@@ -10,8 +10,13 @@
 // export default App
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import StatsDashboard from "./StatsDashboard";
 import { DashboardLayout } from "./layouts/dashboard/layout";
+
+import StatsDashboard from "./StatsDashboard";
+import IncidentAnalytics from "./IncidentAnalytics";
+import ErrorLogs from "./ErrorLogs";
+import Mail from "./Mail";
+import TestPage from "./TestPage";
 import "./App.css";
 
 function UserPage() {
@@ -30,6 +35,10 @@ function App() {
           <Route path="/" element={<StatsDashboard />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/products" element={<ProductPage />} />
+          <Route path="/incidentAnalytics" element={<IncidentAnalytics />} />
+          <Route path="/errorLogs" element={<ErrorLogs />} />
+          <Route path="/mail" element={<Mail />} />
+          <Route path="/testPage" element={<TestPage />} />
         </Routes>
       </DashboardLayout>
     </BrowserRouter>

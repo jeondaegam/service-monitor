@@ -18,7 +18,7 @@ const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} />;
 
 export const navData = [
   {
-    title: "Dashboard",
+    title: "Monitoring",
     path: "/",
     icon: icon("ic-analytics"),
   },
@@ -50,5 +50,25 @@ export const navData = [
     title: "Not found",
     path: "/404",
     icon: icon("ic-disabled"),
+  },
+  {
+    title: "Incident Analytics",
+    path: "/incidentAnalytics",
+    icon: icon("ic-lock"),
+  },
+  {
+    title: "Error Logs",
+    path: "/errorLogs",
+    icon: icon("ic-lock"),
+  },
+  {
+    title: "Mail",
+    path: "/mail",
+    icon: icon("ic-lock"),
+  },
+  {
+    title: "TestPage",
+    path: "/testPage",
+    icon: icon("ic-lock"),
   },
 ];
