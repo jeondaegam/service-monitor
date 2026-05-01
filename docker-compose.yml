@@ -19,52 +19,52 @@ services:
 
 
   # 검색 엔진 (Elasticsearch)
-  es:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
-    container_name: dot-es
-    environment:
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    restart: unless-stopped
-    networks:                 
-      - monitoring-network
+  # es:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+  #   container_name: dot-es
+  #   environment:
+  #     - discovery.type=single-node
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   restart: unless-stopped
+  #   networks:                 
+  #     - monitoring-network
 
-  # 기본 서비스 (dotCMS)
-  dotcms:
-    image: dotcms/dotcms:21.06
-    container_name: dotcms
-    depends_on:
-      es:
-        condition: service_started
-    environment:
-      - PROVIDER_DB_DRIVER=MYSQL
-      - PROVIDER_DB_DNSNAME=${PROVIDER_DB_DNSNAME}
-      - PROVIDER_DB_PORT=${PROVIDER_DB_PORT}
-      - PROVIDER_DB_DBNAME=${PROVIDER_DB_DBNAME}
-      - PROVIDER_DB_USERNAME=${PROVIDER_DB_USERNAME}
-      - "PROVIDER_DB_PASSWORD=${PROVIDER_DB_PASSWORD}"
-      - PROVIDER_DB_URL=${PROVIDER_DB_URL}
-      - PROVIDER_ELASTICSEARCH_DNSNAMES=es
-      - PROVIDER_ELASTICSEARCH_ENDPOINTS=http://es:9200
-      - JAVA_OPTS=-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Xmx2G -Xms2G
-      - DOT_AUTH_TOKEN_CHECK_CSRF=false
-      - DOT_API_SECURITY_CSRF_RELAXED=true
-      - DOT_WEB_INTERCEPTOR_ALLOWED_HOSTS=${DOT_WEB_INTERCEPTOR_ALLOWED_HOSTS}
-      - DOT_TRUSTED_PROXIES=${DOT_TRUSTED_PROXIES}
-      - DOT_SAMESITE_COOKIE_POLICY=LAX
-      - DOT_COOKIE_SAMESITE_NONE=false
-      - DOT_COOKIE_SECURE=false
-      - DOT_INITIAL_ADMIN_PASSWORD=${DOT_INITIAL_ADMIN_PASSWORD}
-    ports:
-      - "8095:8082"             
-    restart: on-failure
-    networks:                 
-      - monitoring-network
+  # # 기본 서비스 (dotCMS)
+  # dotcms:
+  #   image: dotcms/dotcms:21.06
+  #   container_name: dotcms
+  #   depends_on:
+  #     es:
+  #       condition: service_started
+  #   environment:
+  #     - PROVIDER_DB_DRIVER=MYSQL
+  #     - PROVIDER_DB_DNSNAME=${PROVIDER_DB_DNSNAME}
+  #     - PROVIDER_DB_PORT=${PROVIDER_DB_PORT}
+  #     - PROVIDER_DB_DBNAME=${PROVIDER_DB_DBNAME}
+  #     - PROVIDER_DB_USERNAME=${PROVIDER_DB_USERNAME}
+  #     - "PROVIDER_DB_PASSWORD=${PROVIDER_DB_PASSWORD}"
+  #     - PROVIDER_DB_URL=${PROVIDER_DB_URL}
+  #     - PROVIDER_ELASTICSEARCH_DNSNAMES=es
+  #     - PROVIDER_ELASTICSEARCH_ENDPOINTS=http://es:9200
+  #     - JAVA_OPTS=-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Xmx2G -Xms2G
+  #     - DOT_AUTH_TOKEN_CHECK_CSRF=false
+  #     - DOT_API_SECURITY_CSRF_RELAXED=true
+  #     - DOT_WEB_INTERCEPTOR_ALLOWED_HOSTS=${DOT_WEB_INTERCEPTOR_ALLOWED_HOSTS}
+  #     - DOT_TRUSTED_PROXIES=${DOT_TRUSTED_PROXIES}
+  #     - DOT_SAMESITE_COOKIE_POLICY=LAX
+  #     - DOT_COOKIE_SAMESITE_NONE=false
+  #     - DOT_COOKIE_SECURE=false
+  #     - DOT_INITIAL_ADMIN_PASSWORD=${DOT_INITIAL_ADMIN_PASSWORD}
+  #   ports:
+  #     - "8095:8082"             
+  #   restart: on-failure
+  #   networks:                 
+  #     - monitoring-network
 # networks:
 #   db_net:
 #   opensearch-net:
