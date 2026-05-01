@@ -54,14 +54,32 @@ function formatDateTime(value) {
 }
 
 export default function OrderTimeline({
-  title = "Order timeline",
+  //   title = "Order timeline",
+  title = "History",
   subheader,
   list = timelineList,
   sx,
 }) {
   return (
-    <Card sx={sx}>
-      <CardHeader title={title} subheader={subheader} />
+    <Card
+      sx={{
+        borderRadius: 4,
+        boxShadow: "0 12px 24px rgba(145, 158, 171, 0.12)",
+        ...(sx || {}),
+      }}
+    >
+      <CardHeader
+        title={title}
+        subheader={subheader}
+        sx={{
+          p: 3,
+          pb: 0,
+          "& .MuiCardHeader-title": {
+            fontWeight: 700,
+            fontSize: 18,
+          },
+        }}
+      />
 
       <Timeline
         sx={{
