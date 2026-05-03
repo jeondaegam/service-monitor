@@ -13,7 +13,7 @@ const DUMMY_LOGS = [
     level: "ERROR",
     service: "api-gateway",
     message: "Connection timeout: upstream responded with 502",
-    timestamp: "2025-05-01T14:03:21Z",
+    timestamp: "2026-05-01T14:03:21Z",
     requestId: "req_8f2d1a3c",
     stackTrace:
       "com.example.gateway.filter.GatewayFilter.apply(GatewayFilter.java:112)\n  at reactor.core.publisher.FluxOnAssembly$OnAssemblySubscriber.onNext(FluxOnAssembly.java:539)\n  at io.netty.channel.AbstractChannel$AbstractUnsafe.write(AbstractChannel.java:812)\nCaused by: io.netty.channel.ConnectTimeoutException: connection timed out after 3000ms",
@@ -23,7 +23,7 @@ const DUMMY_LOGS = [
     level: "WARN",
     service: "auth",
     message: "JWT validation failed for user_id=4821: token expired",
-    timestamp: "2025-05-01T14:02:58Z",
+    timestamp: "2026-05-01T14:02:58Z",
     requestId: "req_c91e4b2f",
     stackTrace:
       "com.example.auth.JwtValidator.validate(JwtValidator.java:67)\n  at com.example.auth.AuthFilter.doFilter(AuthFilter.java:44)\nCaused by: io.jsonwebtoken.ExpiredJwtException: JWT expired at 2025-05-01T13:58:00Z",
@@ -33,7 +33,7 @@ const DUMMY_LOGS = [
     level: "ERROR",
     service: "db",
     message: "Max connection pool size exceeded: 100/100 connections active",
-    timestamp: "2025-05-01T14:01:44Z",
+    timestamp: "2026-05-01T14:01:44Z",
     requestId: "req_77a9c3d1",
     stackTrace:
       "com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:213)\n  at com.example.repository.UserRepository.findById(UserRepository.java:88)\nCaused by: java.sql.SQLTransientConnectionException: HikariPool-1 - Connection is not available, request timed out after 30000ms",
@@ -43,7 +43,7 @@ const DUMMY_LOGS = [
     level: "WARN",
     service: "api-gateway",
     message: "Response time exceeded threshold: 3842ms (threshold: 3000ms)",
-    timestamp: "2025-05-01T14:00:09Z",
+    timestamp: "2026-05-01T14:00:09Z",
     requestId: "req_4e2f8b5c",
     stackTrace:
       "com.example.gateway.monitor.LatencyMonitor.check(LatencyMonitor.java:55)\n  at com.example.gateway.filter.MetricsFilter.apply(MetricsFilter.java:38)",
@@ -53,7 +53,7 @@ const DUMMY_LOGS = [
     level: "ERROR",
     service: "auth",
     message: "Redis session store unreachable: connection refused",
-    timestamp: "2025-05-01T13:58:33Z",
+    timestamp: "2026-05-01T13:58:33Z",
     requestId: "req_2d7c1e9a",
     stackTrace:
       "redis.clients.jedis.Jedis.connect(Jedis.java:174)\n  at com.example.auth.SessionStore.get(SessionStore.java:92)\nCaused by: java.net.ConnectException: Connection refused (Connection refused)",
@@ -63,7 +63,7 @@ const DUMMY_LOGS = [
     level: "INFO",
     service: "db",
     message: "Scheduled maintenance: index rebuild completed in 4.2s",
-    timestamp: "2025-05-01T13:55:00Z",
+    timestamp: "2026-05-01T13:55:00Z",
     requestId: "req_00000000",
     stackTrace: "",
   },
@@ -72,7 +72,7 @@ const DUMMY_LOGS = [
     level: "ERROR",
     service: "api-gateway",
     message: "Upstream service returned 500: internal server error from /users/profile",
-    timestamp: "2025-05-01T13:52:17Z",
+    timestamp: "2026-05-01T13:52:17Z",
     requestId: "req_9b3f2c7d",
     stackTrace:
       "com.example.gateway.handler.ErrorHandler.handleError(ErrorHandler.java:88)\n  at com.example.gateway.filter.ProxyFilter.apply(ProxyFilter.java:201)\nCaused by: org.springframework.web.client.HttpServerErrorException$InternalServerError: 500 Internal Server Error",
@@ -82,7 +82,7 @@ const DUMMY_LOGS = [
     level: "WARN",
     service: "db",
     message: "Slow query detected (1842ms): SELECT * FROM orders WHERE user_id=? AND status=?",
-    timestamp: "2025-05-01T13:49:05Z",
+    timestamp: "2026-05-01T13:49:05Z",
     requestId: "req_5a8d3e1f",
     stackTrace:
       "com.example.db.QueryMonitor.logSlowQuery(QueryMonitor.java:44)\n  at com.example.repository.OrderRepository.findByUserId(OrderRepository.java:133)",
@@ -102,11 +102,14 @@ const TABLE_HEADERS = ["시간", "레벨", "서비스", "메시지", ""];
 
 function formatTime(iso) {
   const d = new Date(iso);
-  return d.toLocaleTimeString("ko-KR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
+  const yy = String(d.getFullYear()).slice(-2);
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  const hour = String(d.getHours()).padStart(2, "0");
+  const minute = String(d.getMinutes()).padStart(2, "0");
+  const second = String(d.getSeconds()).padStart(2, "0");
+
+  return `${yy}-${month}-${day} ${hour}:${minute}:${second}`;
 }
 
 function formatDateTime(iso) {
@@ -210,7 +213,12 @@ function LogTable({ logs, selectedId, onRowClick }) {
         <thead>
           <tr>
             {TABLE_HEADERS.map((header) => (
-              <th key={header}>{header}</th>
+              <th
+                key={header}
+                className={header === "메시지" ? styles.messageHeader : undefined}
+              >
+                {header}
+              </th>
             ))}
           </tr>
         </thead>
@@ -238,7 +246,7 @@ function LogTable({ logs, selectedId, onRowClick }) {
                   onClick={() => onRowClick(log.logId)}
                 >
                   <td className={styles.timeCell}>{formatTime(log.timestamp)}</td>
-                  <td>
+                  <td className={styles.levelCell}>
                     <LevelBadge level={log.level} />
                   </td>
                   <td className={styles.serviceCell}>{log.service}</td>
@@ -334,7 +342,7 @@ export default function ErrorLogPage() {
       <LogTable logs={filtered} selectedId={selectedId} onRowClick={handleRowClick} />
 
       <div className={styles.footerNote}>
-        {filtered.length}건 표시 중 · 페이지네이션은 API 연동 시 추가
+        {filtered.length}건 표시 중 · 페이지네이션 필요시 API 연동 시 추가
       </div>
     </div>
   );
