@@ -8,11 +8,12 @@ import styles from "./MailManagePage.module.css";
 //   히스토리 → GET /api/mail/history?page=0&size=10
 // ─────────────────────────────────────────
 const DUMMY_RECIPIENTS = [
-  { id: 1, email: "kim.junho@company.com", name: "홍유진", team: "운영팀", active: true },
-  { id: 2, email: "lee.soyeon@company.com", name: "이승환", team: "개발팀", active: false },
-  { id: 3, email: "park.junhee@company.com", name: "한정일", team: "인프라팀", active: false },
-  { id: 4, email: "choi.minjun@company.com", name: "허연혜", team: "운영팀", active: true },
-  { id: 5, email: "choi.minjun@company.com", name: "김나은", team: "운영팀", active: true },
+  { id: 1, email: "yj.hong@company.com", name: "홍유진", team: "운영팀", active: true },
+  { id: 2, email: "sh.lee@company.com", name: "이승환", team: "개발팀", active: false },
+  { id: 3, email: "ji.han@company.com", name: "한정일", team: "인프라팀", active: false },
+  { id: 4, email: "yh.heo@company.com", name: "허연혜", team: "운영팀", active: true },
+  { id: 5, email: "yr.jeon@company.com", name: "전여름", team: "운영팀", active: true },
+  { id: 6, email: "ne.kim@company.com", name: "김나은", team: "개발팀", active: true },
 ];
 
 const DUMMY_HISTORY = [
