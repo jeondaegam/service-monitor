@@ -32,7 +32,7 @@ function App() {
             <Route path="/error-log" element={<ErrorLogPage />} />
             {/* <Route path="/mail" element={<Mail />} /> */}
             {/* <Route path="/test-page" element={<TestPage />} /> */}
-            <Route path="/mail-manage" element={<MailManagePage />} />
+            <Route path="/notifications" element={<MailManagePage />} />
           </Routes>
         </DashboardLayout>
       </BrowserRouter>

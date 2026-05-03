@@ -415,7 +415,7 @@ export default function IncidentStats() {
     <div className={styles.page}>
       <div className={styles.header}>
         <div>
-          <h1 className={styles.title}>Incident Stats</h1>
+          <h1 className={styles.title}>장애 통계</h1>
           <p className={styles.description}>
             장애 조건 기반으로 현재 위험도, 유형별 빈도, 서버별 반복 장애를 분석합니다.
           </p>

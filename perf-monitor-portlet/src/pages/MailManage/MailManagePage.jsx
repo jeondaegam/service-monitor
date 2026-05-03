@@ -423,7 +423,7 @@ export default function MailManagePage() {
 
       <div className={styles.page}>
         <header className={styles.header}>
-          <h1 className={styles.title}>메일 관리</h1>
+          <h1 className={styles.title}>알림 설정</h1>
           <p className={styles.subtitle}>장애 알림 수신자 관리 및 발송 이력 조회</p>
         </header>
 

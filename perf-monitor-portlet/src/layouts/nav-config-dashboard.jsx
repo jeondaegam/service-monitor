@@ -62,8 +62,8 @@ export const navData = [
     icon: icon("ic-error-log"),
   },
   {
-    title: "Mail Manage",
-    path: "/mail-manage",
+    title: "Notifications",
+    path: "/notifications",
     icon: icon("ic-mail"),
   },
   // {
