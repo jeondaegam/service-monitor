@@ -100,6 +100,17 @@ const LEVEL_STYLE = {
   INFO:  { bg: "#DBEAFE", color: "#1E40AF" },
 };
 
+const UI = {
+  panel: "var(--app-panel)",
+  panelAlt: "var(--app-panel-alt)",
+  border: "var(--app-border)",
+  text: "var(--app-text)",
+  muted: "var(--app-muted)",
+  softText: "var(--app-soft-text)",
+  hover: "var(--app-hover)",
+  active: "var(--app-active)",
+};
+
 function formatTime(iso) {
   const d = new Date(iso);
   return d.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
@@ -140,9 +151,9 @@ function LevelBadge({ level }) {
 function DetailPanel({ log }) {
   return (
     <tr>
-      <td colSpan={5} style={{ padding: 0, borderBottom: "1px solid #E5E7EB" }}>
+      <td colSpan={5} style={{ padding: 0, borderBottom: `1px solid ${UI.border}` }}>
         <div style={{
-          background: "#F9FAFB",
+          background: UI.panelAlt,
           borderLeft: `3px solid ${LEVEL_STYLE[log.level]?.color ?? "#6B7280"}`,
           padding: "16px 20px",
           animation: "slideDown 0.18s ease",
@@ -155,20 +166,20 @@ function DetailPanel({ log }) {
               ["발생 시각",    formatDateTime(log.timestamp)],
             ].map(([k, v]) => (
               <div key={k}>
-                <div style={{ fontSize: 11, color: "#6B7280", marginBottom: 2 }}>{k}</div>
-                <div style={{ fontSize: 12, fontFamily: "monospace", color: "#111827", wordBreak: "break-all" }}>{v}</div>
+                <div style={{ fontSize: 11, color: UI.muted, marginBottom: 2 }}>{k}</div>
+                <div style={{ fontSize: 12, fontFamily: "monospace", color: UI.text, wordBreak: "break-all" }}>{v}</div>
               </div>
             ))}
           </div>
 
           <div style={{ marginBottom: log.stackTrace ? 12 : 0 }}>
-            <div style={{ fontSize: 11, color: "#6B7280", marginBottom: 4 }}>메시지</div>
+            <div style={{ fontSize: 11, color: UI.muted, marginBottom: 4 }}>메시지</div>
             <div style={{
               fontSize: 12,
               fontFamily: "monospace",
-              color: "#111827",
-              background: "#fff",
-              border: "1px solid #E5E7EB",
+              color: UI.text,
+              background: UI.panel,
+              border: `1px solid ${UI.border}`,
               borderRadius: 6,
               padding: "8px 12px",
             }}>
@@ -178,13 +189,13 @@ function DetailPanel({ log }) {
 
           {log.stackTrace && (
             <div>
-              <div style={{ fontSize: 11, color: "#6B7280", marginBottom: 4 }}>Stack Trace</div>
+              <div style={{ fontSize: 11, color: UI.muted, marginBottom: 4 }}>Stack Trace</div>
               <pre style={{
                 fontSize: 11,
                 fontFamily: "monospace",
-                color: "#374151",
-                background: "#fff",
-                border: "1px solid #E5E7EB",
+                color: UI.text,
+                background: UI.panel,
+                border: `1px solid ${UI.border}`,
                 borderRadius: 6,
                 padding: "10px 12px",
                 margin: 0,
@@ -243,13 +254,13 @@ export default function ErrorLogPage() {
     border: "1px solid",
     borderColor: active
       ? (type === "ERROR" ? "#FCA5A5" : type === "WARN" ? "#FCD34D" : "#93C5FD")
-      : "#D1D5DB",
+      : UI.border,
     background: active
       ? (type === "ERROR" ? "#FEE2E2" : type === "WARN" ? "#FEF3C7" : "#DBEAFE")
-      : "#fff",
+      : UI.panel,
     color: active
       ? (type === "ERROR" ? "#B91C1C" : type === "WARN" ? "#92400E" : "#1E40AF")
-      : "#6B7280",
+      : UI.muted,
     transition: "all 0.15s",
   });
 
@@ -260,9 +271,9 @@ export default function ErrorLogPage() {
     fontWeight: 500,
     cursor: "pointer",
     border: "1px solid",
-    borderColor: active ? "#6366F1" : "#D1D5DB",
-    background: active ? "#EEF2FF" : "#fff",
-    color: active ? "#4338CA" : "#6B7280",
+    borderColor: active ? "#6366F1" : UI.border,
+    background: active ? UI.active : UI.panel,
+    color: active ? "#6366F1" : UI.muted,
     transition: "all 0.15s",
   });
 
@@ -273,16 +284,16 @@ export default function ErrorLogPage() {
           from { opacity: 0; transform: translateY(-6px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        .log-row:hover td { background: #F3F4F6; cursor: pointer; }
-        .log-row.active td { background: #EEF2FF; }
+        .log-row:hover td { background: var(--app-hover); cursor: pointer; }
+        .log-row.active td { background: var(--app-active); }
       `}</style>
 
-      <div style={{ padding: "28px 32px", fontFamily: "system-ui, sans-serif", maxWidth: 1100, margin: "0 auto" }}>
+      <div style={{ padding: "28px 32px", fontFamily: "system-ui, sans-serif", maxWidth: 1100, margin: "0 auto", color: UI.text }}>
 
         {/* ── 헤더 ── */}
         <div style={{ marginBottom: 24 }}>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: "#111827", margin: 0 }}>에러 로그</h1>
-          <p style={{ fontSize: 13, color: "#6B7280", marginTop: 4 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: UI.text, margin: 0 }}>에러 로그</h1>
+          <p style={{ fontSize: 13, color: UI.muted, marginTop: 4 }}>
             총 {filtered.length}건 · 클릭하면 상세 확인
           </p>
         </div>
@@ -302,7 +313,7 @@ export default function ErrorLogPage() {
             ))}
           </div>
 
-          <div style={{ width: 1, height: 20, background: "#E5E7EB" }} />
+          <div style={{ width: 1, height: 20, background: UI.border }} />
 
           {/* 서비스 필터 */}
           <div style={{ display: "flex", gap: 6 }}>
@@ -336,8 +347,8 @@ export default function ErrorLogPage() {
 
         {/* ── 테이블 ── */}
         <div style={{
-          background: "#fff",
-          border: "1px solid #E5E7EB",
+          background: UI.panel,
+          border: `1px solid ${UI.border}`,
           borderRadius: 12,
           overflow: "hidden",
         }}>
@@ -350,13 +361,13 @@ export default function ErrorLogPage() {
               <col style={{ width: 40 }} />   {/* 화살표 */}
             </colgroup>
             <thead>
-              <tr style={{ background: "#F9FAFB", borderBottom: "1px solid #E5E7EB" }}>
+              <tr style={{ background: UI.panelAlt, borderBottom: `1px solid ${UI.border}` }}>
                 {["시각", "레벨", "서비스", "메시지", ""].map((h) => (
                   <th key={h} style={{
                     textAlign: "left",
                     fontSize: 11,
                     fontWeight: 600,
-                    color: "#6B7280",
+                    color: UI.muted,
                     padding: "10px 14px",
                     letterSpacing: "0.05em",
                     textTransform: "uppercase",
@@ -370,7 +381,7 @@ export default function ErrorLogPage() {
             <tbody>
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={5} style={{ textAlign: "center", padding: 40, color: "#9CA3AF", fontSize: 14 }}>
+                  <td colSpan={5} style={{ textAlign: "center", padding: 40, color: UI.softText, fontSize: 14 }}>
                     조건에 맞는 로그가 없습니다.
                   </td>
                 </tr>
@@ -385,28 +396,28 @@ export default function ErrorLogPage() {
                       className={`log-row${isOpen ? " active" : ""}`}
                       onClick={() => handleRowClick(log.logId)}
                     >
-                      <td style={{ padding: "10px 14px", fontSize: 12, fontFamily: "monospace", color: "#6B7280", borderBottom: isOpen ? "none" : "1px solid #F3F4F6" }}>
+                      <td style={{ padding: "10px 14px", fontSize: 12, fontFamily: "monospace", color: UI.muted, borderBottom: isOpen ? "none" : `1px solid ${UI.border}` }}>
                         {formatTime(log.timestamp)}
                       </td>
-                      <td style={{ padding: "10px 14px", borderBottom: isOpen ? "none" : "1px solid #F3F4F6" }}>
+                      <td style={{ padding: "10px 14px", borderBottom: isOpen ? "none" : `1px solid ${UI.border}` }}>
                         <LevelBadge level={log.level} />
                       </td>
-                      <td style={{ padding: "10px 14px", fontSize: 12, color: "#374151", fontFamily: "monospace", borderBottom: isOpen ? "none" : "1px solid #F3F4F6" }}>
+                      <td style={{ padding: "10px 14px", fontSize: 12, color: UI.text, fontFamily: "monospace", borderBottom: isOpen ? "none" : `1px solid ${UI.border}` }}>
                         {log.service}
                       </td>
                       <td style={{
                         padding: "10px 14px",
                         fontSize: 12,
                         fontFamily: "monospace",
-                        color: "#111827",
-                        borderBottom: isOpen ? "none" : "1px solid #F3F4F6",
+                        color: UI.text,
+                        borderBottom: isOpen ? "none" : `1px solid ${UI.border}`,
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                       }}>
                         {log.message}
                       </td>
-                      <td style={{ padding: "10px 14px", textAlign: "center", fontSize: 14, color: "#9CA3AF", borderBottom: isOpen ? "none" : "1px solid #F3F4F6", transition: "transform 0.15s", transform: isOpen ? "rotate(90deg)" : "none" }}>
+                      <td style={{ padding: "10px 14px", textAlign: "center", fontSize: 14, color: UI.softText, borderBottom: isOpen ? "none" : `1px solid ${UI.border}`, transition: "transform 0.15s", transform: isOpen ? "rotate(90deg)" : "none" }}>
                         ›
                       </td>
                     </tr>
@@ -422,7 +433,7 @@ export default function ErrorLogPage() {
 
         {/* ── 페이지네이션 자리 ── */}
         {/* API 붙이면 여기에 페이지 버튼 추가 */}
-        <div style={{ marginTop: 12, fontSize: 12, color: "#9CA3AF", textAlign: "right" }}>
+        <div style={{ marginTop: 12, fontSize: 12, color: UI.softText, textAlign: "right" }}>
           {filtered.length}건 표시 중 · 페이지네이션은 API 연동 후 추가
         </div>
       </div>

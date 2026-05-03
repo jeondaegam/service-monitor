@@ -1,15 +1,19 @@
 import { Box } from "@mui/material";
 import { NavDesktop } from "./nav";
 import OrderTimeline from "../../sections/overview/analytics-order-timeline";
+import { useThemeMode } from "../../theme-mode";
 
 export function DashboardLayout({ children }) {
+  const { themeMode } = useThemeMode();
+
   return (
     <Box
+      className={`app-shell app-theme-${themeMode}`}
       sx={{
         display: "grid",
         gridTemplateColumns: "260px minmax(0, 1fr) 360px",
         minHeight: "100vh",
-        bgcolor: "#0d0f14",
+        bgcolor: "var(--app-bg)",
       }}
     >
       <Box component="aside">
@@ -21,7 +25,7 @@ export function DashboardLayout({ children }) {
         sx={{
           p: 4,
           minWidth: 0,
-          bgcolor: "#0d0f14",
+          bgcolor: "var(--app-bg)",
         }}
       >
         {children}
@@ -31,8 +35,8 @@ export function DashboardLayout({ children }) {
         component="aside"
         sx={{
           p: 3,
-          bgcolor: "#0d0f14",
-          borderLeft: "1px solid #232840",
+          bgcolor: "var(--app-bg)",
+          borderLeft: "1px solid var(--app-border)",
           minWidth: 0,
           height: "100vh",
           position: "sticky",

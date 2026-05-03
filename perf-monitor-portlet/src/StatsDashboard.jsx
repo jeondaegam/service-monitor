@@ -34,18 +34,18 @@ const generateData = () =>
   }));
 
 const COLORS = {
-  bg: "#0d0f14",
-  surface: "#13161e",
-  card: "#181c27",
-  border: "#232840",
-  accent: "#e84545",
+  bg: "var(--app-bg)",
+  surface: "var(--app-surface)",
+  card: "var(--app-panel)",
+  border: "var(--app-border)",
+  accent: "var(--app-danger)",
   accentSoft: "rgba(232,69,69,0.15)",
   blue: "#4a9eff",
   blueSoft: "rgba(74,158,255,0.15)",
-  text: "#e8eaf0",
-  muted: "#7b82a0",
-  success: "#2dd4a0",
-  warning: "#f59e42",
+  text: "var(--app-text)",
+  muted: "var(--app-muted)",
+  success: "var(--app-success)",
+  warning: "var(--app-warning)",
 };
 
 const cardStyle = {

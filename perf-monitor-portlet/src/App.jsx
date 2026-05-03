@@ -19,6 +19,7 @@ import TestPage from "./TestPage";
 import "./App.css";
 import ErrorLogPage from "./ErrorLogPage";
 import MailManagePage from "./MailManagePage";
+import { ThemeModeProvider } from "./theme-mode";
 
 function UserPage() {
   return <h1>User</h1>;
@@ -30,21 +31,23 @@ function ProductPage() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <DashboardLayout>
-        <Routes>
-          <Route path="/" element={<StatsDashboard />} />
-          {/* <Route path="/" element={<TestPage />} /> */}
-          <Route path="/user" element={<UserPage />} />
-          <Route path="/products" element={<ProductPage />} />
-          <Route path="/incidentAnalytics" element={<IncidentAnalytics />} />
-          <Route path="/errorLog" element={<ErrorLogPage />} />
-          <Route path="/mail" element={<Mail />} />
-          <Route path="/testPage" element={<TestPage />} />
-          <Route path="/mailManage" element={<MailManagePage />} />
-        </Routes>
-      </DashboardLayout>
-    </BrowserRouter>
+    <ThemeModeProvider>
+      <BrowserRouter>
+        <DashboardLayout>
+          <Routes>
+            <Route path="/" element={<StatsDashboard />} />
+            {/* <Route path="/" element={<TestPage />} /> */}
+            <Route path="/user" element={<UserPage />} />
+            <Route path="/products" element={<ProductPage />} />
+            <Route path="/incidentAnalytics" element={<IncidentAnalytics />} />
+            <Route path="/errorLog" element={<ErrorLogPage />} />
+            <Route path="/mail" element={<Mail />} />
+            <Route path="/testPage" element={<TestPage />} />
+            <Route path="/mailManage" element={<MailManagePage />} />
+          </Routes>
+        </DashboardLayout>
+      </BrowserRouter>
+    </ThemeModeProvider>
   );
 }
 

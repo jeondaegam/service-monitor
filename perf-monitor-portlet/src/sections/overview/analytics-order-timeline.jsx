@@ -71,8 +71,11 @@ export default function OrderTimeline({
   return (
     <Card
       sx={{
-        borderRadius: 4,
-        boxShadow: "0 12px 24px rgba(145, 158, 171, 0.12)",
+        bgcolor: "var(--app-panel)",
+        color: "var(--app-text)",
+        border: "1px solid var(--app-border)",
+        borderRadius: 2,
+        boxShadow: "var(--app-shadow)",
         ...(sx || {}),
       }}
     >
@@ -85,6 +88,10 @@ export default function OrderTimeline({
           "& .MuiCardHeader-title": {
             fontWeight: 700,
             fontSize: 18,
+            color: "var(--app-text)",
+          },
+          "& .MuiCardHeader-subheader": {
+            color: "var(--app-muted)",
           },
         }}
       />
@@ -128,9 +135,11 @@ function Item({ item, lastItem }) {
       </TimelineSeparator>
 
       <TimelineContent>
-        <Typography variant="subtitle2">{item.title}</Typography>
+        <Typography variant="subtitle2" sx={{ color: "var(--app-text)" }}>
+          {item.title}
+        </Typography>
 
-        <Typography variant="caption" sx={{ color: "text.disabled" }}>
+        <Typography variant="caption" sx={{ color: "var(--app-muted)" }}>
           {formatDateTime(item.time)}
         </Typography>
       </TimelineContent>

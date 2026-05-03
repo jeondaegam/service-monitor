@@ -54,3 +54,54 @@ input[type='number']::-webkit-inner-spin-button {
   margin: 0;
   -webkit-appearance: none;
 }
+
+/** **************************************
+* App theme tokens
+*************************************** */
+.app-theme-dark {
+  --app-bg: #0d0f14;
+  --app-surface: #13161e;
+  --app-panel: #181c27;
+  --app-panel-alt: #13161e;
+  --app-border: #232840;
+  --app-text: #e8eaf0;
+  --app-muted: #7b82a0;
+  --app-soft-text: #7b82a0;
+  --app-hover: #13161e;
+  --app-active: rgba(74, 158, 255, 0.15);
+  --app-accent: #4a9eff;
+  --app-danger: #e84545;
+  --app-warning: #f59e42;
+  --app-success: #2dd4a0;
+  --app-button-bg: rgba(74, 158, 255, 0.15);
+  --app-button-text: #4a9eff;
+  --app-shadow: none;
+}
+
+.app-theme-light {
+  --app-bg: #f6f7fb;
+  --app-surface: #f9fafb;
+  --app-panel: #ffffff;
+  --app-panel-alt: #f9fafb;
+  --app-border: #e5e7eb;
+  --app-text: #111827;
+  --app-muted: #6b7280;
+  --app-soft-text: #9ca3af;
+  --app-hover: #f3f4f6;
+  --app-active: #eef2ff;
+  --app-accent: #6366f1;
+  --app-danger: #b91c1c;
+  --app-warning: #92400e;
+  --app-success: #059669;
+  --app-button-bg: #111827;
+  --app-button-text: #ffffff;
+  --app-shadow: 0 12px 24px rgba(145, 158, 171, 0.12);
+}
+
+.app-shell {
+  background: var(--app-bg);
+  color: var(--app-text);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}

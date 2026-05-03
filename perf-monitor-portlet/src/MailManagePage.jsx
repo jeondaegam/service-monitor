@@ -55,6 +55,17 @@ const LEVEL_STYLE = {
   WARN:  { bg: "#FEF3C7", color: "#92400E" },
 };
 
+const UI = {
+  panel: "var(--app-panel)",
+  panelAlt: "var(--app-panel-alt)",
+  border: "var(--app-border)",
+  text: "var(--app-text)",
+  muted: "var(--app-muted)",
+  softText: "var(--app-soft-text)",
+  hover: "var(--app-hover)",
+  active: "var(--app-active)",
+};
+
 // ─────────────────────────────────────────
 // 수신자 추가/수정 모달
 // ─────────────────────────────────────────
@@ -82,12 +93,13 @@ function RecipientModal({ initial, onSave, onClose }) {
     >
       <div
         style={{
-          background: "#fff", borderRadius: 14, padding: 28, width: 380,
+          background: UI.panel, borderRadius: 14, padding: 28, width: 380,
+          border: `1px solid ${UI.border}`,
           boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 style={{ fontSize: 16, fontWeight: 700, margin: "0 0 20px", color: "#111827" }}>
+        <h2 style={{ fontSize: 16, fontWeight: 700, margin: "0 0 20px", color: UI.text }}>
           {isEdit ? "수신자 수정" : "수신자 추가"}
         </h2>
 
@@ -97,7 +109,7 @@ function RecipientModal({ initial, onSave, onClose }) {
           { label: "팀",       key: "team",  type: "text",   placeholder: "운영팀" },
         ].map(({ label, key, type, placeholder }) => (
           <div key={key} style={{ marginBottom: 14 }}>
-            <label style={{ fontSize: 12, color: "#6B7280", display: "block", marginBottom: 4 }}>{label}</label>
+            <label style={{ fontSize: 12, color: UI.muted, display: "block", marginBottom: 4 }}>{label}</label>
             <input
               type={type}
               value={form[key]}
@@ -105,7 +117,8 @@ function RecipientModal({ initial, onSave, onClose }) {
               onChange={(e) => set(key, e.target.value)}
               style={{
                 width: "100%", padding: "8px 12px", fontSize: 13,
-                border: "1px solid #D1D5DB", borderRadius: 8, outline: "none",
+                border: `1px solid ${UI.border}`, borderRadius: 8, outline: "none",
+                background: UI.panelAlt, color: UI.text,
                 boxSizing: "border-box",
               }}
             />
@@ -113,7 +126,7 @@ function RecipientModal({ initial, onSave, onClose }) {
         ))}
 
         <div style={{ marginBottom: 22, display: "flex", alignItems: "center", gap: 10 }}>
-          <label style={{ fontSize: 12, color: "#6B7280" }}>활성화</label>
+          <label style={{ fontSize: 12, color: UI.muted }}>활성화</label>
           <div
             onClick={() => set("active", !form.active)}
             style={{
@@ -139,7 +152,7 @@ function RecipientModal({ initial, onSave, onClose }) {
             onClick={onClose}
             style={{
               padding: "8px 18px", borderRadius: 8, fontSize: 13,
-              border: "1px solid #D1D5DB", background: "#fff", color: "#374151", cursor: "pointer",
+              border: `1px solid ${UI.border}`, background: UI.panel, color: UI.text, cursor: "pointer",
             }}
           >
             취소
@@ -213,9 +226,9 @@ export default function MailManagePage() {
   const chipStyle = (active) => ({
     padding: "4px 12px", borderRadius: 20, fontSize: 12, fontWeight: 500,
     cursor: "pointer", border: "1px solid",
-    borderColor: active ? "#6366F1" : "#D1D5DB",
-    background: active ? "#EEF2FF" : "#fff",
-    color: active ? "#4338CA" : "#6B7280",
+    borderColor: active ? "#6366F1" : UI.border,
+    background: active ? UI.active : UI.panel,
+    color: active ? "#6366F1" : UI.muted,
     transition: "all 0.15s",
   });
 
@@ -230,9 +243,9 @@ export default function MailManagePage() {
           from { opacity: 0; transform: translateY(-4px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        .hist-row:hover td { background: #F9FAFB; cursor: pointer; }
-        .hist-row.expanded td { background: #EEF2FF; }
-        .recip-row:hover { background: #F9FAFB; }
+        .hist-row:hover td { background: var(--app-hover); cursor: pointer; }
+        .hist-row.expanded td { background: var(--app-active); }
+        .recip-row:hover { background: var(--app-hover); }
       `}</style>
 
       {/* 모달 */}
@@ -244,12 +257,12 @@ export default function MailManagePage() {
         />
       )}
 
-      <div style={{ padding: "28px 32px", fontFamily: "system-ui, sans-serif", maxWidth: 1100, margin: "0 auto" }}>
+      <div style={{ padding: "28px 32px", fontFamily: "system-ui, sans-serif", maxWidth: 1100, margin: "0 auto", color: UI.text }}>
 
         {/* ── 헤더 ── */}
         <div style={{ marginBottom: 28 }}>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: "#111827", margin: 0 }}>메일 관리</h1>
-          <p style={{ fontSize: 13, color: "#6B7280", marginTop: 4 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: UI.text, margin: 0 }}>메일 관리</h1>
+          <p style={{ fontSize: 13, color: UI.muted, marginTop: 4 }}>
             장애 알림 수신자 관리 및 발송 이력 조회
           </p>
         </div>
@@ -262,10 +275,10 @@ export default function MailManagePage() {
             { label: "발송 성공 (30일)", value: successCount,    color: "#0284C7", bg: "#E0F2FE" },
           ].map(({ label, value, color, bg }) => (
             <div key={label} style={{
-              background: "#fff", border: "1px solid #E5E7EB",
+              background: UI.panel, border: `1px solid ${UI.border}`,
               borderRadius: 12, padding: "16px 20px",
             }}>
-              <div style={{ fontSize: 12, color: "#6B7280", marginBottom: 6 }}>{label}</div>
+              <div style={{ fontSize: 12, color: UI.muted, marginBottom: 6 }}>{label}</div>
               <div style={{ fontSize: 28, fontWeight: 700, color }}>{value}</div>
             </div>
           ))}
@@ -277,7 +290,7 @@ export default function MailManagePage() {
           {/* ── 왼쪽: 수신자 관리 ── */}
           <div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-              <span style={{ fontSize: 15, fontWeight: 600, color: "#111827" }}>알림 수신자</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: UI.text }}>알림 수신자</span>
               <button
                 onClick={() => setModal({ mode: "add" })}
                 style={{
@@ -289,9 +302,9 @@ export default function MailManagePage() {
               </button>
             </div>
 
-            <div style={{ background: "#fff", border: "1px solid #E5E7EB", borderRadius: 12, overflow: "hidden" }}>
+            <div style={{ background: UI.panel, border: `1px solid ${UI.border}`, borderRadius: 12, overflow: "hidden" }}>
               {recipients.length === 0 && (
-                <div style={{ padding: 32, textAlign: "center", color: "#9CA3AF", fontSize: 14 }}>
+                <div style={{ padding: 32, textAlign: "center", color: UI.softText, fontSize: 14 }}>
                   수신자가 없습니다.
                 </div>
               )}
@@ -304,7 +317,7 @@ export default function MailManagePage() {
                     style={{
                       display: "flex", alignItems: "center", gap: 12,
                       padding: "12px 16px",
-                      borderBottom: idx < recipients.length - 1 ? "1px solid #F3F4F6" : "none",
+                      borderBottom: idx < recipients.length - 1 ? `1px solid ${UI.border}` : "none",
                       opacity: r.active ? 1 : 0.5,
                       transition: "opacity 0.2s",
                     }}
@@ -321,9 +334,9 @@ export default function MailManagePage() {
 
                     {/* 정보 */}
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: "#111827" }}>{r.name}</div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: UI.text }}>{r.name}</div>
                       <div style={{
-                        fontSize: 11, color: "#6B7280",
+                        fontSize: 11, color: UI.muted,
                         whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                       }}>
                         {r.email} · {r.team}
@@ -354,8 +367,8 @@ export default function MailManagePage() {
                       onClick={() => setModal({ mode: "edit", data: r })}
                       style={{
                         padding: "4px 10px", borderRadius: 6, fontSize: 11,
-                        border: "1px solid #D1D5DB", background: "#fff",
-                        color: "#374151", cursor: "pointer", flexShrink: 0,
+                        border: `1px solid ${UI.border}`, background: UI.panel,
+                        color: UI.text, cursor: "pointer", flexShrink: 0,
                       }}
                     >
                       수정
@@ -381,8 +394,8 @@ export default function MailManagePage() {
           {/* ── 오른쪽: 발송 히스토리 ── */}
           <div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-              <span style={{ fontSize: 15, fontWeight: 600, color: "#111827" }}>발송 히스토리</span>
-              <span style={{ fontSize: 12, color: "#9CA3AF" }}>최근 30일</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: UI.text }}>발송 히스토리</span>
+              <span style={{ fontSize: 12, color: UI.softText }}>최근 30일</span>
             </div>
 
             {/* 히스토리 필터 */}
@@ -408,7 +421,7 @@ export default function MailManagePage() {
             </div>
 
             {/* 히스토리 테이블 */}
-            <div style={{ background: "#fff", border: "1px solid #E5E7EB", borderRadius: 12, overflow: "hidden" }}>
+            <div style={{ background: UI.panel, border: `1px solid ${UI.border}`, borderRadius: 12, overflow: "hidden" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
                 <colgroup>
                   <col style={{ width: 90 }} />
@@ -417,11 +430,11 @@ export default function MailManagePage() {
                   <col style={{ width: 46 }} />
                 </colgroup>
                 <thead>
-                  <tr style={{ background: "#F9FAFB", borderBottom: "1px solid #E5E7EB" }}>
+                  <tr style={{ background: UI.panelAlt, borderBottom: `1px solid ${UI.border}` }}>
                     {["발송 시각", "제목", "결과", "수신자"].map((h) => (
                       <th key={h} style={{
                         textAlign: "left", fontSize: 11, fontWeight: 600,
-                        color: "#6B7280", padding: "9px 12px",
+                        color: UI.muted, padding: "9px 12px",
                         letterSpacing: "0.05em", textTransform: "uppercase",
                       }}>
                         {h}
@@ -432,7 +445,7 @@ export default function MailManagePage() {
                 <tbody>
                   {filteredHistory.length === 0 && (
                     <tr>
-                      <td colSpan={4} style={{ textAlign: "center", padding: 32, color: "#9CA3AF", fontSize: 13 }}>
+                      <td colSpan={4} style={{ textAlign: "center", padding: 32, color: UI.softText, fontSize: 13 }}>
                         발송 이력이 없습니다.
                       </td>
                     </tr>
@@ -447,17 +460,17 @@ export default function MailManagePage() {
                           className={`hist-row${isOpen ? " expanded" : ""}`}
                           onClick={() => setExpandedMail(isOpen ? null : h.mailId)}
                         >
-                          <td style={{ padding: "9px 12px", fontSize: 11, fontFamily: "monospace", color: "#6B7280", borderBottom: isOpen ? "none" : "1px solid #F3F4F6" }}>
+                          <td style={{ padding: "9px 12px", fontSize: 11, fontFamily: "monospace", color: UI.muted, borderBottom: isOpen ? "none" : `1px solid ${UI.border}` }}>
                             {formatDateTime(h.sentAt)}
                           </td>
                           <td style={{
-                            padding: "9px 12px", fontSize: 12, color: "#111827",
-                            borderBottom: isOpen ? "none" : "1px solid #F3F4F6",
+                            padding: "9px 12px", fontSize: 12, color: UI.text,
+                            borderBottom: isOpen ? "none" : `1px solid ${UI.border}`,
                             whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                           }}>
                             {h.subject}
                           </td>
-                          <td style={{ padding: "9px 12px", borderBottom: isOpen ? "none" : "1px solid #F3F4F6" }}>
+                          <td style={{ padding: "9px 12px", borderBottom: isOpen ? "none" : `1px solid ${UI.border}` }}>
                             <span style={{
                               fontSize: 10, fontWeight: 600, padding: "2px 8px", borderRadius: 20,
                               background: h.status === "SUCCESS" ? "#D1FAE5" : "#FEE2E2",
@@ -466,7 +479,7 @@ export default function MailManagePage() {
                               {h.status === "SUCCESS" ? "성공" : "실패"}
                             </span>
                           </td>
-                          <td style={{ padding: "9px 12px", fontSize: 12, color: "#6B7280", textAlign: "center", borderBottom: isOpen ? "none" : "1px solid #F3F4F6" }}>
+                          <td style={{ padding: "9px 12px", fontSize: 12, color: UI.muted, textAlign: "center", borderBottom: isOpen ? "none" : `1px solid ${UI.border}` }}>
                             {h.status === "SUCCESS" ? `${h.recipientCount}명` : "—"}
                           </td>
                         </tr>
@@ -474,9 +487,9 @@ export default function MailManagePage() {
                         {/* 인라인 상세 */}
                         {isOpen && (
                           <tr key={`detail-${h.mailId}`}>
-                            <td colSpan={4} style={{ padding: 0, borderBottom: "1px solid #E5E7EB" }}>
+                            <td colSpan={4} style={{ padding: 0, borderBottom: `1px solid ${UI.border}` }}>
                               <div style={{
-                                background: "#F5F3FF",
+                                background: UI.active,
                                 borderLeft: "3px solid #6366F1",
                                 padding: "14px 16px",
                                 animation: "slideDown 0.15s ease",
@@ -489,9 +502,9 @@ export default function MailManagePage() {
                                     ["연관 로그 ID",  h.relatedLogId],
                                   ].map(([k, v]) => (
                                     <div key={k}>
-                                      <div style={{ fontSize: 11, color: "#6B7280", marginBottom: 2 }}>{k}</div>
+                                      <div style={{ fontSize: 11, color: UI.muted, marginBottom: 2 }}>{k}</div>
                                       <div style={{
-                                        fontSize: 12, fontFamily: "monospace", color: "#111827",
+                                        fontSize: 12, fontFamily: "monospace", color: UI.text,
                                         display: "flex", alignItems: "center", gap: 6,
                                       }}>
                                         {k === "트리거 레벨" ? (
@@ -523,7 +536,7 @@ export default function MailManagePage() {
               </table>
             </div>
 
-            <div style={{ marginTop: 10, fontSize: 12, color: "#9CA3AF", textAlign: "right" }}>
+            <div style={{ marginTop: 10, fontSize: 12, color: UI.softText, textAlign: "right" }}>
               {filteredHistory.length}건 표시 중 · 페이지네이션은 API 연동 후 추가
             </div>
           </div>
