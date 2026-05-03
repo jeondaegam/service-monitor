@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DashboardLayout } from "./layouts/dashboard/layout";
 
 import StatsDashboard from "./pages/StatsDashboard/StatsDashboard";
-import IncidentAnalytics from "./pages/IncidentAnalytics/IncidentAnalytics";
+import IncidentStats from "./pages/IncidentStats/IncidentStats";
 import Mail from "./pages/Mail";
 import TestPage from "./pages/TestPage";
 import "./style/App.css";
@@ -28,7 +28,7 @@ function App() {
             {/* <Route path="/" element={<TestPage />} /> */}
             {/* <Route path="/user" element={<UserPage />} /> */}
             {/* <Route path="/products" element={<ProductPage />} /> */}
-            <Route path="/incident-analytics" element={<IncidentAnalytics />} />
+            <Route path="/incident-stats" element={<IncidentStats />} />
             <Route path="/error-log" element={<ErrorLogPage />} />
             {/* <Route path="/mail" element={<Mail />} /> */}
             {/* <Route path="/test-page" element={<TestPage />} /> */}

@@ -52,8 +52,8 @@ export const navData = [
   //   icon: icon("ic-disabled"),
   // },
   {
-    title: "Incident Analytics",
-    path: "/incident-analytics",
+    title: "Incident Stats",
+    path: "/incident-stats",
     icon: icon("ic-analytics"),
   },
   {

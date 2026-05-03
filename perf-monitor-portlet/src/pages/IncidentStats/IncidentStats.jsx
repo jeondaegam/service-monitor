@@ -14,7 +14,7 @@ import {
   YAxis,
 } from "recharts";
 
-import styles from "./IncidentAnalytics.module.css";
+import styles from "./IncidentStats.module.css";
 // API 연동시 false 
 const USE_DEMO_DATA = true;
 
@@ -54,7 +54,7 @@ const INCIDENT_TYPE_META = {
   },
 };
 
-const DEMO_INCIDENT_ANALYTICS = {
+const DEMO_INCIDENT_STATS = {
   generatedAt: "2026-05-03T13:40:00+09:00",
   summary: {
     activeIncidents: 3,
@@ -191,14 +191,14 @@ const DEMO_INCIDENT_ANALYTICS = {
   ],
 };
 
-async function fetchIncidentAnalytics() {
+async function fetchIncidentStats() {
   if (USE_DEMO_DATA) {
-    return Promise.resolve(DEMO_INCIDENT_ANALYTICS);
+    return Promise.resolve(DEMO_INCIDENT_STATS);
   }
 
-  const response = await fetch("/api/incidents/analytics");
+  const response = await fetch("/api/incidents/stats");
   if (!response.ok) {
-    throw new Error("Failed to fetch incident analytics");
+    throw new Error("Failed to fetch incident stats");
   }
   return response.json();
 }
@@ -355,7 +355,7 @@ function IncidentTable({ incidents, type = "active" }) {
   );
 }
 
-export default function IncidentAnalytics() {
+export default function IncidentStats() {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -365,7 +365,7 @@ export default function IncidentAnalytics() {
     setErrorMessage("");
 
     try {
-      const data = await fetchIncidentAnalytics();
+      const data = await fetchIncidentStats();
       setAnalytics(data);
     } catch (error) {
       setErrorMessage(error.message);
@@ -415,7 +415,7 @@ export default function IncidentAnalytics() {
     <div className={styles.page}>
       <div className={styles.header}>
         <div>
-          <h1 className={styles.title}>Incident Analytics</h1>
+          <h1 className={styles.title}>Incident Stats</h1>
           <p className={styles.description}>
             장애 조건 기반으로 현재 위험도, 유형별 빈도, 서버별 반복 장애를 분석합니다.
           </p>

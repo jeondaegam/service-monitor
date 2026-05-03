@@ -114,7 +114,7 @@ export default function StatsDashboard() {
             <div className={styles.liveDot} />
             <span className={styles.liveText}>LIVE</span>
           </div>
-          <h1 className={styles.title}>서비스 에러율 대시보드</h1>
+          <h1 className={styles.title}>서버 모니터링 대시보드 (iframe으로 교체)</h1>
           <p className={styles.subtitle}>
             마지막 업데이트: {lastUpdated.toLocaleTimeString("ko-KR")}
           </p>

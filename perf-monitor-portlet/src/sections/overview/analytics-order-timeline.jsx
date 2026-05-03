@@ -12,37 +12,40 @@ const timelineList = [
   {
     id: "1",
     type: "success",
+    // title: "[복구 완료] API 서버 정상 응답 상태로 전환",
     title: "[복구 완료] API 서버 정상 응답 상태로 전환",
     time: "2026-04-30T09:20:00",
   },
   {
     id: "2",
     type: "critical",
-    title: "[서버 다운] API 서버 응답 불가 상태",
+    title: "[서버 다운] API 서버 응답 불가 상태 발생",
     time: "2026-04-30T09:12:00",
   },
   {
     id: "3",
     type: "critical",
-    title: "[DB 장애] connection timeout 5초 초과 발생",
+    title: "[DB 장애]  user-service DB connection timeout (5초 초과)",
+    // title: "DB Connection Timeout — user-service ",
     time: "2026-04-30T09:05:00",
   },
   {
     id: "4",
     type: "warning",
-    title: "[CPU 경고] 사용률 80% 이상 10분 지속",
+    title: "[CPU 경고] api-server CPU 사용률 80% 이상 10분 지속",
+    // title: "CPU 과부하 — api-gateway ",
     time: "2026-04-30T08:50:00",
   },
   {
     id: "5",
     type: "info",
-    title: "[메모리 경고] 사용률 80% 이상 5분 지속",
+    title: "[메모리 경고] 메모리 사용률 80% 이상 5분 지속",
     time: "2026-04-30T08:40:00",
   },
   {
     id: "6",
     type: "info",
-    title: "[트래픽 증가] API 요청 수 급증 감지",
+    title: "[트래픽 증가] api-server API 요청 수 급증 (평균 대비 +120%)",
     time: "2026-04-30T08:30:00",
   },
 ];
@@ -60,12 +63,12 @@ const DOT_COLORS = {
 function formatDateTime(value) {
   if (!value) return "";
 
-  return new Date(value).toLocaleString("ko-KR", {
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const date = new Date(value);
+  const pad = (number) => String(number).padStart(2, "0");
+
+  return `${pad(date.getMonth() + 1)}.${pad(date.getDate())} ${pad(date.getHours())}:${pad(
+    date.getMinutes(),
+  )}`;
 }
 
 function getTimelineDotColor(type) {
@@ -175,7 +178,7 @@ function Item({ item, lastItem }) {
             display: "block",
             mt: 0.5,
             color: "var(--app-soft-text)",
-            fontSize: 11,
+            fontSize: 12,
             lineHeight: 1.4,
           }}
         >
