@@ -9,37 +9,45 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineItem, { timelineItemClasses } from "@mui/lab/TimelineItem";
 
 const timelineList = [
-  {
-    id: "1",
-    type: "order1",
-    title: "1983, orders, $4220",
-    time: "2023-11-08T00:00:00",
+
+    {
+    id: '1',
+    type: 'success',
+    title: '[복구 완료] API 서버 정상 응답 상태로 전환',
+    time: '2026-04-30T09:20:00',
   },
   {
-    id: "2",
-    type: "order2",
-    title: "12 Invoices have been paid",
-    time: "2024-04-09T00:00:00",
+    id: '2',
+    type: 'critical',
+    title: '[서버 다운] API 서버 응답 불가 상태',
+    time: '2026-04-30T09:12:00',
   },
   {
-    id: "3",
-    type: "order3",
-    title: "Order #37745 from September",
-    time: "2023-09-12T00:00:00",
+    id: '3',
+    type: 'critical',
+    title: '[DB 장애] connection timeout 5초 초과 발생',
+    time: '2026-04-30T09:05:00',
   },
   {
-    id: "4",
-    type: "order4",
-    title: "New order placed #XF-2356",
-    time: "2024-01-01T00:00:00",
+    id: '4',
+    type: 'warning',
+    title: '[CPU 과부하] 사용률 80% 이상 10분 지속',
+    time: '2026-04-30T08:50:00',
   },
   {
-    id: "5",
-    type: "order5",
-    title: "New order placed #XF-2346",
-    time: "2024-04-23T00:00:00",
+    id: '5',
+    type: 'info',
+    title: '[메모리 경고] 사용률 80% 이상 5분 지속',
+    time: '2026-04-30T08:40:00',
+  },
+  {
+    id: '6',
+    type: 'info',
+    title: '[트래픽 증가] API 요청 10회 이상 급증 감지',
+    time: '2026-04-30T08:30:00',
   },
 ];
+
 
 function formatDateTime(value) {
   if (!value) return "";
@@ -55,7 +63,7 @@ function formatDateTime(value) {
 
 export default function OrderTimeline({
   //   title = "Order timeline",
-  title = "History",
+  title = "이벤트 피드",
   subheader,
   list = timelineList,
   sx,
@@ -107,15 +115,15 @@ function Item({ item, lastItem }) {
   return (
     <TimelineItem>
       <TimelineSeparator>
-        <TimelineDot
-          color={
-            (item.type === "order1" && "primary") ||
-            (item.type === "order2" && "success") ||
-            (item.type === "order3" && "info") ||
-            (item.type === "order4" && "warning") ||
-            "error"
-          }
-        />
+<TimelineDot
+  color={
+    (item.type === 'critical' && 'error') ||
+    (item.type === 'warning' && 'warning') ||
+    (item.type === 'info' && 'info') ||
+    (item.type === 'success' && 'success') ||
+    'primary'
+  }
+/>
         {lastItem ? null : <TimelineConnector />}
       </TimelineSeparator>
 

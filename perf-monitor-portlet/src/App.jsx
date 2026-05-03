@@ -12,7 +12,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DashboardLayout } from "./layouts/dashboard/layout";
 
-// import StatsDashboard from "./StatsDashboard";
+import StatsDashboard from "./StatsDashboard";
 import IncidentAnalytics from "./IncidentAnalytics";
 import ErrorLogs from "./ErrorLogs";
 import Mail from "./Mail";
@@ -32,8 +32,8 @@ function App() {
     <BrowserRouter>
       <DashboardLayout>
         <Routes>
-          {/* <Route path="/" element={<StatsDashboard />} /> */}
-          <Route path="/" element={<TestPage />} />
+          <Route path="/" element={<StatsDashboard />} />
+          {/* <Route path="/" element={<TestPage />} /> */}
           <Route path="/user" element={<UserPage />} />
           <Route path="/products" element={<ProductPage />} />
           <Route path="/incidentAnalytics" element={<IncidentAnalytics />} />
