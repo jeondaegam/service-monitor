@@ -47,6 +47,16 @@ const timelineList = [
   },
 ];
 
+const DOT_COLORS = {
+  critical: "#FF5630",
+  error: "#FF5630",
+  warning: "#FFAB00",
+  warn: "#FFAB00",
+  info: "#00B8D9",
+  success: "#22C55E",
+  resolved: "#22C55E",
+};
+
 function formatDateTime(value) {
   if (!value) return "";
 
@@ -59,17 +69,7 @@ function formatDateTime(value) {
 }
 
 function getTimelineDotColor(type) {
-  const colorMap = {
-    critical: "error",
-    error: "error",
-    warning: "warning",
-    warn: "warning",
-    info: "info",
-    success: "success",
-    resolved: "success",
-  };
-
-  return colorMap[type] || "primary";
+  return DOT_COLORS[type] || "#1877F2";
 }
 
 export default function OrderTimeline({
@@ -138,9 +138,9 @@ function Item({ item, lastItem }) {
     <TimelineItem sx={{ minHeight: 72 }}>
       <TimelineSeparator>
         <TimelineDot
-          color={getTimelineDotColor(item.type)}
           sx={{
             m: "5px 0",
+            bgcolor: getTimelineDotColor(item.type),
           }}
         />
         {lastItem ? null : (
