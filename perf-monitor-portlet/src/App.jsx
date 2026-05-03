@@ -18,6 +18,7 @@ import Mail from "./Mail";
 import TestPage from "./TestPage";
 import "./App.css";
 import ErrorLogPage from "./ErrorLogPage";
+import MailManagePage from "./MailManagePage";
 
 function UserPage() {
   return <h1>User</h1>;
@@ -40,6 +41,7 @@ function App() {
           <Route path="/errorLog" element={<ErrorLogPage />} />
           <Route path="/mail" element={<Mail />} />
           <Route path="/testPage" element={<TestPage />} />
+          <Route path="/mailManage" element={<MailManagePage />} />
         </Routes>
       </DashboardLayout>
     </BrowserRouter>

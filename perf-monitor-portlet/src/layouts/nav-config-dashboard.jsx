@@ -62,8 +62,8 @@ export const navData = [
     icon: icon("ic-lock"),
   },
   {
-    title: "Mail",
-    path: "/mail",
+    title: "Mail Manage",
+    path: "/mailManage",
     icon: icon("ic-lock"),
   },
   {
