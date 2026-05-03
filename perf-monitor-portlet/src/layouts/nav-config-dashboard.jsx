@@ -20,7 +20,7 @@ export const navData = [
   {
     title: "Monitoring",
     path: "/",
-    icon: icon("ic-analytics"),
+    icon: icon("ic-monitoring-v3"),
   },
   {
     title: "User",
@@ -54,17 +54,17 @@ export const navData = [
   {
     title: "Incident Analytics",
     path: "/incident-analytics",
-    icon: icon("ic-lock"),
+    icon: icon("ic-analytics"),
   },
   {
     title: "Error Logs",
     path: "/error-log",
-    icon: icon("ic-lock"),
+    icon: icon("ic-error-log"),
   },
   {
     title: "Mail Manage",
     path: "/mail-manage",
-    icon: icon("ic-lock"),
+    icon: icon("ic-mail"),
   },
   {
     title: "TestPage",
