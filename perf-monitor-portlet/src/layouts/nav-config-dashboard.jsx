@@ -53,22 +53,22 @@ export const navData = [
   },
   {
     title: "Incident Analytics",
-    path: "/incidentAnalytics",
+    path: "/incident-analytics",
     icon: icon("ic-lock"),
   },
   {
     title: "Error Logs",
-    path: "/errorLog",
+    path: "/error-log",
     icon: icon("ic-lock"),
   },
   {
     title: "Mail Manage",
-    path: "/mailManage",
+    path: "/mail-manage",
     icon: icon("ic-lock"),
   },
   {
     title: "TestPage",
-    path: "/testPage",
+    path: "/test-page",
     icon: icon("ic-lock"),
   },
 ];
