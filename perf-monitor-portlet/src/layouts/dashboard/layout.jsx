@@ -11,7 +11,7 @@ export function DashboardLayout({ children }) {
       className={`app-shell app-theme-${themeMode}`}
       sx={{
         display: "grid",
-        gridTemplateColumns: "260px minmax(0, 1fr) 360px",
+        gridTemplateColumns: "260px minmax(0, 1fr) 432px",
         minHeight: "100vh",
         bgcolor: "var(--app-bg)",
       }}

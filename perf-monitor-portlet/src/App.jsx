@@ -1,14 +1,3 @@
-// import { useState } from 'react'
-// import StatsDashboard from './StatsDashboard'
-// import './App.css'
-
-// function App() {
-//   return (<StatsDashboard />
-//   )
-// }
-
-// export default App
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DashboardLayout } from "./layouts/dashboard/layout";
 
