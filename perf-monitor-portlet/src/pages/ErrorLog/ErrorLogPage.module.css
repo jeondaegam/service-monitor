@@ -93,11 +93,12 @@
 
 /* 시간 */
 .timeCol {
-  width: 136px;
+  width: 156px;
 }
 
+/* 레벨 컬럼*/
 .levelCol {
-  width: 84px;
+  width: 100px;
 }
 
 .serviceCol {
@@ -124,6 +125,7 @@
 }
 
 .table .messageHeader {
+  padding-left: 17px;
   text-align: left;
 }
 
@@ -168,6 +170,7 @@
 }
 
 .messageCell {
+  padding-left: 17px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
