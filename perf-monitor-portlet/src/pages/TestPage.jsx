@@ -2,9 +2,7 @@ import { Box } from "@mui/material";
 import StorageIcon from "@mui/icons-material/Storage";
 import ErrorIcon from "@mui/icons-material/Error";
 import MailIcon from "@mui/icons-material/Mail";
-import SummaryCard from "./components/SummaryCard";
-
-import OrderTimeline from "./sections/overview/analytics-order-timeline";
+import SummaryCard from "../components/SummaryCard";
 
 export default function TestPage() {
   return (

@@ -12,13 +12,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DashboardLayout } from "./layouts/dashboard/layout";
 
-import StatsDashboard from "./StatsDashboard";
-import IncidentAnalytics from "./IncidentAnalytics";
-import Mail from "./Mail";
-import TestPage from "./TestPage";
-import "./App.css";
-import ErrorLogPage from "./ErrorLogPage";
-import MailManagePage from "./MailManagePage";
+import StatsDashboard from "./pages/StatsDashboard/StatsDashboard";
+import IncidentAnalytics from "./pages/IncidentAnalytics/IncidentAnalytics";
+import Mail from "./pages/Mail";
+import TestPage from "./pages/TestPage";
+import "./style/App.css";
+import ErrorLogPage from "./pages/ErrorLog/ErrorLogPage";
+import MailManagePage from "./pages/MailManage/MailManagePage";
 import { ThemeModeProvider } from "./theme-mode";
 
 function UserPage() {
