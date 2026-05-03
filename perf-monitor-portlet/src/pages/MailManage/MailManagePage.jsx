@@ -456,7 +456,7 @@ export default function MailManagePage() {
           <section>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionTitle}>발송 히스토리</span>
-              <span className={styles.sectionMeta}>최근 30일</span>
+              <span className={styles.sectionMeta}>최근 7일</span>
             </div>
 
              {/* 발송 히스토리: 전체, 성공, 실패 필터 */}
