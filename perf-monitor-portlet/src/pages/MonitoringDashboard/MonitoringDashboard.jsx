@@ -10,7 +10,7 @@ import {
   YAxis,
 } from "recharts";
 
-import styles from "./StatsDashboard.module.css";
+import styles from "./MonitoringDashboard.module.css";
 
 const CHART_COLORS = {
   accent: "var(--app-danger)",
