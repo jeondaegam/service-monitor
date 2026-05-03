@@ -1,0 +1,297 @@
+.page {
+  min-height: 100%;
+  padding: 28px 32px;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family: system-ui, sans-serif;
+}
+
+.loading {
+  padding: 32px;
+  color: var(--app-muted);
+  font-size: 14px;
+}
+
+.errorWrap {
+  padding: 32px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.description {
+  margin: 6px 0 0;
+  color: var(--app-muted);
+  font-size: 13px;
+}
+
+.lastUpdated {
+  margin: 6px 0 0;
+  color: var(--app-soft-text);
+  font-size: 12px;
+}
+
+.button {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: var(--app-button-bg);
+  color: var(--app-button-text);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondaryButton {
+  border: 1px solid var(--app-border);
+  background: var(--app-panel);
+  color: var(--app-text);
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.chartGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.9fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.riskGrid {
+  display: grid;
+  grid-template-columns: minmax(360px, 0.95fr) minmax(0, 1.35fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
+  gap: 16px;
+}
+
+.card {
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: var(--app-panel);
+  padding: 20px;
+}
+
+.summaryCard {
+  min-height: 122px;
+}
+
+.sectionTitle {
+  margin-bottom: 16px;
+}
+
+.sectionTitle h2 {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.sectionTitle p {
+  margin: 4px 0 0;
+  color: var(--app-muted);
+  font-size: 12px;
+}
+
+.summaryLabel {
+  margin: 0;
+  color: var(--app-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.summaryValueRow {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.summaryValue {
+  color: var(--summary-color);
+  font-size: 32px;
+  line-height: 1;
+}
+
+.summaryUnit {
+  color: var(--app-muted);
+  font-size: 13px;
+}
+
+.summaryHelper {
+  margin: 10px 0 0;
+  color: var(--app-soft-text);
+  font-size: 12px;
+}
+
+.breakdownList {
+  display: grid;
+  gap: 8px;
+}
+
+.breakdownItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--app-muted);
+  font-size: 12px;
+}
+
+.breakdownCount {
+  color: var(--app-text);
+}
+
+.typeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.typeDot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--type-color);
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--status-bg);
+  color: var(--status-color);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wideTable {
+  min-width: 760px;
+}
+
+.historyTable {
+  min-width: 680px;
+}
+
+.table thead tr {
+  background: var(--app-panel-alt);
+}
+
+.table th {
+  padding: 10px 12px;
+  color: var(--app-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 12px;
+  border-top: 1px solid var(--app-border);
+  color: var(--app-muted);
+  font-size: 12px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.table .strongCell {
+  color: var(--app-text);
+  font-weight: 700;
+}
+
+.ruleList {
+  display: grid;
+  gap: 10px;
+}
+
+.ruleItem {
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--app-panel-alt);
+}
+
+.ruleTitle {
+  color: var(--app-text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ruleText {
+  margin: 6px 0 0;
+  color: var(--app-muted);
+  font-size: 12px;
+}
+
+.tooltip {
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--app-panel);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+}
+
+.tooltipTitle {
+  margin: 0 0 8px;
+  color: var(--app-text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tooltipLine {
+  margin: 4px 0;
+  color: var(--tooltip-color);
+  font-size: 12px;
+}
+
+@media (max-width: 1200px) {
+  .chartGrid,
+  .riskGrid,
+  .bottomGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: 20px;
+  }
+
+  .header {
+    flex-direction: column;
+  }
+}

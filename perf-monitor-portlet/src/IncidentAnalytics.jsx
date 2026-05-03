@@ -14,17 +14,11 @@ import {
   YAxis,
 } from "recharts";
 
+import styles from "./IncidentAnalytics.module.css";
 // API 연동시 false 
 const USE_DEMO_DATA = true;
 
-const COLORS = {
-  page: "var(--app-bg)",
-  panel: "var(--app-panel)",
-  panelAlt: "var(--app-panel-alt)",
-  border: "var(--app-border)",
-  text: "var(--app-text)",
-  muted: "var(--app-muted)",
-  softText: "var(--app-soft-text)",
+const CHART_COLORS = {
   critical: "var(--app-danger)",
   warning: "var(--app-warning)",
   success: "var(--app-success)",
@@ -32,28 +26,30 @@ const COLORS = {
   db: "#2563eb",
   down: "#7c3aed",
   traffic: "#0d9488",
-  line: "#334155",
+  total: "#334155",
+  muted: "var(--app-muted)",
+  border: "var(--app-border)",
 };
 
 const INCIDENT_TYPE_META = {
   CPU: {
     label: "CPU",
-    color: COLORS.cpu,
+    color: CHART_COLORS.cpu,
     rule: "CPU 80% 이상 10분 지속",
   },
   DB: {
     label: "DB",
-    color: COLORS.db,
+    color: CHART_COLORS.db,
     rule: "Connection timeout 5초 이상",
   },
   SERVER_DOWN: {
     label: "Server Down",
-    color: COLORS.down,
+    color: CHART_COLORS.down,
     rule: "Server ON/OFF 상태 체크 실패",
   },
   API_TRAFFIC: {
     label: "API Traffic",
-    color: COLORS.traffic,
+    color: CHART_COLORS.traffic,
     rule: "API 트래픽 임계치 초과",
   },
 };
@@ -200,7 +196,6 @@ async function fetchIncidentAnalytics() {
     return Promise.resolve(DEMO_INCIDENT_ANALYTICS);
   }
 
-  // API 연동시 수정 (URL 예시) 
   const response = await fetch("/api/incidents/analytics");
   if (!response.ok) {
     throw new Error("Failed to fetch incident analytics");
@@ -217,99 +212,68 @@ function formatDateTime(value) {
   });
 }
 
-function getStatusStyle(status) {
+function getStatusMeta(status) {
   if (status === "CRITICAL" || status === "장애") {
-    return { color: COLORS.critical, background: "#fee2e2", label: "장애" };
+    return { color: CHART_COLORS.critical, background: "#fee2e2", label: "장애" };
   }
+
   if (status === "WARNING" || status === "경고") {
-    return { color: COLORS.warning, background: "#fef3c7", label: "경고" };
+    return { color: CHART_COLORS.warning, background: "#fef3c7", label: "경고" };
   }
-  return { color: COLORS.success, background: "#dcfce7", label: "정상" };
+
+  return { color: CHART_COLORS.success, background: "#dcfce7", label: "정상" };
 }
 
-function Card({ children, style }) {
-  return (
-    <section
-      style={{
-        background: COLORS.panel,
-        border: `1px solid ${COLORS.border}`,
-        borderRadius: 8,
-        padding: 20,
-        ...style,
-      }}
-    >
-      {children}
-    </section>
-  );
+function Card({ children, className = "" }) {
+  return <section className={`${styles.card} ${className}`}>{children}</section>;
 }
 
 function SectionTitle({ title, sub }) {
   return (
-    <div style={{ marginBottom: 16 }}>
-      <h2 style={{ margin: 0, color: COLORS.text, fontSize: 16, fontWeight: 700 }}>
-        {title}
-      </h2>
-      {sub && (
-        <p style={{ margin: "4px 0 0", color: COLORS.muted, fontSize: 12 }}>
-          {sub}
-        </p>
-      )}
+    <div className={styles.sectionTitle}>
+      <h2>{title}</h2>
+      {sub && <p>{sub}</p>}
     </div>
   );
 }
 
 function SummaryCard({ label, value, unit, helper, color }) {
   return (
-    <Card style={{ minHeight: 122 }}>
-      <p style={{ margin: 0, color: COLORS.muted, fontSize: 12, fontWeight: 600 }}>
-        {label}
-      </p>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginTop: 12 }}>
-        <strong style={{ color, fontSize: 32, lineHeight: 1 }}>{value}</strong>
-        {unit && <span style={{ color: COLORS.muted, fontSize: 13 }}>{unit}</span>}
+    <Card className={styles.summaryCard}>
+      <p className={styles.summaryLabel}>{label}</p>
+      <div className={styles.summaryValueRow}>
+        <strong className={styles.summaryValue} style={{ "--summary-color": color }}>
+          {value}
+        </strong>
+        {unit && <span className={styles.summaryUnit}>{unit}</span>}
       </div>
-      <p style={{ margin: "10px 0 0", color: COLORS.softText, fontSize: 12 }}>
-        {helper}
-      </p>
+      <p className={styles.summaryHelper}>{helper}</p>
     </Card>
   );
 }
 
 function StatusBadge({ status }) {
-  const statusStyle = getStatusStyle(status);
+  const statusMeta = getStatusMeta(status);
+
   return (
     <span
+      className={styles.statusBadge}
       style={{
-        display: "inline-flex",
-        alignItems: "center",
-        minWidth: 48,
-        justifyContent: "center",
-        padding: "3px 8px",
-        borderRadius: 999,
-        background: statusStyle.background,
-        color: statusStyle.color,
-        fontSize: 11,
-        fontWeight: 700,
+        "--status-bg": statusMeta.background,
+        "--status-color": statusMeta.color,
       }}
     >
-      {statusStyle.label}
+      {statusMeta.label}
     </span>
   );
 }
 
 function TypeBadge({ type }) {
   const meta = INCIDENT_TYPE_META[type];
+
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-      <span
-        style={{
-          width: 8,
-          height: 8,
-          borderRadius: 999,
-          background: meta.color,
-          flex: "0 0 auto",
-        }}
-      />
+    <span className={styles.typeBadge}>
+      <span className={styles.typeDot} style={{ "--type-color": meta.color }} />
       <span>{meta.label}</span>
     </span>
   );
@@ -319,23 +283,74 @@ function AnalyticsTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
 
   return (
-    <div
-      style={{
-        background: COLORS.panel,
-        border: `1px solid ${COLORS.border}`,
-        borderRadius: 8,
-        padding: "10px 12px",
-        boxShadow: "0 10px 25px rgba(15, 23, 42, 0.12)",
-      }}
-    >
-      <p style={{ margin: "0 0 8px", color: COLORS.text, fontSize: 12, fontWeight: 700 }}>
-        {label}
-      </p>
+    <div className={styles.tooltip}>
+      <p className={styles.tooltipTitle}>{label}</p>
       {payload.map((item) => (
-        <p key={item.dataKey} style={{ margin: "4px 0", color: item.color, fontSize: 12 }}>
+        <p
+          key={item.dataKey || item.name}
+          className={styles.tooltipLine}
+          style={{ "--tooltip-color": item.color }}
+        >
           {item.name}: <strong>{item.value}</strong>
         </p>
       ))}
+    </div>
+  );
+}
+
+function IncidentTable({ incidents, type = "active" }) {
+  const headers =
+    type === "active"
+      ? ["상태", "서버", "유형", "조건", "측정값", "지속", "담당"]
+      : ["서버", "유형", "발생", "복구", "지속 시간", "상태"];
+
+  return (
+    <div className={styles.tableWrap}>
+      <table
+        className={`${styles.table} ${
+          type === "active" ? styles.wideTable : styles.historyTable
+        }`}
+      >
+        <thead>
+          <tr>
+            {headers.map((header) => (
+              <th key={header}>{header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {incidents.map((incident) =>
+            type === "active" ? (
+              <tr key={incident.id}>
+                <td>
+                  <StatusBadge status={incident.status} />
+                </td>
+                <td className={styles.strongCell}>{incident.serverName}</td>
+                <td>
+                  <TypeBadge type={incident.type} />
+                </td>
+                <td>{incident.condition}</td>
+                <td className={styles.strongCell}>{incident.measuredValue}</td>
+                <td>{incident.durationMinutes}분</td>
+                <td>{incident.owner}</td>
+              </tr>
+            ) : (
+              <tr key={incident.id}>
+                <td className={styles.strongCell}>{incident.serverName}</td>
+                <td>
+                  <TypeBadge type={incident.type} />
+                </td>
+                <td>{formatDateTime(incident.startedAt)}</td>
+                <td>{formatDateTime(incident.endedAt)}</td>
+                <td className={styles.strongCell}>{incident.durationMinutes}분</td>
+                <td>
+                  <StatusBadge status={incident.status} />
+                </td>
+              </tr>
+            ),
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -365,6 +380,7 @@ export default function IncidentAnalytics() {
 
   const chartBreakdown = useMemo(() => {
     if (!analytics) return [];
+
     return analytics.typeBreakdown.map((item) => ({
       ...item,
       label: INCIDENT_TYPE_META[item.type].label,
@@ -373,27 +389,18 @@ export default function IncidentAnalytics() {
   }, [analytics]);
 
   if (loading) {
-    return (
-      <div style={{ padding: 32, color: COLORS.muted, fontSize: 14 }}>
-        장애 통계 데이터를 불러오는 중입니다.
-      </div>
-    );
+    return <div className={styles.loading}>장애 통계 데이터를 불러오는 중입니다.</div>;
   }
 
   if (errorMessage) {
     return (
-      <div style={{ padding: 32 }}>
+      <div className={styles.errorWrap}>
         <Card>
           <SectionTitle title="데이터 조회 실패" sub={errorMessage} />
           <button
+            className={`${styles.button} ${styles.secondaryButton}`}
+            type="button"
             onClick={loadAnalytics}
-            style={{
-              border: `1px solid ${COLORS.border}`,
-              background: COLORS.panel,
-              borderRadius: 8,
-              padding: "8px 12px",
-              cursor: "pointer",
-            }}
           >
             다시 시도
           </button>
@@ -405,121 +412,80 @@ export default function IncidentAnalytics() {
   const { summary } = analytics;
 
   return (
-    <div
-      style={{
-        minHeight: "100%",
-        background: COLORS.page,
-        padding: "28px 32px",
-        color: COLORS.text,
-        fontFamily: "system-ui, sans-serif",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          gap: 16,
-          marginBottom: 22,
-        }}
-      >
+    <div className={styles.page}>
+      <div className={styles.header}>
         <div>
-          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800 }}>
-            Incident Analytics
-          </h1>
-          <p style={{ margin: "6px 0 0", color: COLORS.muted, fontSize: 13 }}>
+          <h1 className={styles.title}>Incident Analytics</h1>
+          <p className={styles.description}>
             장애 조건 기반으로 현재 위험도, 유형별 빈도, 서버별 반복 장애를 분석합니다.
           </p>
-          <p style={{ margin: "6px 0 0", color: COLORS.softText, fontSize: 12 }}>
+          <p className={styles.lastUpdated}>
             마지막 집계: {formatDateTime(analytics.generatedAt)}
           </p>
         </div>
 
-        <button
-          onClick={loadAnalytics}
-          style={{
-            background: COLORS.text,
-            color: "#fff",
-            border: 0,
-            borderRadius: 8,
-            padding: "10px 14px",
-            fontSize: 13,
-            fontWeight: 700,
-            cursor: "pointer",
-          }}
-        >
+        <button className={styles.button} type="button" onClick={loadAnalytics}>
           새로고침
         </button>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-          gap: 14,
-          marginBottom: 16,
-        }}
-      >
+      <div className={styles.summaryGrid}>
         <SummaryCard
           label="현재 장애"
           value={summary.activeIncidents}
           unit="건"
           helper="실시간 확인 필요"
-          color={COLORS.critical}
+          color={CHART_COLORS.critical}
         />
         <SummaryCard
           label="경고 서버"
           value={summary.warningServers}
           unit="대"
           helper="임계치 근접 서버"
-          color={COLORS.warning}
+          color={CHART_COLORS.warning}
         />
         <SummaryCard
           label="오늘 장애"
           value={summary.todayIncidents}
           unit="건"
           helper="최근 24시간 기준"
-          color={COLORS.line}
+          color={CHART_COLORS.total}
         />
         <SummaryCard
           label="평균 복구 시간"
           value={summary.mttrMinutes}
           unit="분"
           helper="MTTR"
-          color={COLORS.db}
+          color={CHART_COLORS.db}
         />
         <SummaryCard
           label="가용률"
           value={summary.availability}
           unit="%"
           helper="오늘 누적 기준"
-          color={COLORS.success}
+          color={CHART_COLORS.success}
         />
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 1.5fr) minmax(320px, 0.9fr)",
-          gap: 16,
-          marginBottom: 16,
-        }}
-      >
+      <div className={styles.chartGrid}>
         <Card>
           <SectionTitle
             title="시간대별 장애 추이"
             sub="CPU, DB, 서버 다운, API 트래픽 장애를 시간대별로 비교합니다."
           />
           <ResponsiveContainer width="100%" height={280}>
-            <LineChart data={analytics.hourlyTrend} margin={{ top: 8, right: 16, left: -20, bottom: 0 }}>
-              <CartesianGrid stroke={COLORS.border} strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="time" tick={{ fill: COLORS.muted, fontSize: 12 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: COLORS.muted, fontSize: 12 }} axisLine={false} tickLine={false} />
+            <LineChart
+              data={analytics.hourlyTrend}
+              margin={{ top: 8, right: 16, left: -20, bottom: 0 }}
+            >
+              <CartesianGrid stroke={CHART_COLORS.border} strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="time" tick={{ fill: CHART_COLORS.muted, fontSize: 12 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: CHART_COLORS.muted, fontSize: 12 }} axisLine={false} tickLine={false} />
               <Tooltip content={<AnalyticsTooltip />} />
-              <Line type="monotone" dataKey="total" name="전체" stroke={COLORS.line} strokeWidth={3} dot={false} />
-              <Line type="monotone" dataKey="cpu" name="CPU" stroke={COLORS.cpu} strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="db" name="DB" stroke={COLORS.db} strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="traffic" name="API Traffic" stroke={COLORS.traffic} strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="total" name="전체" stroke={CHART_COLORS.total} strokeWidth={3} dot={false} />
+              <Line type="monotone" dataKey="cpu" name="CPU" stroke={CHART_COLORS.cpu} strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="db" name="DB" stroke={CHART_COLORS.db} strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="traffic" name="API Traffic" stroke={CHART_COLORS.traffic} strokeWidth={2} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </Card>
@@ -543,45 +509,36 @@ export default function IncidentAnalytics() {
               <Tooltip content={<AnalyticsTooltip />} />
             </PieChart>
           </ResponsiveContainer>
-          <div style={{ display: "grid", gap: 8 }}>
+          <div className={styles.breakdownList}>
             {chartBreakdown.map((item) => (
-              <div
-                key={item.type}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  color: COLORS.muted,
-                  fontSize: 12,
-                }}
-              >
+              <div key={item.type} className={styles.breakdownItem}>
                 <TypeBadge type={item.type} />
-                <strong style={{ color: COLORS.text }}>{item.count}건</strong>
+                <strong className={styles.breakdownCount}>{item.count}건</strong>
               </div>
             ))}
           </div>
         </Card>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "minmax(360px, 0.95fr) minmax(0, 1.35fr)",
-          gap: 16,
-          marginBottom: 16,
-        }}
-      >
+      <div className={styles.riskGrid}>
         <Card>
-          <SectionTitle title="서버별 위험도" sub="반복 장애와 최근 상태를 기준으로 산정한 데모 점수입니다." />
+          <SectionTitle
+            title="서버별 위험도"
+            sub="반복 장애와 최근 상태를 기준으로 산정한 데모 점수입니다."
+          />
           <ResponsiveContainer width="100%" height={230}>
-            <BarChart data={analytics.serverRiskRanking} layout="vertical" margin={{ top: 4, right: 12, left: 10, bottom: 0 }}>
-              <CartesianGrid stroke={COLORS.border} strokeDasharray="3 3" horizontal={false} />
-              <XAxis type="number" domain={[0, 100]} tick={{ fill: COLORS.muted, fontSize: 12 }} axisLine={false} tickLine={false} />
-              <YAxis dataKey="serverName" type="category" tick={{ fill: COLORS.muted, fontSize: 12 }} axisLine={false} tickLine={false} width={70} />
+            <BarChart
+              data={analytics.serverRiskRanking}
+              layout="vertical"
+              margin={{ top: 4, right: 12, left: 10, bottom: 0 }}
+            >
+              <CartesianGrid stroke={CHART_COLORS.border} strokeDasharray="3 3" horizontal={false} />
+              <XAxis type="number" domain={[0, 100]} tick={{ fill: CHART_COLORS.muted, fontSize: 12 }} axisLine={false} tickLine={false} />
+              <YAxis dataKey="serverName" type="category" tick={{ fill: CHART_COLORS.muted, fontSize: 12 }} axisLine={false} tickLine={false} width={70} />
               <Tooltip content={<AnalyticsTooltip />} />
               <Bar dataKey="riskScore" name="위험도" radius={[0, 6, 6, 0]}>
                 {analytics.serverRiskRanking.map((entry) => (
-                  <Cell key={entry.serverName} fill={getStatusStyle(entry.status).color} />
+                  <Cell key={entry.serverName} fill={getStatusMeta(entry.status).color} />
                 ))}
               </Bar>
             </BarChart>
@@ -589,91 +546,35 @@ export default function IncidentAnalytics() {
         </Card>
 
         <Card>
-          <SectionTitle title="현재 진행 중인 장애" sub="운영자가 먼저 확인해야 할 활성 장애 목록입니다." />
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 760 }}>
-              <thead>
-                <tr style={{ background: COLORS.panelAlt }}>
-                  {["상태", "서버", "유형", "조건", "측정값", "지속", "담당"].map((header) => (
-                    <th key={header} style={tableHeaderStyle}>
-                      {header}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {analytics.activeIncidents.map((incident) => (
-                  <tr key={incident.id} style={{ borderTop: `1px solid ${COLORS.border}` }}>
-                    <td style={tableCellStyle}><StatusBadge status={incident.status} /></td>
-                    <td style={tableCellStrongStyle}>{incident.serverName}</td>
-                    <td style={tableCellStyle}><TypeBadge type={incident.type} /></td>
-                    <td style={tableCellStyle}>{incident.condition}</td>
-                    <td style={tableCellStrongStyle}>{incident.measuredValue}</td>
-                    <td style={tableCellStyle}>{incident.durationMinutes}분</td>
-                    <td style={tableCellStyle}>{incident.owner}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <SectionTitle
+            title="현재 진행 중인 장애"
+            sub="운영자가 먼저 확인해야 할 활성 장애 목록입니다."
+          />
+          <IncidentTable incidents={analytics.activeIncidents} />
         </Card>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 1fr) minmax(320px, 0.85fr)",
-          gap: 16,
-        }}
-      >
+      <div className={styles.bottomGrid}>
         <Card>
-          <SectionTitle title="최근 장애 이력" sub="복구 완료된 장애를 지속 시간 기준으로 확인합니다." />
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 680 }}>
-              <thead>
-                <tr style={{ background: COLORS.panelAlt }}>
-                  {["서버", "유형", "발생", "복구", "지속 시간", "상태"].map((header) => (
-                    <th key={header} style={tableHeaderStyle}>
-                      {header}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {analytics.recentIncidents.map((incident) => (
-                  <tr key={incident.id} style={{ borderTop: `1px solid ${COLORS.border}` }}>
-                    <td style={tableCellStrongStyle}>{incident.serverName}</td>
-                    <td style={tableCellStyle}><TypeBadge type={incident.type} /></td>
-                    <td style={tableCellStyle}>{formatDateTime(incident.startedAt)}</td>
-                    <td style={tableCellStyle}>{formatDateTime(incident.endedAt)}</td>
-                    <td style={tableCellStrongStyle}>{incident.durationMinutes}분</td>
-                    <td style={tableCellStyle}><StatusBadge status={incident.status} /></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <SectionTitle
+            title="최근 장애 이력"
+            sub="복구 완료된 장애를 지속 시간 기준으로 확인합니다."
+          />
+          <IncidentTable incidents={analytics.recentIncidents} type="history" />
         </Card>
 
         <Card>
-          <SectionTitle title="장애 판단 기준" sub="백엔드 룰 엔진 또는 설정 API로 분리하기 좋은 영역입니다." />
-          <div style={{ display: "grid", gap: 10 }}>
+          <SectionTitle
+            title="장애 판단 기준"
+            sub="백엔드 룰 엔진 또는 설정 API로 분리하기 좋은 영역입니다."
+          />
+          <div className={styles.ruleList}>
             {Object.entries(INCIDENT_TYPE_META).map(([type, meta]) => (
-              <div
-                key={type}
-                style={{
-                  border: `1px solid ${COLORS.border}`,
-                  borderRadius: 8,
-                  padding: 12,
-                  background: COLORS.panelAlt,
-                }}
-              >
-                <div style={{ color: COLORS.text, fontSize: 13, fontWeight: 700 }}>
+              <div key={type} className={styles.ruleItem}>
+                <div className={styles.ruleTitle}>
                   <TypeBadge type={type} />
                 </div>
-                <p style={{ margin: "6px 0 0", color: COLORS.muted, fontSize: 12 }}>
-                  {meta.rule}
-                </p>
+                <p className={styles.ruleText}>{meta.rule}</p>
               </div>
             ))}
           </div>
@@ -682,26 +583,3 @@ export default function IncidentAnalytics() {
     </div>
   );
 }
-
-const tableHeaderStyle = {
-  textAlign: "left",
-  color: COLORS.muted,
-  fontSize: 11,
-  fontWeight: 700,
-  padding: "10px 12px",
-  whiteSpace: "nowrap",
-};
-
-const tableCellStyle = {
-  color: COLORS.muted,
-  fontSize: 12,
-  padding: "12px",
-  verticalAlign: "middle",
-  whiteSpace: "nowrap",
-};
-
-const tableCellStrongStyle = {
-  ...tableCellStyle,
-  color: COLORS.text,
-  fontWeight: 700,
-};
