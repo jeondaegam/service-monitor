@@ -7,7 +7,7 @@ import Mail from "./pages/Mail";
 import TestPage from "./pages/TestPage";
 import "./style/App.css";
 import ErrorLogPage from "./pages/ErrorLog/ErrorLogPage";
-import MailManagePage from "./pages/MailManage/MailManagePage";
+import Notifications from "./pages/Notifications/Notifications";
 import { ThemeModeProvider } from "./theme-mode";
 
 function UserPage() {
@@ -32,7 +32,7 @@ function App() {
             <Route path="/error-log" element={<ErrorLogPage />} />
             {/* <Route path="/mail" element={<Mail />} /> */}
             {/* <Route path="/test-page" element={<TestPage />} /> */}
-            <Route path="/notifications" element={<MailManagePage />} />
+            <Route path="/notifications" element={<Notifications />} />
           </Routes>
         </DashboardLayout>
       </BrowserRouter>

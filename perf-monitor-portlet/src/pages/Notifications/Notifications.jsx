@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import styles from "./MailManagePage.module.css";
+import styles from "./Notifications.module.css";
 // ─────────────────────────────────────────
 // 하드코딩 더미 데이터
 // API 붙일 때 교체 위치:
@@ -242,9 +242,9 @@ function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
             <button className={styles.secondaryButton} type="button" onClick={() => onEdit(recipient)}>
               수정
             </button>
-            <button className={styles.dangerButton} type="button" onClick={() => onDelete(recipient.id)}>
+            {/* <button className={styles.dangerButton} type="button" onClick={() => onDelete(recipient.id)}>
               삭제
-            </button>
+            </button> */}
           </div>
         );
       })}
@@ -366,7 +366,7 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
 // ─────────────────────────────────────────
 // 메인 페이지
 // ─────────────────────────────────────────
-export default function MailManagePage() {
+export default function Notifications() {
   const [recipients, setRecipients] = useState(DUMMY_RECIPIENTS);
   const [modal, setModal] = useState(null);
   const [historyStatus, setHistoryStatus] = useState("all");
