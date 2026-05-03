@@ -135,20 +135,27 @@ export default function OrderTimeline({
 
 function Item({ item, lastItem }) {
   return (
-    <TimelineItem sx={{ minHeight: 72 }}>
+    <TimelineItem sx={{ minHeight: 70 }}>
       <TimelineSeparator>
         <TimelineDot
           sx={{
-            m: "5px 0",
+            m: "6px 0 8px",
             bgcolor: getTimelineDotColor(item.type),
           }}
         />
         {lastItem ? null : (
-          <TimelineConnector sx={{ bgcolor: "var(--app-border)" }} />
+          <TimelineConnector
+            sx={{
+              width: 2,
+              minHeight: 34,
+              flexGrow: 0,
+              bgcolor: "var(--app-border)",
+            }}
+          />
         )}
       </TimelineSeparator>
 
-      <TimelineContent sx={{ pt: 0, pb: 2.25, pr: 0 }}>
+      <TimelineContent sx={{ pt: 0, pb: 2.1, pr: 0 }}>
         <Typography
           variant="subtitle2"
           sx={{
