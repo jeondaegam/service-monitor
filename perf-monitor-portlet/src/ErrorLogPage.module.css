@@ -1,0 +1,278 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 32px;
+  color: var(--app-text);
+  font-family: system-ui, sans-serif;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  color: var(--app-muted);
+  font-size: 13px;
+}
+
+.filterBar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.chipGroup {
+  display: flex;
+  gap: 6px;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--app-border);
+}
+
+.chip {
+  border: 1px solid var(--app-border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  background: var(--app-panel);
+  color: var(--app-muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chipActive {
+  border-color: #6366f1;
+  background: var(--app-active);
+  color: #6366f1;
+}
+
+.chipError {
+  border-color: #fca5a5;
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.chipWarn {
+  border-color: #fcd34d;
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.chipInfo {
+  border-color: #93c5fd;
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.tableCard {
+  overflow: hidden;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  background: var(--app-panel);
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.timeCol {
+  width: 80px;
+}
+
+.levelCol {
+  width: 70px;
+}
+
+.serviceCol {
+  width: 100px;
+}
+
+.arrowCol {
+  width: 40px;
+}
+
+.table thead tr {
+  border-bottom: 1px solid var(--app-border);
+  background: var(--app-panel-alt);
+}
+
+.table th {
+  padding: 10px 14px;
+  color: var(--app-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.logRow:hover td {
+  background: var(--app-hover);
+  cursor: pointer;
+}
+
+.logRowActive td {
+  background: var(--app-active);
+}
+
+.table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--app-border);
+  color: var(--app-muted);
+  font-size: 12px;
+}
+
+.rowOpen td {
+  border-bottom: 0;
+}
+
+.timeCell,
+.serviceCell,
+.messageCell {
+  font-family: monospace;
+}
+
+.serviceCell,
+.messageCell {
+  color: var(--app-text);
+}
+
+.messageCell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arrowCell {
+  color: var(--app-soft-text);
+  font-size: 14px;
+  text-align: center;
+  transition: transform 0.15s;
+}
+
+.arrowOpen {
+  transform: rotate(90deg);
+}
+
+.emptyCell {
+  padding: 40px;
+  color: var(--app-soft-text);
+  font-size: 14px;
+  text-align: center;
+}
+
+.levelBadge {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 2px 8px;
+  background: var(--level-bg);
+  color: var(--level-color);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.detailCell {
+  padding: 0 !important;
+  border-bottom: 1px solid var(--app-border) !important;
+}
+
+.detailPanel {
+  padding: 16px 20px;
+  border-left: 3px solid var(--detail-color);
+  background: var(--app-panel-alt);
+  animation: slideDown 0.18s ease;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+  margin-bottom: 14px;
+}
+
+.detailLabel {
+  margin-bottom: 2px;
+  color: var(--app-muted);
+  font-size: 11px;
+}
+
+.detailValue {
+  color: var(--app-text);
+  font-family: monospace;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.messageBlock {
+  margin-bottom: 12px;
+}
+
+.detailBox,
+.stackTrace {
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+  background: var(--app-panel);
+  color: var(--app-text);
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.detailBox {
+  padding: 8px 12px;
+}
+
+.stackTrace {
+  overflow-x: auto;
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 11px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.footerNote {
+  margin-top: 12px;
+  color: var(--app-soft-text);
+  font-size: 12px;
+  text-align: right;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: 20px;
+  }
+
+  .divider {
+    display: none;
+  }
+}

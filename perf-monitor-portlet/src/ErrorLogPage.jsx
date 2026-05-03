@@ -1,4 +1,6 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
+
+import styles from "./ErrorLogPage.module.css";
 
 // ─────────────────────────────────────────
 // 하드코딩 더미 데이터
@@ -87,125 +89,105 @@ const DUMMY_LOGS = [
   },
 ];
 
-// 서비스 목록 - 백엔드에서 받아올 수도 있음
 const SERVICES = ["all", "api-gateway", "auth", "db"];
 const LEVELS = ["all", "ERROR", "WARN", "INFO"];
 
-// ─────────────────────────────────────────
-// 유틸
-// ─────────────────────────────────────────
 const LEVEL_STYLE = {
-  ERROR: { bg: "#FEE2E2", color: "#B91C1C" },
-  WARN:  { bg: "#FEF3C7", color: "#92400E" },
-  INFO:  { bg: "#DBEAFE", color: "#1E40AF" },
+  ERROR: { bg: "#fee2e2", color: "#b91c1c" },
+  WARN: { bg: "#fef3c7", color: "#92400e" },
+  INFO: { bg: "#dbeafe", color: "#1e40af" },
 };
 
-const UI = {
-  panel: "var(--app-panel)",
-  panelAlt: "var(--app-panel-alt)",
-  border: "var(--app-border)",
-  text: "var(--app-text)",
-  muted: "var(--app-muted)",
-  softText: "var(--app-soft-text)",
-  hover: "var(--app-hover)",
-  active: "var(--app-active)",
-};
+const TABLE_HEADERS = ["시간", "레벨", "서비스", "메시지", ""];
 
 function formatTime(iso) {
   const d = new Date(iso);
-  return d.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  return d.toLocaleTimeString("ko-KR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
 }
 
 function formatDateTime(iso) {
   const d = new Date(iso);
   return d.toLocaleString("ko-KR", {
-    month: "2-digit", day: "2-digit",
-    hour: "2-digit", minute: "2-digit", second: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
   });
 }
 
-// ─────────────────────────────────────────
-// 배지 컴포넌트
-// ─────────────────────────────────────────
+function classNames(...names) {
+  return names.filter(Boolean).join(" ");
+}
+
 function LevelBadge({ level }) {
-  const s = LEVEL_STYLE[level] || LEVEL_STYLE.INFO;
+  const style = LEVEL_STYLE[level] || LEVEL_STYLE.INFO;
+
   return (
-    <span style={{
-      display: "inline-block",
-      fontSize: 10,
-      fontWeight: 600,
-      padding: "2px 8px",
-      borderRadius: 20,
-      background: s.bg,
-      color: s.color,
-      letterSpacing: "0.04em",
-    }}>
+    <span
+      className={styles.levelBadge}
+      style={{
+        "--level-bg": style.bg,
+        "--level-color": style.color,
+      }}
+    >
       {level}
     </span>
   );
 }
 
-// ─────────────────────────────────────────
-// 상세 패널 (인라인 확장)
-// ─────────────────────────────────────────
+function FilterChip({ active, tone, children, onClick }) {
+  return (
+    <button
+      className={classNames(
+        styles.chip,
+        active && tone === "ERROR" && styles.chipError,
+        active && tone === "WARN" && styles.chipWarn,
+        active && tone === "INFO" && styles.chipInfo,
+        active && !["ERROR", "WARN", "INFO"].includes(tone) && styles.chipActive,
+      )}
+      type="button"
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}
+
 function DetailPanel({ log }) {
+  const levelStyle = LEVEL_STYLE[log.level] || LEVEL_STYLE.INFO;
+
   return (
     <tr>
-      <td colSpan={5} style={{ padding: 0, borderBottom: `1px solid ${UI.border}` }}>
-        <div style={{
-          background: UI.panelAlt,
-          borderLeft: `3px solid ${LEVEL_STYLE[log.level]?.color ?? "#6B7280"}`,
-          padding: "16px 20px",
-          animation: "slideDown 0.18s ease",
-        }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 24px", marginBottom: 14 }}>
+      <td className={styles.detailCell} colSpan={5}>
+        <div className={styles.detailPanel} style={{ "--detail-color": levelStyle.color }}>
+          <div className={styles.detailGrid}>
             {[
-              ["Log ID",      log.logId],
-              ["Request ID",  log.requestId],
-              ["서비스",       log.service],
-              ["발생 시각",    formatDateTime(log.timestamp)],
-            ].map(([k, v]) => (
-              <div key={k}>
-                <div style={{ fontSize: 11, color: UI.muted, marginBottom: 2 }}>{k}</div>
-                <div style={{ fontSize: 12, fontFamily: "monospace", color: UI.text, wordBreak: "break-all" }}>{v}</div>
+              ["Log ID", log.logId],
+              ["Request ID", log.requestId],
+              ["서비스", log.service],
+              ["발생 시각", formatDateTime(log.timestamp)],
+            ].map(([label, value]) => (
+              <div key={label}>
+                <div className={styles.detailLabel}>{label}</div>
+                <div className={styles.detailValue}>{value}</div>
               </div>
             ))}
           </div>
 
-          <div style={{ marginBottom: log.stackTrace ? 12 : 0 }}>
-            <div style={{ fontSize: 11, color: UI.muted, marginBottom: 4 }}>메시지</div>
-            <div style={{
-              fontSize: 12,
-              fontFamily: "monospace",
-              color: UI.text,
-              background: UI.panel,
-              border: `1px solid ${UI.border}`,
-              borderRadius: 6,
-              padding: "8px 12px",
-            }}>
-              {log.message}
-            </div>
+          <div className={log.stackTrace ? styles.messageBlock : undefined}>
+            <div className={styles.detailLabel}>메시지</div>
+            <div className={styles.detailBox}>{log.message}</div>
           </div>
 
           {log.stackTrace && (
             <div>
-              <div style={{ fontSize: 11, color: UI.muted, marginBottom: 4 }}>Stack Trace</div>
-              <pre style={{
-                fontSize: 11,
-                fontFamily: "monospace",
-                color: UI.text,
-                background: UI.panel,
-                border: `1px solid ${UI.border}`,
-                borderRadius: 6,
-                padding: "10px 12px",
-                margin: 0,
-                overflowX: "auto",
-                whiteSpace: "pre-wrap",
-                wordBreak: "break-word",
-                lineHeight: 1.7,
-              }}>
-                {log.stackTrace}
-              </pre>
+              <div className={styles.detailLabel}>Stack Trace</div>
+              <pre className={styles.stackTrace}>{log.stackTrace}</pre>
             </div>
           )}
         </div>
@@ -214,229 +196,146 @@ function DetailPanel({ log }) {
   );
 }
 
+function LogTable({ logs, selectedId, onRowClick }) {
+  return (
+    <div className={styles.tableCard}>
+      <table className={styles.table}>
+        <colgroup>
+          <col className={styles.timeCol} />
+          <col className={styles.levelCol} />
+          <col className={styles.serviceCol} />
+          <col />
+          <col className={styles.arrowCol} />
+        </colgroup>
+        <thead>
+          <tr>
+            {TABLE_HEADERS.map((header) => (
+              <th key={header}>{header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {logs.length === 0 && (
+            <tr>
+              <td className={styles.emptyCell} colSpan={5}>
+                조건에 맞는 로그가 없습니다.
+              </td>
+            </tr>
+          )}
+
+          {logs.map((log) => {
+            const isOpen = selectedId === log.logId;
+
+            return (
+              <>
+                <tr
+                  key={log.logId}
+                  className={classNames(
+                    styles.logRow,
+                    isOpen && styles.logRowActive,
+                    isOpen && styles.rowOpen,
+                  )}
+                  onClick={() => onRowClick(log.logId)}
+                >
+                  <td className={styles.timeCell}>{formatTime(log.timestamp)}</td>
+                  <td>
+                    <LevelBadge level={log.level} />
+                  </td>
+                  <td className={styles.serviceCell}>{log.service}</td>
+                  <td className={styles.messageCell}>{log.message}</td>
+                  <td className={classNames(styles.arrowCell, isOpen && styles.arrowOpen)}>
+                    &rsaquo;
+                  </td>
+                </tr>
+
+                {isOpen && <DetailPanel key={`detail-${log.logId}`} log={log} />}
+              </>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 // ─────────────────────────────────────────
 // 메인 페이지
 // ─────────────────────────────────────────
 export default function ErrorLogPage() {
   const [selectedId, setSelectedId] = useState(null);
-  const [filterLevel,   setFilterLevel]   = useState("all");
+  const [filterLevel, setFilterLevel] = useState("all");
   const [filterService, setFilterService] = useState("all");
-  const [keyword,       setKeyword]       = useState("");
+  const [keyword] = useState("");
 
-  // ── 필터링 ──────────────────────────────
-  // API 붙이면 이 useMemo 대신 useEffect + fetch 로 교체
   const filtered = useMemo(() => {
     return DUMMY_LOGS.filter((log) => {
-      if (filterLevel   !== "all" && log.level   !== filterLevel)   return false;
-      if (filterService !== "all" && log.service !== filterService)  return false;
-      if (keyword && !log.message.toLowerCase().includes(keyword.toLowerCase())) return false;
+      if (filterLevel !== "all" && log.level !== filterLevel) return false;
+      if (filterService !== "all" && log.service !== filterService) return false;
+      if (keyword && !log.message.toLowerCase().includes(keyword.toLowerCase())) {
+        return false;
+      }
       return true;
     });
   }, [filterLevel, filterService, keyword]);
 
   const handleRowClick = (logId) => {
     setSelectedId((prev) => (prev === logId ? null : logId));
-    // ── API 연동 시 여기서 단건 조회 ──
-    // if (prev !== logId) {
-    //   fetch(`/api/logs/${logId}`)
-    //     .then(r => r.json())
-    //     .then(data => setDetail(data));
-    // }
   };
 
-  // ── 칩 공용 스타일 ──────────────────────
-  const chipStyle = (active, type) => ({
-    padding: "4px 12px",
-    borderRadius: 20,
-    fontSize: 12,
-    fontWeight: 500,
-    cursor: "pointer",
-    border: "1px solid",
-    borderColor: active
-      ? (type === "ERROR" ? "#FCA5A5" : type === "WARN" ? "#FCD34D" : "#93C5FD")
-      : UI.border,
-    background: active
-      ? (type === "ERROR" ? "#FEE2E2" : type === "WARN" ? "#FEF3C7" : "#DBEAFE")
-      : UI.panel,
-    color: active
-      ? (type === "ERROR" ? "#B91C1C" : type === "WARN" ? "#92400E" : "#1E40AF")
-      : UI.muted,
-    transition: "all 0.15s",
-  });
+  const handleLevelChange = (level) => {
+    setFilterLevel(level);
+    setSelectedId(null);
+  };
 
-  const svcChipStyle = (active) => ({
-    padding: "4px 12px",
-    borderRadius: 20,
-    fontSize: 12,
-    fontWeight: 500,
-    cursor: "pointer",
-    border: "1px solid",
-    borderColor: active ? "#6366F1" : UI.border,
-    background: active ? UI.active : UI.panel,
-    color: active ? "#6366F1" : UI.muted,
-    transition: "all 0.15s",
-  });
+  const handleServiceChange = (service) => {
+    setFilterService(service);
+    setSelectedId(null);
+  };
 
   return (
-    <>
-      <style>{`
-        @keyframes slideDown {
-          from { opacity: 0; transform: translateY(-6px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .log-row:hover td { background: var(--app-hover); cursor: pointer; }
-        .log-row.active td { background: var(--app-active); }
-      `}</style>
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>에러 로그</h1>
+        <p className={styles.subtitle}>
+          총 {filtered.length}건 · 클릭하면 상세 내용을 확인할 수 있습니다.
+        </p>
+      </header>
 
-      <div style={{ padding: "28px 32px", fontFamily: "system-ui, sans-serif", maxWidth: 1100, margin: "0 auto", color: UI.text }}>
-
-        {/* ── 헤더 ── */}
-        <div style={{ marginBottom: 24 }}>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: UI.text, margin: 0 }}>에러 로그</h1>
-          <p style={{ fontSize: 13, color: UI.muted, marginTop: 4 }}>
-            총 {filtered.length}건 · 클릭하면 상세 확인
-          </p>
+      <div className={styles.filterBar}>
+        <div className={styles.chipGroup}>
+          {LEVELS.map((level) => (
+            <FilterChip
+              key={level}
+              active={filterLevel === level}
+              tone={level}
+              onClick={() => handleLevelChange(level)}
+            >
+              {level === "all" ? "전체" : level}
+            </FilterChip>
+          ))}
         </div>
 
-        {/* ── 필터 바 ── */}
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", marginBottom: 16 }}>
-          {/* 레벨 필터 */}
-          <div style={{ display: "flex", gap: 6 }}>
-            {LEVELS.map((lv) => (
-              <button
-                key={lv}
-                style={chipStyle(filterLevel === lv, lv)}
-                onClick={() => { setFilterLevel(lv); setSelectedId(null); }}
-              >
-                {lv === "all" ? "전체" : lv}
-              </button>
-            ))}
-          </div>
+        <div className={styles.divider} />
 
-          <div style={{ width: 1, height: 20, background: UI.border }} />
-
-          {/* 서비스 필터 */}
-          <div style={{ display: "flex", gap: 6 }}>
-            {SERVICES.map((svc) => (
-              <button
-                key={svc}
-                style={svcChipStyle(filterService === svc)}
-                onClick={() => { setFilterService(svc); setSelectedId(null); }}
-              >
-                {svc === "all" ? "전체 서비스" : svc}
-              </button>
-            ))}
-          </div>
-
-          {/* 키워드 검색 */}
-          {/* <input
-            placeholder="메시지 검색..."
-            value={keyword}
-            onChange={(e) => { setKeyword(e.target.value); setSelectedId(null); }}
-            style={{
-              marginLeft: "auto",
-              padding: "6px 12px",
-              fontSize: 13,
-              border: "1px solid #D1D5DB",
-              borderRadius: 8,
-              outline: "none",
-              width: 200,
-            }}
-          /> */}
-        </div>
-
-        {/* ── 테이블 ── */}
-        <div style={{
-          background: UI.panel,
-          border: `1px solid ${UI.border}`,
-          borderRadius: 12,
-          overflow: "hidden",
-        }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
-            <colgroup>
-              <col style={{ width: 80 }} />   {/* 시각 */}
-              <col style={{ width: 70 }} />   {/* 레벨 */}
-              <col style={{ width: 100 }} />  {/* 서비스 */}
-              <col />                          {/* 메시지 */}
-              <col style={{ width: 40 }} />   {/* 화살표 */}
-            </colgroup>
-            <thead>
-              <tr style={{ background: UI.panelAlt, borderBottom: `1px solid ${UI.border}` }}>
-                {["시각", "레벨", "서비스", "메시지", ""].map((h) => (
-                  <th key={h} style={{
-                    textAlign: "left",
-                    fontSize: 11,
-                    fontWeight: 600,
-                    color: UI.muted,
-                    padding: "10px 14px",
-                    letterSpacing: "0.05em",
-                    textTransform: "uppercase",
-                  }}>
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-
-            <tbody>
-              {filtered.length === 0 && (
-                <tr>
-                  <td colSpan={5} style={{ textAlign: "center", padding: 40, color: UI.softText, fontSize: 14 }}>
-                    조건에 맞는 로그가 없습니다.
-                  </td>
-                </tr>
-              )}
-
-              {filtered.map((log) => {
-                const isOpen = selectedId === log.logId;
-                return (
-                  <>
-                    <tr
-                      key={log.logId}
-                      className={`log-row${isOpen ? " active" : ""}`}
-                      onClick={() => handleRowClick(log.logId)}
-                    >
-                      <td style={{ padding: "10px 14px", fontSize: 12, fontFamily: "monospace", color: UI.muted, borderBottom: isOpen ? "none" : `1px solid ${UI.border}` }}>
-                        {formatTime(log.timestamp)}
-                      </td>
-                      <td style={{ padding: "10px 14px", borderBottom: isOpen ? "none" : `1px solid ${UI.border}` }}>
-                        <LevelBadge level={log.level} />
-                      </td>
-                      <td style={{ padding: "10px 14px", fontSize: 12, color: UI.text, fontFamily: "monospace", borderBottom: isOpen ? "none" : `1px solid ${UI.border}` }}>
-                        {log.service}
-                      </td>
-                      <td style={{
-                        padding: "10px 14px",
-                        fontSize: 12,
-                        fontFamily: "monospace",
-                        color: UI.text,
-                        borderBottom: isOpen ? "none" : `1px solid ${UI.border}`,
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}>
-                        {log.message}
-                      </td>
-                      <td style={{ padding: "10px 14px", textAlign: "center", fontSize: 14, color: UI.softText, borderBottom: isOpen ? "none" : `1px solid ${UI.border}`, transition: "transform 0.15s", transform: isOpen ? "rotate(90deg)" : "none" }}>
-                        ›
-                      </td>
-                    </tr>
-
-                    {/* 인라인 상세 패널 */}
-                    {isOpen && <DetailPanel key={`detail-${log.logId}`} log={log} />}
-                  </>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-
-        {/* ── 페이지네이션 자리 ── */}
-        {/* API 붙이면 여기에 페이지 버튼 추가 */}
-        <div style={{ marginTop: 12, fontSize: 12, color: UI.softText, textAlign: "right" }}>
-          {filtered.length}건 표시 중 · 페이지네이션은 API 연동 후 추가
+        <div className={styles.chipGroup}>
+          {SERVICES.map((service) => (
+            <FilterChip
+              key={service}
+              active={filterService === service}
+              tone="service"
+              onClick={() => handleServiceChange(service)}
+            >
+              {service === "all" ? "전체 서비스" : service}
+            </FilterChip>
+          ))}
         </div>
       </div>
-    </>
+
+      <LogTable logs={filtered} selectedId={selectedId} onRowClick={handleRowClick} />
+
+      <div className={styles.footerNote}>
+        {filtered.length}건 표시 중 · 페이지네이션은 API 연동 시 추가
+      </div>
+    </div>
   );
 }
