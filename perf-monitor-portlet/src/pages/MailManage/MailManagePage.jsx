@@ -195,13 +195,11 @@ function RecipientModal({ initial, onSave, onClose }) {
   );
 }
 
-function SummaryCard({ label, value, color }) {
+function SummaryCard({ label, value }) {
   return (
     <div className={styles.summaryCard}>
       <div className={styles.summaryLabel}>{label}</div>
-      <div className={styles.summaryValue} style={{ "--summary-color": color }}>
-        {value}
-      </div>
+      <div className={styles.summaryValue}>{value}</div>
     </div>
   );
 }
@@ -429,9 +427,9 @@ export default function MailManagePage() {
         </header>
 
         <div className={styles.summaryGrid}>
-          <SummaryCard label="전체 수신자" value={recipients.length} color="#6366f1" />
-          <SummaryCard label="활성 수신자" value={activeCount} color="#059669" />
-          <SummaryCard label="발송 성공 (30일)" value={successCount} color="#0284c7" />
+          <SummaryCard label="전체 수신자" value={recipients.length} />
+          <SummaryCard label="활성 수신자" value={activeCount} />
+          <SummaryCard label="발송 성공 (7일)" value={successCount} />
         </div>
 
         <div className={styles.contentGrid}>
@@ -461,7 +459,8 @@ export default function MailManagePage() {
               <span className={styles.sectionMeta}>최근 30일</span>
             </div>
 
-            <div className={styles.filterBar}>
+             {/* 발송 히스토리: 전체, 성공, 실패 필터 */}
+            {/* <div className={styles.filterBar}>
               {HISTORY_FILTERS.map((filter) => (
                 <button
                   key={filter.key}
@@ -472,7 +471,7 @@ export default function MailManagePage() {
                   {filter.label}
                 </button>
               ))}
-            </div>
+            </div> */}
 
             <HistoryTable
               histories={filteredHistory}

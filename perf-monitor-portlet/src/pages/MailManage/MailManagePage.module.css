@@ -1,5 +1,5 @@
 .page {
-  max-width: 1100px;
+  max-width: 1530px;
   margin: 0 auto;
   padding: 28px 32px;
   color: var(--app-text);
@@ -48,7 +48,7 @@
 }
 
 .summaryValue {
-  color: var(--summary-color);
+  color: var(--app-text);
   font-size: 28px;
   font-weight: 700;
 }
@@ -235,16 +235,18 @@
   border-collapse: collapse;
 }
 
+/* 발송시각 */
 .sentAtCol {
-  width: 90px;
+  width: 150px;
 }
 
+/* 결과 */
 .statusCol {
-  width: 58px;
+  width: 70px;
 }
 
 .countCol {
-  width: 56px;
+  width: 70px;
 }
 
 .table thead tr {
