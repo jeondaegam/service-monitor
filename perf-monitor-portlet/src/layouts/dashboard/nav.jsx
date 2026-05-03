@@ -8,11 +8,8 @@ export function NavDesktop() {
   return (
     <Box
       sx={{
-        width: 260,
-        height: "100vh",
-        position: "fixed",
-        left: 0,
-        top: 0,
+        height: "100%",
+        minHeight: "100vh",
         p: 2,
         bgcolor: "#fff",
         borderRight: "1px solid #eee",
