@@ -38,6 +38,7 @@
 
 .title {
   margin: 0;
+  color: var(--app-text);
   font-size: 26px;
   font-weight: 700;
 }
