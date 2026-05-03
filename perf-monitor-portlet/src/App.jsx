@@ -14,10 +14,10 @@ import { DashboardLayout } from "./layouts/dashboard/layout";
 
 import StatsDashboard from "./StatsDashboard";
 import IncidentAnalytics from "./IncidentAnalytics";
-import ErrorLogs from "./ErrorLogs";
 import Mail from "./Mail";
 import TestPage from "./TestPage";
 import "./App.css";
+import ErrorLogPage from "./ErrorLogPage";
 
 function UserPage() {
   return <h1>User</h1>;
@@ -37,7 +37,7 @@ function App() {
           <Route path="/user" element={<UserPage />} />
           <Route path="/products" element={<ProductPage />} />
           <Route path="/incidentAnalytics" element={<IncidentAnalytics />} />
-          <Route path="/errorLogs" element={<ErrorLogs />} />
+          <Route path="/errorLog" element={<ErrorLogPage />} />
           <Route path="/mail" element={<Mail />} />
           <Route path="/testPage" element={<TestPage />} />
         </Routes>

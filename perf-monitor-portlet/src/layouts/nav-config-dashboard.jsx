@@ -58,7 +58,7 @@ export const navData = [
   },
   {
     title: "Error Logs",
-    path: "/errorLogs",
+    path: "/errorLog",
     icon: icon("ic-lock"),
   },
   {
