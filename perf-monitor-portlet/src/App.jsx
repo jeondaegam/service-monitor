@@ -26,12 +26,12 @@ function App() {
           <Routes>
             <Route path="/" element={<StatsDashboard />} />
             {/* <Route path="/" element={<TestPage />} /> */}
-            <Route path="/user" element={<UserPage />} />
-            <Route path="/products" element={<ProductPage />} />
+            {/* <Route path="/user" element={<UserPage />} /> */}
+            {/* <Route path="/products" element={<ProductPage />} /> */}
             <Route path="/incident-analytics" element={<IncidentAnalytics />} />
             <Route path="/error-log" element={<ErrorLogPage />} />
-            <Route path="/mail" element={<Mail />} />
-            <Route path="/test-page" element={<TestPage />} />
+            {/* <Route path="/mail" element={<Mail />} /> */}
+            {/* <Route path="/test-page" element={<TestPage />} /> */}
             <Route path="/mail-manage" element={<MailManagePage />} />
           </Routes>
         </DashboardLayout>

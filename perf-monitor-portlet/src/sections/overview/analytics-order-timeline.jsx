@@ -73,7 +73,7 @@ function getTimelineDotColor(type) {
 }
 
 export default function OrderTimeline({
-  title = "이벤트 피드",
+  title = "최근 장애 이력",
   subheader,
   list = timelineList,
   sx,
@@ -101,7 +101,7 @@ export default function OrderTimeline({
             color: "var(--app-text)",
             fontSize: 16,
             fontWeight: 700,
-            lineHeight: 1.3,
+            lineHeight: 3.3,
           },
           "& .MuiCardHeader-subheader": {
             color: "var(--app-muted)",
