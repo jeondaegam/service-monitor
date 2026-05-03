@@ -1,5 +1,7 @@
 .page {
+  max-width: 1430px;
   min-height: 100%;
+  margin: 0 auto;
   padding: 28px 32px;
   background: var(--app-bg);
   color: var(--app-text);

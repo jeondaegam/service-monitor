@@ -1,4 +1,6 @@
 .page {
+  max-width: 1250px;
+  margin: 0 auto;
   box-sizing: border-box;
   color: var(--app-text);
   font-family: "DM Sans", "Pretendard", sans-serif;
