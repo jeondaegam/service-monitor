@@ -1,0 +1,267 @@
+.page {
+  box-sizing: border-box;
+  color: var(--app-text);
+  font-family: "DM Sans", "Pretendard", sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.liveRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.liveDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--app-success);
+  box-shadow: 0 0 8px var(--app-success);
+  animation: pulse 2s infinite;
+}
+
+.liveText {
+  color: var(--app-success);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  color: var(--app-muted);
+  font-size: 13px;
+}
+
+.refreshButton {
+  border: 1px solid var(--app-danger);
+  border-radius: 10px;
+  padding: 10px 20px;
+  background: rgba(232, 69, 69, 0.15);
+  color: var(--app-danger);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.refreshing {
+  opacity: 0.6;
+}
+
+.metricsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.card,
+.metricCard {
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  background: var(--app-panel);
+}
+
+.card {
+  padding: 24px;
+}
+
+.chartCard {
+  margin-bottom: 24px;
+}
+
+.metricCard {
+  position: relative;
+  min-width: 180px;
+  flex: 1;
+  overflow: hidden;
+  padding: 24px;
+}
+
+.metricAccent {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 0 16px 0 100%;
+  background: var(--metric-color);
+  opacity: 0.08;
+}
+
+.metricLabel {
+  margin: 0;
+  color: var(--app-muted);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.metricValue {
+  margin: 10px 0 4px;
+  color: var(--metric-color);
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.metricUnit {
+  margin-left: 4px;
+  color: var(--app-muted);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.metricSub {
+  margin: 0;
+  color: var(--app-muted);
+  font-size: 12px;
+}
+
+.metricSub strong {
+  color: var(--app-text);
+  font-weight: 500;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.sectionSub {
+  margin: 4px 0 0;
+  color: var(--app-muted);
+  font-size: 12px;
+}
+
+.legend {
+  display: flex;
+  gap: 12px;
+  color: var(--app-muted);
+  font-size: 12px;
+}
+
+.tooltip {
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: var(--app-surface);
+  font-size: 13px;
+}
+
+.tooltipTitle {
+  margin: 0 0 8px;
+  color: var(--app-muted);
+  font-weight: 600;
+}
+
+.tooltipLine {
+  margin: 4px 0;
+  color: var(--tooltip-color);
+}
+
+.tooltipLine strong {
+  color: var(--app-text);
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table thead tr {
+  border-bottom: 1px solid var(--app-border);
+}
+
+.table th {
+  padding: 8px 12px;
+  color: var(--app-muted);
+  font-weight: 500;
+  text-align: left;
+}
+
+.table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.table tbody tr {
+  transition: background 0.15s;
+}
+
+.table tbody tr:hover {
+  background: var(--app-surface);
+}
+
+.mutedCell {
+  color: var(--app-muted);
+}
+
+.strongCell {
+  color: var(--status-color);
+  font-weight: 600;
+}
+
+.warningCell {
+  color: var(--app-warning);
+}
+
+.statusBadge {
+  border: 1px solid var(--status-border);
+  border-radius: 6px;
+  padding: 2px 10px;
+  background: var(--status-bg);
+  color: var(--status-color);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@media (max-width: 720px) {
+  .header,
+  .cardHeader {
+    flex-direction: column;
+  }
+
+  .legend {
+    flex-wrap: wrap;
+  }
+}
