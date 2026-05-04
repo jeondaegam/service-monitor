@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 
 import styles from "./ErrorLogPage.module.css";
 
@@ -71,7 +71,8 @@ const DUMMY_LOGS = [
     logId: "log_007",
     level: "ERROR",
     service: "api-gateway",
-    message: "Upstream service returned 500: internal server error from /users/profile",
+    message:
+      "Upstream service returned 500: internal server error from /users/profile",
     timestamp: "2026-05-01T13:52:17Z",
     requestId: "req_9b3f2c7d",
     stackTrace:
@@ -81,7 +82,8 @@ const DUMMY_LOGS = [
     logId: "log_008",
     level: "WARN",
     service: "db",
-    message: "Slow query detected (1842ms): SELECT * FROM orders WHERE user_id=? AND status=?",
+    message:
+      "Slow query detected (1842ms): SELECT * FROM orders WHERE user_id=? AND status=?",
     timestamp: "2026-05-01T13:49:05Z",
     requestId: "req_5a8d3e1f",
     stackTrace:
@@ -151,7 +153,9 @@ function FilterChip({ active, tone, children, onClick }) {
         active && tone === "ERROR" && styles.chipError,
         active && tone === "WARN" && styles.chipWarn,
         active && tone === "INFO" && styles.chipInfo,
-        active && !["ERROR", "WARN", "INFO"].includes(tone) && styles.chipActive,
+        active &&
+          !["ERROR", "WARN", "INFO"].includes(tone) &&
+          styles.chipActive,
       )}
       type="button"
       onClick={onClick}
@@ -167,7 +171,10 @@ function DetailPanel({ log }) {
   return (
     <tr>
       <td className={styles.detailCell} colSpan={5}>
-        <div className={styles.detailPanel} style={{ "--detail-color": levelStyle.color }}>
+        <div
+          className={styles.detailPanel}
+          style={{ "--detail-color": levelStyle.color }}
+        >
           <div className={styles.detailGrid}>
             {[
               ["Log ID", log.logId],
@@ -215,7 +222,9 @@ function LogTable({ logs, selectedId, onRowClick }) {
             {TABLE_HEADERS.map((header) => (
               <th
                 key={header}
-                className={header === "메시지" ? styles.messageHeader : undefined}
+                className={
+                  header === "메시지" ? styles.messageHeader : undefined
+                }
               >
                 {header}
               </th>
@@ -235,9 +244,8 @@ function LogTable({ logs, selectedId, onRowClick }) {
             const isOpen = selectedId === log.logId;
 
             return (
-              <>
+              <Fragment key={log.logId}>
                 <tr
-                  key={log.logId}
                   className={classNames(
                     styles.logRow,
                     isOpen && styles.logRowActive,
@@ -245,19 +253,26 @@ function LogTable({ logs, selectedId, onRowClick }) {
                   )}
                   onClick={() => onRowClick(log.logId)}
                 >
-                  <td className={styles.timeCell}>{formatTime(log.timestamp)}</td>
+                  <td className={styles.timeCell}>
+                    {formatTime(log.timestamp)}
+                  </td>
                   <td className={styles.levelCell}>
                     <LevelBadge level={log.level} />
                   </td>
                   <td className={styles.serviceCell}>{log.service}</td>
                   <td className={styles.messageCell}>{log.message}</td>
-                  <td className={classNames(styles.arrowCell, isOpen && styles.arrowOpen)}>
+                  <td
+                    className={classNames(
+                      styles.arrowCell,
+                      isOpen && styles.arrowOpen,
+                    )}
+                  >
                     &rsaquo;
                   </td>
                 </tr>
 
-                {isOpen && <DetailPanel key={`detail-${log.logId}`} log={log} />}
-              </>
+                {isOpen && <DetailPanel log={log} />}
+              </Fragment>
             );
           })}
         </tbody>
@@ -278,8 +293,12 @@ export default function ErrorLogPage() {
   const filtered = useMemo(() => {
     return DUMMY_LOGS.filter((log) => {
       if (filterLevel !== "all" && log.level !== filterLevel) return false;
-      if (filterService !== "all" && log.service !== filterService) return false;
-      if (keyword && !log.message.toLowerCase().includes(keyword.toLowerCase())) {
+      if (filterService !== "all" && log.service !== filterService)
+        return false;
+      if (
+        keyword &&
+        !log.message.toLowerCase().includes(keyword.toLowerCase())
+      ) {
         return false;
       }
       return true;
@@ -339,7 +358,11 @@ export default function ErrorLogPage() {
         </div>
       </div>
 
-      <LogTable logs={filtered} selectedId={selectedId} onRowClick={handleRowClick} />
+      <LogTable
+        logs={filtered}
+        selectedId={selectedId}
+        onRowClick={handleRowClick}
+      />
 
       <div className={styles.footerNote}>
         {filtered.length}건 표시 중 · 페이지네이션 필요시 API 연동 시 추가
