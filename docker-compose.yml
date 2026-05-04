@@ -9,7 +9,7 @@ services:
     volumes:
       - ./perf-monitor-portlet:/app  
       - /app/node_modules
-    command: sh -c "npm install && npm run dev" 
+    # command: sh -c "npm install && npm run dev" 
     environment:
       - CHOKIDAR_USEPOLLING=true 
     networks:
