@@ -136,12 +136,13 @@ const HISTORY_FILTERS = [
 
 function formatDateTime(iso) {
   const d = new Date(iso);
-  return d.toLocaleString("ko-KR", {
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  const hour = String(d.getHours()).padStart(2, "0");
+  const minute = String(d.getMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day} ${hour}:${minute}`;
 }
 
 function getInitials(name) {
@@ -364,14 +365,14 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
     <div className={styles.panel}>
       <table className={`app-table app-table--fixed ${styles.table}`}>
         <colgroup>
-          <col className={styles.sentAtCol} />
-          <col className={styles.emailCol} />
+          <col className={styles.historyMetaCol} />
+          <col className={styles.historyMetaCol} />
           <col />
         </colgroup>
         <thead>
           <tr>
             {["발송 시각", "발송 주소", "제목"].map((header) => (
-              <th key={header} className={styles.tableHeaderCenter}>
+              <th key={header} className={styles.tableHeaderLeft}>
                 {header}
               </th>
             ))}
@@ -399,13 +400,13 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
                   )}
                   onClick={() => onToggle(history.mailId)}
                 >
-                  <td className={classNames(styles.timeCell, styles.cellCenter)}>
+                  <td className={classNames(styles.timeCell, styles.cellLeft)}>
                     {formatDateTime(history.sentAt)}
                   </td>
-                  <td className={classNames(styles.emailCell, styles.cellCenter)}>
+                  <td className={classNames(styles.emailCell, styles.cellLeft)}>
                     {history.senderEmail}
                   </td>
-                  <td className={styles.subjectCell}>
+                  <td className={classNames(styles.subjectCell, styles.cellLeft)}>
                     {history.subject}
                   </td>
                 </tr>
@@ -534,7 +535,7 @@ export default function Notifications() {
           <section>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionTitle}>발송 히스토리</span>
-              <span className={styles.sectionMeta}>최근 7일</span>
+              {/* <span className={styles.sectionMeta}>최근 7일</span> */}
             </div>
 
             {/* 발송 히스토리: 전체, 성공, 실패 필터 */}

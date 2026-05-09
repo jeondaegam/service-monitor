@@ -208,13 +208,8 @@
   color: #5c8bf9;
 }
 
-.emailCol {
+.historyMetaCol {
   width: 210px;
-}
-
-/* 발송시각 */
-.sentAtCol {
-  width: 150px;
 }
 
 .table thead tr {
@@ -232,12 +227,12 @@
   text-transform: uppercase;
 }
 
-.tableHeaderCenter {
-  text-align: center !important;
+.tableHeaderLeft {
+  text-align: left !important;
 }
 
-.cellCenter {
-  text-align: center;
+.cellLeft {
+  text-align: left;
 }
 
 .historyRow:hover td {
