@@ -291,13 +291,11 @@ function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
                 "--avatar-color": avatar.color,
               }}
             >
-              {getInitials(recipient.name)}
+              {getInitials(recipient.email)}
             </div>
 
             <div className={styles.recipientInfo}>
-              <div className={styles.recipientMeta}>
-                {recipient.email}
-              </div>
+              <div className={styles.recipientMeta}>{recipient.email}</div>
             </div>
 
             {/* <ToggleSwitch
