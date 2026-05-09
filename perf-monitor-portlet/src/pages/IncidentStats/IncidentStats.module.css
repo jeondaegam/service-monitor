@@ -67,6 +67,7 @@
 
 .bottomGrid {
   display: grid;
+  align-items: start;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
   gap: 16px;
 }

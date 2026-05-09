@@ -560,7 +560,7 @@ export default function IncidentStats() {
               <XAxis type="number" domain={[0, 100]} tick={{ fill: CHART_COLORS.muted, fontSize: 12 }} axisLine={false} tickLine={false} />
               <YAxis dataKey="serverName" type="category" tick={{ fill: CHART_COLORS.muted, fontSize: 12 }} axisLine={false} tickLine={false} width={70} />
               <Tooltip content={<AnalyticsTooltip />} />
-              <Bar dataKey="riskScore" name="위험도" radius={[0, 6, 6, 0]}>
+              <Bar dataKey="riskScore" name="위험도" barSize={24} radius={[0, 6, 6, 0]}>
                 {analytics.serverRiskRanking.map((entry) => (
                   <Cell key={entry.serverName} fill={getStatusMeta(entry.status).color} />
                 ))}
