@@ -237,7 +237,7 @@
 
 .detailGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px 24px;
   margin-bottom: 14px;
 }
@@ -284,7 +284,7 @@
 }
 
 .aiReportCard {
-  margin-top: 16px;
+  margin-top: 24px;
   overflow: hidden;
   border: 1px solid var(--app-border);
   border-radius: 12px;
@@ -435,5 +435,9 @@
 
   .aiReportMeta {
     white-space: normal;
+  }
+
+  .detailGrid {
+    grid-template-columns: 1fr;
   }
 }

@@ -266,7 +266,6 @@ function DetailPanel({ log }) {
           <div className={styles.detailGrid}>
             {[
               ["Log ID", log.logId],
-              ["Request ID", log.requestId],
               ["에러 유형", log.errorType],
               ["발생 시각", formatDateTime(log.timestamp)],
             ].map(([label, value]) => (
@@ -277,6 +276,7 @@ function DetailPanel({ log }) {
             ))}
           </div>
 
+          <br/>
           <div className={log.stackTrace ? styles.messageBlock : undefined}>
             <div className={styles.detailLabel}>메시지</div>
             <div className={styles.detailBox}>{log.message}</div>
