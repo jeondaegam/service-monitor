@@ -318,7 +318,7 @@ function DetailPanel({ log }) {
 function LogTable({ logs, selectedId, onRowClick }) {
   return (
     <div className={styles.tableCard}>
-      <table className={styles.table}>
+      <table className={`app-table app-table--fixed ${styles.table}`}>
         <colgroup>
           <col className={styles.logIdCol} />
           <col className={styles.timeCol} />
@@ -547,10 +547,10 @@ export default function ErrorLogPage() {
   };
 
   return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>에러 로그</h1>
-        <p className={styles.subtitle}>
+    <div className="app-page app-page--wide app-page--padded">
+      <header className="app-page-header">
+        <h1 className="app-page-title">에러 로그</h1>
+        <p className="app-page-subtitle">
           총 {filtered.length}건 · 클릭하면 상세 내용을 확인할 수 있습니다.
         </p>
       </header>

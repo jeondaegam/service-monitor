@@ -105,3 +105,64 @@ input[type='number']::-webkit-inner-spin-button {
     background 0.2s ease,
     color 0.2s ease;
 }
+
+/** **************************************
+* Shared page primitives
+*************************************** */
+.app-page {
+  box-sizing: border-box;
+  margin: 0 auto;
+  color: var(--app-text);
+  font-family: system-ui, sans-serif;
+}
+
+.app-page--wide {
+  max-width: 1430px;
+}
+
+.app-page--padded {
+  padding: 28px 32px;
+}
+
+.app-page-header {
+  margin-bottom: 32px;
+}
+
+.app-page-header--split {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.app-page-title {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.app-page-subtitle {
+  margin: 4px 0 0;
+  color: var(--app-muted);
+  font-size: 13px;
+}
+
+.app-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.app-table--fixed {
+  table-layout: fixed;
+}
+
+@media (max-width: 720px) {
+  .app-page--padded {
+    padding: 20px;
+  }
+
+  .app-page-header--stack-mobile {
+    flex-direction: column;
+  }
+}

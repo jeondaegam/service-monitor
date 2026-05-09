@@ -362,7 +362,7 @@ function HistoryDetail({ history }) {
 function HistoryTable({ histories, expandedMail, onToggle }) {
   return (
     <div className={styles.panel}>
-      <table className={styles.table}>
+      <table className={`app-table app-table--fixed ${styles.table}`}>
         <colgroup>
           <col className={styles.sentAtCol} />
           <col className={styles.emailCol} />
@@ -494,10 +494,10 @@ export default function Notifications() {
         />
       )}
 
-      <div className={styles.page}>
-        <header className={styles.header}>
-          <h1 className={styles.title}>알림 설정</h1>
-          <p className={styles.subtitle}>
+      <div className="app-page app-page--wide app-page--padded">
+        <header className="app-page-header">
+          <h1 className="app-page-title">알림 설정</h1>
+          <p className="app-page-subtitle">
             장애 알림 수신자 관리 및 발송 이력 조회
           </p>
         </header>

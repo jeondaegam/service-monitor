@@ -307,7 +307,7 @@ function IncidentTable({ incidents, type = "active" }) {
   return (
     <div className={styles.tableWrap}>
       <table
-        className={`${styles.table} ${
+        className={`app-table ${styles.table} ${
           type === "active" ? styles.wideTable : styles.historyTable
         }`}
       >
@@ -412,11 +412,11 @@ export default function IncidentStats() {
   const { summary } = analytics;
 
   return (
-    <div className={styles.page}>
-      <div className={styles.header}>
+    <div className={`app-page app-page--wide app-page--padded ${styles.page}`}>
+      <div className="app-page-header app-page-header--split app-page-header--stack-mobile">
         <div>
-          <h1 className={styles.title}>장애 통계</h1>
-          <p className={styles.description}>
+          <h1 className={`app-page-title ${styles.title}`}>장애 통계</h1>
+          <p className={`app-page-subtitle ${styles.description}`}>
             장애 조건 기반으로 현재 위험도, 유형별 빈도, 서버별 반복 장애를 분석합니다.
           </p>
           <p className={styles.lastUpdated}>

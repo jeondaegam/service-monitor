@@ -1,17 +1,6 @@
 .page {
   max-width: 1250px;
-  margin: 0 auto;
-  box-sizing: border-box;
-  color: var(--app-text);
   font-family: "DM Sans", "Pretendard", sans-serif;
-}
-
-.header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 32px;
 }
 
 .liveRow {
@@ -37,16 +26,11 @@
 }
 
 .title {
-  margin: 0;
-  color: var(--app-text);
   font-size: 26px;
-  font-weight: 700;
 }
 
 .subtitle {
-  margin: 6px 0 0;
-  color: var(--app-muted);
-  font-size: 13px;
+  margin-top: 6px;
 }
 
 .refreshButton {
@@ -207,8 +191,6 @@
 }
 
 .table {
-  width: 100%;
-  border-collapse: collapse;
   font-size: 13px;
 }
 
@@ -271,7 +253,6 @@
 }
 
 @media (max-width: 720px) {
-  .header,
   .cardHeader {
     flex-direction: column;
   }

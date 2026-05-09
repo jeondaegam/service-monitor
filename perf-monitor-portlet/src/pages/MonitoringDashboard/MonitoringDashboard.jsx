@@ -107,15 +107,15 @@ export default function StatsDashboard() {
   };
 
   return (
-    <div className={styles.page}>
-      <header className={styles.header}>
+    <div className={`app-page ${styles.page}`}>
+      <header className="app-page-header app-page-header--split app-page-header--stack-mobile">
         <div>
           <div className={styles.liveRow}>
             <div className={styles.liveDot} />
             <span className={styles.liveText}>LIVE</span>
           </div>
-          <h1 className={styles.title}>서버 모니터링 대시보드 (iframe으로 교체)</h1>
-          <p className={styles.subtitle}>
+          <h1 className={`app-page-title ${styles.title}`}>서버 모니터링 대시보드 (iframe으로 교체)</h1>
+          <p className={`app-page-subtitle ${styles.subtitle}`}>
             마지막 업데이트: {lastUpdated.toLocaleTimeString("ko-KR")}
           </p>
         </div>
@@ -231,7 +231,7 @@ export default function StatsDashboard() {
       <section className={styles.card}>
         <h2 className={styles.sectionTitle}>시간대별 상세</h2>
         <div className={styles.tableWrap}>
-          <table className={styles.table}>
+          <table className={`app-table ${styles.table}`}>
             <thead>
               <tr>
                 {["시간대", "에러율", "요청 수", "임계 에러율", "상태"].map((header) => (

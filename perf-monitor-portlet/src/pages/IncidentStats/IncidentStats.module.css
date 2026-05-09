@@ -1,11 +1,6 @@
 .page {
-  max-width: 1430px;
   min-height: 100%;
-  margin: 0 auto;
-  padding: 28px 32px;
   background: var(--app-bg);
-  color: var(--app-text);
-  font-family: system-ui, sans-serif;
 }
 
 .loading {
@@ -18,25 +13,12 @@
   padding: 32px;
 }
 
-.header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 32px;
-}
-
 .title {
-  margin: 0;
-  color: var(--app-text);
-  font-size: 24px;
   font-weight: 800;
 }
 
 .description {
-  margin: 6px 0 0;
-  color: var(--app-muted);
-  font-size: 13px;
+  margin-top: 6px;
 }
 
 .lastUpdated {
@@ -196,11 +178,6 @@
   overflow-x: auto;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
 .wideTable {
   min-width: 760px;
 }
@@ -286,15 +263,5 @@
   .riskGrid,
   .bottomGrid {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 720px) {
-  .page {
-    padding: 20px;
-  }
-
-  .header {
-    flex-direction: column;
   }
 }
