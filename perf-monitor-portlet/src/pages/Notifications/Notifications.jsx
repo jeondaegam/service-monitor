@@ -158,18 +158,18 @@ function classNames(...names) {
   return names.filter(Boolean).join(" ");
 }
 
-function ToggleSwitch({ active, onClick, title }) {
-  return (
-    <button
-      className={classNames(styles.switch, active && styles.switchOn)}
-      type="button"
-      title={title}
-      onClick={onClick}
-    >
-      <span className={styles.switchKnob} />
-    </button>
-  );
-}
+// function ToggleSwitch({ active, onClick, title }) {
+//   return (
+//     <button
+//       className={classNames(styles.switch, active && styles.switchOn)}
+//       type="button"
+//       title={title}
+//       onClick={onClick}
+//     >
+//       <span className={styles.switchKnob} />
+//     </button>
+//   );
+// }
 // ─────────────────────────────────────────
 // 수신자 추가/수정 모달
 // ─────────────────────────────────────────
@@ -260,7 +260,7 @@ function SummaryCard({ label, value }) {
   );
 }
 
-function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
+function RecipientList({ recipients, onEdit, onDelete }) {
   return (
     <div className={styles.panel}>
       {recipients.length === 0 && (
@@ -273,10 +273,7 @@ function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
         return (
           <div
             key={recipient.id}
-            className={classNames(
-              styles.recipientRow,
-              !recipient.active && styles.inactive,
-            )}
+            className={styles.recipientRow}
           >
             <div
               className={styles.avatar}
@@ -442,7 +439,7 @@ export default function Notifications() {
     });
   }, [historyStatus]);
 
-  const activeCount = recipients.filter((recipient) => recipient.active).length;
+  // const activeCount = recipients.filter((recipient) => recipient.active).length;
   const successCount = DUMMY_HISTORY.filter(
     (history) => history.status === "SUCCESS",
   ).length;
@@ -465,15 +462,15 @@ export default function Notifications() {
     setModal(null);
   };
 
-  const handleToggleActive = (id) => {
-    setRecipients((prev) =>
-      prev.map((recipient) =>
-        recipient.id === id
-          ? { ...recipient, active: !recipient.active }
-          : recipient,
-      ),
-    );
-  };
+  // const handleToggleActive = (id) => {
+  //   setRecipients((prev) =>
+  //     prev.map((recipient) =>
+  //       recipient.id === id
+  //         ? { ...recipient, active: !recipient.active }
+  //         : recipient,
+  //     ),
+  //   );
+  // };
 
   const handleDelete = (id) => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
@@ -524,7 +521,6 @@ export default function Notifications() {
 
             <RecipientList
               recipients={recipients}
-              onToggleActive={handleToggleActive}
               onEdit={(recipient) =>
                 setModal({ mode: "edit", data: recipient })
               }
