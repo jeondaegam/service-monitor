@@ -412,13 +412,22 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
                   )}
                   onClick={() => onToggle(history.mailId)}
                 >
-                  <td className={styles.timeCell} style={{ textAlign: "center" }}>
+                  <td
+                    className={styles.timeCell}
+                    style={{ textAlign: "center" }}
+                  >
                     {formatDateTime(history.sentAt)}
                   </td>
-                  <td className={styles.emailCell} style={{ textAlign: "center" }}>
+                  <td
+                    className={styles.emailCell}
+                    style={{ textAlign: "center" }}
+                  >
                     {history.senderEmail}
                   </td>
-                  <td className={styles.subjectCell} style={{ textAlign: "left" }}>
+                  <td
+                    className={styles.subjectCell}
+                    style={{ textAlign: "left" }}
+                  >
                     {history.subject}
                   </td>
                 </tr>
