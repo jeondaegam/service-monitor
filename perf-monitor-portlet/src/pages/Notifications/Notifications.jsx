@@ -174,15 +174,15 @@ function ToggleSwitch({ active, onClick, title }) {
 // ─────────────────────────────────────────
 function RecipientModal({ initial, onSave, onClose }) {
   const [form, setForm] = useState(
-    initial ?? { email: "", name: "", team: "", active: true },
+    initial ?? { email: "" },
   );
   const isEdit = Boolean(initial);
 
   const set = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
 
   const handleSave = () => {
-    if (!form.email || !form.name) {
-      alert("이메일과 이름은 필수입니다.");
+    if (!form.email) {
+      alert("이메일은 필수입니다.");
       return;
     }
     onSave(form);
@@ -205,8 +205,6 @@ function RecipientModal({ initial, onSave, onClose }) {
             type: "email",
             placeholder: "example@company.com",
           },
-          { label: "이름 *", key: "name", type: "text", placeholder: "홍길동" },
-          { label: "팀", key: "team", type: "text", placeholder: "운영팀" },
         ].map(({ label, key, type, placeholder }) => (
           <div key={key} className={styles.field}>
             <label className={styles.label}>{label}</label>
@@ -219,22 +217,6 @@ function RecipientModal({ initial, onSave, onClose }) {
             />
           </div>
         ))}
-
-        <div className={styles.modalSwitchRow}>
-          <span className={styles.label}>활성화</span>
-          <ToggleSwitch
-            active={form.active}
-            onClick={() => set("active", !form.active)}
-          />
-          <span
-            className={classNames(
-              styles.switchText,
-              form.active && styles.switchTextActive,
-            )}
-          >
-            {form.active ? "활성" : "비활성"}
-          </span>
-        </div>
 
         <div className={styles.modalActions}>
           <button
