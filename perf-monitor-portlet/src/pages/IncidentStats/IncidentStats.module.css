@@ -209,6 +209,14 @@
   white-space: nowrap;
 }
 
+.historyTable tbody tr {
+  transition: background 0.15s ease;
+}
+
+.historyTable tbody tr:hover {
+  background: var(--app-hover);
+}
+
 .table .strongCell {
   color: var(--app-text);
   font-weight: 700;
