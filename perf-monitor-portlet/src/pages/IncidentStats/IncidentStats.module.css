@@ -78,7 +78,7 @@
 
 .riskGrid {
   display: grid;
-  grid-template-columns: minmax(360px, 0.95fr) minmax(0, 1.35fr);
+  grid-template-columns: 1fr;
   gap: 16px;
   margin-bottom: 16px;
 }

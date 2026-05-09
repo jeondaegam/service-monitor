@@ -430,6 +430,7 @@ export default function IncidentStats() {
       </div>
 
       <div className={styles.summaryGrid}>
+        {/*
         <SummaryCard
           label="현재 장애"
           value={summary.activeIncidents}
@@ -444,13 +445,15 @@ export default function IncidentStats() {
           helper="임계치 근접 서버"
           color={CHART_COLORS.warning}
         />
+        */}
         <SummaryCard
           label="오늘 장애"
           value={summary.todayIncidents}
           unit="건"
-          helper="최근 24시간 기준"
+          helper="당일 0시 기준"
           color={CHART_COLORS.total}
         />
+        {/*
         <SummaryCard
           label="평균 복구 시간"
           value={summary.mttrMinutes}
@@ -465,6 +468,7 @@ export default function IncidentStats() {
           helper="오늘 누적 기준"
           color={CHART_COLORS.success}
         />
+        */}
       </div>
 
       <div className={styles.chartGrid}>
@@ -523,7 +527,7 @@ export default function IncidentStats() {
       <div className={styles.riskGrid}>
         <Card>
           <SectionTitle
-            title="서버별 위험도"
+            title="서버별 장애 발생 현황"
             sub="반복 장애와 최근 상태를 기준으로 산정한 데모 점수입니다."
           />
           <ResponsiveContainer width="100%" height={230}>
@@ -545,6 +549,7 @@ export default function IncidentStats() {
           </ResponsiveContainer>
         </Card>
 
+        {/*
         <Card>
           <SectionTitle
             title="현재 진행 중인 장애"
@@ -552,6 +557,7 @@ export default function IncidentStats() {
           />
           <IncidentTable incidents={analytics.activeIncidents} />
         </Card>
+        */}
       </div>
 
       <div className={styles.bottomGrid}>

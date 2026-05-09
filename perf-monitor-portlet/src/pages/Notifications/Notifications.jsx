@@ -579,10 +579,10 @@ export default function Notifications() {
               onToggle={handleToggleHistory}
             />
 
-            <div className={styles.footerNote}>
+            {/* <div className={styles.footerNote}>
               {filteredHistory.length}건 표시 중 · 페이지네이션은 API 연동 시
               추가
-            </div>
+            </div> */}
           </section>
         </div>
       </div>
