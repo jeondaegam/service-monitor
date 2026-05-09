@@ -356,12 +356,16 @@ function LogTable({ logs, selectedId, onRowClick }) {
                   <td className={styles.errorTypeCell}>{log.errorType}</td>
                   <td className={styles.messageCell}>{log.message}</td>
                   <td
-                    className={classNames(
-                      styles.arrowCell,
-                      isOpen && styles.arrowOpen,
-                    )}
+                    className={styles.arrowCell}
                   >
-                    &rsaquo;
+                    <span
+                      className={classNames(
+                        styles.arrowIcon,
+                        isOpen && styles.arrowOpen,
+                      )}
+                    >
+                      &rsaquo;
+                    </span>
                   </td>
                 </tr>
 

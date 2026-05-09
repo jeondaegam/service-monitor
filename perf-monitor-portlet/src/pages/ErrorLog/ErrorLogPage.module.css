@@ -198,6 +198,11 @@
   color: var(--app-soft-text);
   font-size: 14px;
   text-align: center;
+}
+
+.arrowIcon {
+  display: inline-block;
+  line-height: 1;
   transition: transform 0.15s;
 }
 
