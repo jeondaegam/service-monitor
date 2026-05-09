@@ -364,9 +364,9 @@ export default function ErrorLogPage() {
         onRowClick={handleRowClick}
       />
 
-      <div className={styles.footerNote}>
+      {/* <div className={styles.footerNote}>
         {filtered.length}건 표시 중 · 페이지네이션 필요시 API 연동 시 추가
-      </div>
+      </div> */}
     </div>
   );
 }

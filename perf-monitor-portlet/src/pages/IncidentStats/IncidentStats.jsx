@@ -495,7 +495,7 @@ export default function IncidentStats() {
         </Card>
 
         <Card>
-          <SectionTitle title="장애 유형 비율" sub="오늘 발생한 장애의 원인 분포입니다." />
+          <SectionTitle title="장애 유형별 비율" sub="오늘 발생한 장애의 원인 분포입니다." />
           <ResponsiveContainer width="100%" height={190}>
             <PieChart>
               <Pie
@@ -572,7 +572,7 @@ export default function IncidentStats() {
         <Card>
           <SectionTitle
             title="장애 판단 기준"
-            sub="백엔드 룰 엔진 또는 설정 API로 분리하기 좋은 영역입니다."
+            sub="장애 유형별 감지 조건과 임계치를 확인합니다."
           />
           <div className={styles.ruleList}>
             {Object.entries(INCIDENT_TYPE_META).map(([type, meta]) => (
