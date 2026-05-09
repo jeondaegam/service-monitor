@@ -21,6 +21,7 @@
 
 .datePicker {
   width: 158px;
+  color-scheme: inherit;
 }
 
 .datePicker :global(.MuiOutlinedInput-root) {
@@ -29,12 +30,21 @@
   font-size: 12px;
 }
 
+.datePicker :global(.MuiOutlinedInput-notchedOutline) {
+  border-color: var(--app-border);
+}
+
+.datePicker :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
+  border-color: var(--app-muted);
+}
+
 .datePicker :global(.MuiOutlinedInput-input) {
   padding: 6px 12px;
 }
 
 .datePicker input {
   color: var(--app-text);
+  color-scheme: inherit;
   font-family: system-ui, sans-serif;
 }
 
@@ -91,6 +101,28 @@
   border: 1px solid var(--app-border);
   border-radius: 12px;
   background: var(--app-panel);
+  scrollbar-color: var(--app-scrollbar-thumb) var(--app-scrollbar-track);
+}
+
+.tableCard::-webkit-scrollbar,
+.aiReportContent::-webkit-scrollbar,
+.stackTrace::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.tableCard::-webkit-scrollbar-track,
+.aiReportContent::-webkit-scrollbar-track,
+.stackTrace::-webkit-scrollbar-track {
+  background: var(--app-scrollbar-track);
+}
+
+.tableCard::-webkit-scrollbar-thumb,
+.aiReportContent::-webkit-scrollbar-thumb,
+.stackTrace::-webkit-scrollbar-thumb {
+  border: 2px solid var(--app-scrollbar-track);
+  border-radius: 999px;
+  background: var(--app-scrollbar-thumb);
 }
 
 .logIdCol {
@@ -178,6 +210,7 @@
 }
 
 .logIdCell,
+.timeCell,
 .errorTypeCell {
   text-align: center;
 }
@@ -279,6 +312,7 @@
   padding: 10px 12px;
   font-size: 11px;
   line-height: 1.7;
+  scrollbar-color: var(--app-scrollbar-thumb) var(--app-scrollbar-track);
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -339,6 +373,7 @@
   color: var(--app-text);
   font-family: system-ui, sans-serif;
   font-size: 13px;
+  scrollbar-color: var(--app-scrollbar-thumb) var(--app-scrollbar-track);
   word-break: keep-all;
 }
 

@@ -451,7 +451,7 @@ export default function IncidentStats() {
           value={summary.todayIncidents}
           unit="건"
           helper="당일 0시 기준"
-          color={CHART_COLORS.total}
+          color="var(--app-text)"
         />
         {/*
         <SummaryCard

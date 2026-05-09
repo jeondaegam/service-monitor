@@ -59,6 +59,7 @@ input[type='number']::-webkit-inner-spin-button {
 * App theme tokens
 *************************************** */
 .app-theme-dark {
+  color-scheme: dark;
   --app-bg: #0d0f14;
   --app-surface: #13161e;
   --app-panel: #181c27;
@@ -76,9 +77,12 @@ input[type='number']::-webkit-inner-spin-button {
   --app-button-bg: rgba(74, 158, 255, 0.15);
   --app-button-text: #4a9eff;
   --app-shadow: none;
+  --app-scrollbar-thumb: #3a4058;
+  --app-scrollbar-track: #13161e;
 }
 
 .app-theme-light {
+  color-scheme: light;
   --app-bg: #f6f7fb;
   --app-surface: #f9fafb;
   --app-panel: #ffffff;
@@ -96,6 +100,8 @@ input[type='number']::-webkit-inner-spin-button {
   --app-button-bg: #111827;
   --app-button-text: #ffffff;
   --app-shadow: 0 12px 24px rgba(145, 158, 171, 0.12);
+  --app-scrollbar-thumb: #cbd5e1;
+  --app-scrollbar-track: #f8fafc;
 }
 
 .app-shell {
