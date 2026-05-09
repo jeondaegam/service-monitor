@@ -60,6 +60,7 @@ const DOT_COLORS = {
   resolved: "#22C55E",
 };
 
+// 04.30 09:20 형식 
 function formatDateTime(value) {
   if (!value) return "";
 
@@ -70,6 +71,18 @@ function formatDateTime(value) {
     date.getMinutes(),
   )}`;
 }
+
+// 26-05-09 23:03:21 형식
+// function formatDateTime(value) {
+//   if (!value) return "";
+
+//   const date = new Date(value);
+//   const pad = (number) => String(number).padStart(2, "0");
+
+//   return `${String(date.getFullYear()).slice(2)}-${pad(date.getMonth() + 1)}-${pad(
+//     date.getDate(),
+//   )} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+// }
 
 function getTimelineDotColor(type) {
   return DOT_COLORS[type] || "#1877F2";

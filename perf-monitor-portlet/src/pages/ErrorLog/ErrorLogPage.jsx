@@ -318,7 +318,7 @@ function DetailPanel({ log }) {
 function LogTable({ logs, selectedId, onRowClick }) {
   return (
     <div className={styles.tableCard}>
-      <table className={`app-table app-table--fixed ${styles.table}`}>
+      <table className={styles.table}>
         <colgroup>
           <col className={styles.logIdCol} />
           <col className={styles.timeCol} />
