@@ -96,12 +96,19 @@
 }
 
 .tableCard {
-  max-height: 430px;
+  height: clamp(430px, 52vh, 680px);
   overflow: auto;
   border: 1px solid var(--app-border);
   border-radius: 12px;
   background: var(--app-panel);
   scrollbar-color: var(--app-scrollbar-thumb) var(--app-scrollbar-track);
+}
+
+.table {
+  width: 100%;
+  min-height: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .tableCard::-webkit-scrollbar,
@@ -156,7 +163,7 @@
   position: sticky;
   top: 0;
   z-index: 1;
-  padding: 10px 14px;
+  padding: clamp(10px, 1.2vh, 14px) 14px;
   background: var(--app-panel-alt);
   color: var(--app-muted);
   font-size: 11px;
@@ -166,9 +173,14 @@
   text-transform: uppercase;
 }
 
+
 .table .messageHeader {
   padding-left: 17px;
   text-align: left;
+}
+
+.logRow {
+  height: clamp(42px, 5.8vh, 58px);
 }
 
 .logRow:hover td {
@@ -181,10 +193,11 @@
 }
 
 .table td {
-  padding: 10px 14px;
+  padding: clamp(10px, 1.25vh, 16px) 14px;
   border-bottom: 1px solid var(--app-border);
   color: var(--app-muted);
   font-size: 12px;
+  line-height: 1.45;
 }
 
 .rowOpen td {
@@ -216,6 +229,7 @@
 }
 
 .messageCell {
+  max-width: 0;
   padding-left: 17px;
   overflow: hidden;
   text-overflow: ellipsis;
