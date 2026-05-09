@@ -167,6 +167,18 @@
   font-size: 12px;
 }
 
+.legendAccent {
+  color: var(--app-danger);
+}
+
+.legendWarning {
+  color: var(--app-warning);
+}
+
+.legendBlue {
+  color: #4a9eff;
+}
+
 .tooltip {
   border: 1px solid var(--app-border);
   border-radius: 10px;

@@ -298,7 +298,6 @@ function DetailPanel({ log }) {
             ))}
           </div>
 
-          <br/>
           <div className={log.stackTrace ? styles.messageBlock : undefined}>
             <div className={styles.detailLabel}>메시지</div>
             <div className={styles.detailBox}>{log.message}</div>
@@ -559,18 +558,18 @@ export default function ErrorLogPage() {
       <div className={styles.filterBar}>
         <div className={styles.dateControls}>
           <Button
+            className={styles.dateButton}
             size="small"
             variant={selectedDate === todayDate ? "contained" : "outlined"}
             onClick={() => handleDateChange(todayDate)}
-            sx={{ borderRadius: "20px", minWidth: 56, fontSize: 12, fontWeight: 700 }}
           >
             오늘
           </Button>
           <Button
+            className={styles.dateButton}
             size="small"
             variant={selectedDate === getDateByOffset(-1) ? "contained" : "outlined"}
             onClick={() => handleDateChange(getDateByOffset(-1))}
-            sx={{ borderRadius: "20px", minWidth: 56, fontSize: 12, fontWeight: 700 }}
           >
             어제
           </Button>
@@ -580,17 +579,6 @@ export default function ErrorLogPage() {
             size="small"
             value={selectedDate}
             onChange={(event) => handleDateChange(event.target.value)}
-            sx={{
-              width: 158,
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "20px",
-                backgroundColor: "var(--app-panel)",
-                fontSize: 12,
-              },
-              "& .MuiOutlinedInput-input": {
-                padding: "6px 12px",
-              },
-            }}
           />
         </div>
 

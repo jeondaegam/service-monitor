@@ -37,6 +37,27 @@
   gap: 6px;
 }
 
+.dateButton {
+  min-width: 56px !important;
+  border-radius: 20px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+.datePicker {
+  width: 158px;
+}
+
+.datePicker :global(.MuiOutlinedInput-root) {
+  border-radius: 20px;
+  background-color: var(--app-panel);
+  font-size: 12px;
+}
+
+.datePicker :global(.MuiOutlinedInput-input) {
+  padding: 6px 12px;
+}
+
 .datePicker input {
   color: var(--app-text);
   font-family: system-ui, sans-serif;

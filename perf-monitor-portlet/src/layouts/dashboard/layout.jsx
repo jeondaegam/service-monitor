@@ -39,7 +39,7 @@ export function DashboardLayout({ children }) {
         sx={{
           p: 3,
           bgcolor: "var(--app-bg)",
-          borderLeft: "1px solid var(--app-border)",
+          borderLeft: "1px solid var(--app-border)", // 우측 레이아웃 영역 실선
           minWidth: 0,
           height: "100vh",
           position: "sticky",

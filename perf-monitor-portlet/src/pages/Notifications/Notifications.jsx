@@ -123,9 +123,9 @@ const AVATAR_COLORS = [
   { bg: "#fce7f3", color: "#9d174d" },
 ];
 
-const LEVEL_STYLE = {
-  ERROR: { bg: "#fee2e2", color: "#b91c1c" },
-  WARN: { bg: "#fef3c7", color: "#92400e" },
+const LEVEL_CLASS = {
+  ERROR: styles.levelError,
+  WARN: styles.levelWarn,
 };
 
 const HISTORY_FILTERS = [
@@ -202,18 +202,9 @@ function RecipientModal({ initial, recipients, onSave, onClose }) {
           <>
             <div className={styles.field}>
               <label className={styles.label}>등록된 수신자</label>
-              <div
-                className={styles.input}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "4px",
-                  maxHeight: "200px",
-                  overflowY: "auto",
-                }}
-              >
+              <div className={classNames(styles.input, styles.recipientEmailList)}>
                 {recipients.length === 0 ? (
-                  <span style={{ color: "var(--app-muted)" }}>수신자 없음</span>
+                  <span className={styles.mutedText}>수신자 없음</span>
                 ) : (
                   recipients.map((r) => <div key={r.id}>{r.email}</div>)
                 )}
@@ -332,12 +323,8 @@ function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
 }
 
 function LevelBadge({ level }) {
-  const style = LEVEL_STYLE[level] ?? LEVEL_STYLE.WARN;
   return (
-    <span
-      className={styles.levelBadge}
-      style={{ "--level-bg": style.bg, "--level-color": style.color }}
-    >
+    <span className={classNames(styles.levelBadge, LEVEL_CLASS[level] ?? LEVEL_CLASS.WARN)}>
       {level}
     </span>
   );
@@ -384,7 +371,7 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
         <thead>
           <tr>
             {["발송 시각", "발송 주소", "제목"].map((header) => (
-              <th key={header} style={{ textAlign: "center" }}>
+              <th key={header} className={styles.tableHeaderCenter}>
                 {header}
               </th>
             ))}
@@ -412,22 +399,13 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
                   )}
                   onClick={() => onToggle(history.mailId)}
                 >
-                  <td
-                    className={styles.timeCell}
-                    style={{ textAlign: "center" }}
-                  >
+                  <td className={classNames(styles.timeCell, styles.cellCenter)}>
                     {formatDateTime(history.sentAt)}
                   </td>
-                  <td
-                    className={styles.emailCell}
-                    style={{ textAlign: "center" }}
-                  >
+                  <td className={classNames(styles.emailCell, styles.cellCenter)}>
                     {history.senderEmail}
                   </td>
-                  <td
-                    className={styles.subjectCell}
-                    style={{ textAlign: "left" }}
-                  >
+                  <td className={styles.subjectCell}>
                     {history.subject}
                   </td>
                 </tr>

@@ -263,6 +263,14 @@
   text-transform: uppercase;
 }
 
+.tableHeaderCenter {
+  text-align: center !important;
+}
+
+.cellCenter {
+  text-align: center;
+}
+
 .historyRow:hover td {
   background: var(--app-hover);
   cursor: pointer;
@@ -308,9 +316,14 @@
   font-weight: 600;
 }
 
-.levelBadge {
-  background: var(--level-bg);
-  color: var(--level-color);
+.levelError {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.levelWarn {
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .detailCell {
@@ -400,6 +413,18 @@
   background: var(--app-panel-alt);
   color: var(--app-text);
   font-size: 13px;
+}
+
+.recipientEmailList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.mutedText {
+  color: var(--app-muted);
 }
 
 .modalSwitchRow {

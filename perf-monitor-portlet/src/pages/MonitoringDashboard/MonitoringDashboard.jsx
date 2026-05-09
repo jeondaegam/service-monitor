@@ -171,9 +171,9 @@ export default function StatsDashboard() {
             <p className={styles.sectionSub}>최근 24시간 기준</p>
           </div>
           <div className={styles.legend}>
-            <span style={{ color: CHART_COLORS.accent }}>━ 에러율</span>
-            <span style={{ color: CHART_COLORS.warning }}>━ 임계 에러</span>
-            <span style={{ color: CHART_COLORS.blue }}>▌ 요청 수</span>
+            <span className={styles.legendAccent}>━ 에러율</span>
+            <span className={styles.legendWarning}>━ 임계 에러</span>
+            <span className={styles.legendBlue}>▌ 요청 수</span>
           </div>
         </div>
 
