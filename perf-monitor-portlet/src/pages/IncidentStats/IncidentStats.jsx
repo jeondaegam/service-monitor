@@ -527,6 +527,26 @@ export default function IncidentStats() {
       <div className={styles.riskGrid}>
         <Card>
           <SectionTitle
+            title="최근 장애 이력"
+            sub="복구 완료된 장애를 지속 시간 기준으로 확인합니다."
+          />
+          <IncidentTable incidents={analytics.recentIncidents} type="history" />
+        </Card>
+
+        {/*
+        <Card>
+          <SectionTitle
+            title="현재 진행 중인 장애"
+            sub="운영자가 먼저 확인해야 할 활성 장애 목록입니다."
+          />
+          <IncidentTable incidents={analytics.activeIncidents} />
+        </Card>
+        */}
+      </div>
+
+      <div className={styles.bottomGrid}>
+        <Card>
+          <SectionTitle
             title="서버별 장애 발생 현황"
             sub="반복 장애와 최근 상태를 기준으로 산정한 데모 점수입니다."
           />
@@ -547,26 +567,6 @@ export default function IncidentStats() {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </Card>
-
-        {/*
-        <Card>
-          <SectionTitle
-            title="현재 진행 중인 장애"
-            sub="운영자가 먼저 확인해야 할 활성 장애 목록입니다."
-          />
-          <IncidentTable incidents={analytics.activeIncidents} />
-        </Card>
-        */}
-      </div>
-
-      <div className={styles.bottomGrid}>
-        <Card>
-          <SectionTitle
-            title="최근 장애 이력"
-            sub="복구 완료된 장애를 지속 시간 기준으로 확인합니다."
-          />
-          <IncidentTable incidents={analytics.recentIncidents} type="history" />
         </Card>
 
         <Card>
