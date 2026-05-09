@@ -202,13 +202,20 @@ function RecipientModal({ initial, recipients, onSave, onClose }) {
           <>
             <div className={styles.field}>
               <label className={styles.label}>등록된 수신자</label>
-              <div className={styles.input} style={{ display: "flex", flexDirection: "column", gap: "4px", maxHeight: "200px", overflowY: "auto" }}>
+              <div
+                className={styles.input}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px",
+                  maxHeight: "200px",
+                  overflowY: "auto",
+                }}
+              >
                 {recipients.length === 0 ? (
                   <span style={{ color: "var(--app-muted)" }}>수신자 없음</span>
                 ) : (
-                  recipients.map((r) => (
-                    <div key={r.id}>{r.email}</div>
-                  ))
+                  recipients.map((r) => <div key={r.id}>{r.email}</div>)
                 )}
               </div>
             </div>
@@ -292,6 +299,14 @@ function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
             <div className={styles.recipientInfo}>
               <div className={styles.recipientMeta}>{recipient.email}</div>
             </div>
+
+            <button
+              className={styles.dangerButton}
+              type="button"
+              onClick={() => onDelete(recipient.id)}
+            >
+              삭제
+            </button>
 
             {/* <ToggleSwitch
               active={recipient.active}
