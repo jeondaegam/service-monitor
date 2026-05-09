@@ -1,5 +1,5 @@
 .page {
-  max-width: 1530px;
+  max-width: 1430px;
   margin: 0 auto;
   padding: 28px 32px;
   color: var(--app-text);
@@ -7,7 +7,7 @@
 }
 
 .header {
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
 .title {
@@ -61,14 +61,14 @@
   display: grid;
   grid-template-columns: 1fr 1.4fr;
   align-items: start;
-  gap: 20px;
+  gap: 24px;
 }
 
 .sectionHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .sectionTitle {
