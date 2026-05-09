@@ -265,6 +265,124 @@
   word-break: break-word;
 }
 
+.aiReportCard {
+  margin-top: 16px;
+  overflow: hidden;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  background: var(--app-panel);
+}
+
+.aiReportHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--app-border);
+  background: var(--app-panel-alt);
+}
+
+.aiReportTitle {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.aiReportSubtitle {
+  margin: 4px 0 0;
+  color: var(--app-muted);
+  font-size: 12px;
+}
+
+.aiReportMeta {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  color: var(--app-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.aiReportMeta strong {
+  border-radius: 20px;
+  padding: 3px 9px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 11px;
+}
+
+.aiReportContent {
+  overflow-x: auto;
+  max-height: 560px;
+  padding: 18px 20px;
+  color: var(--app-text);
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  word-break: keep-all;
+}
+
+.aiReportHeading {
+  margin: 18px 0 10px;
+  color: var(--app-text);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.aiReportHeading:first-child {
+  margin-top: 0;
+}
+
+.aiReportSubHeading {
+  margin: 16px 0 8px;
+  color: var(--app-text);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.aiReportListItem {
+  display: grid;
+  grid-template-columns: 6px 1fr;
+  gap: 8px;
+  align-items: start;
+  margin: 5px 0;
+  color: var(--app-muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.aiReportNestedListItem {
+  margin-left: 18px;
+}
+
+.aiReportBullet {
+  width: 4px;
+  height: 4px;
+  margin-top: 9px;
+  border-radius: 999px;
+  background: var(--app-muted);
+}
+
+.aiReportParagraph {
+  margin: 6px 0;
+  color: var(--app-muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.aiReportDivider {
+  height: 1px;
+  margin: 18px 0;
+  border: 0;
+  background: var(--app-border);
+}
+
+.aiReportSpacer {
+  height: 8px;
+}
+
 .footerNote {
   margin-top: 12px;
   color: var(--app-soft-text);
@@ -291,5 +409,13 @@
 
   .divider {
     display: none;
+  }
+
+  .aiReportHeader {
+    flex-direction: column;
+  }
+
+  .aiReportMeta {
+    white-space: normal;
   }
 }

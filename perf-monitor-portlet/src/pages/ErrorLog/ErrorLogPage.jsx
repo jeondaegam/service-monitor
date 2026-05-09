@@ -91,6 +91,74 @@ const DUMMY_LOGS = [
   },
 ];
 
+const DUMMY_AI_REPORT = {
+  targetDate: "2026-05-08",
+  totalErrorCnt: 4,
+  aiSummary: `1. 종합 요약
+- 분석 기준일 2026-05-08 기준으로 Log4j2 ERROR 이벤트는 총 4건 확인되었습니다.
+- 오류는 DB 연결 풀 고갈 또는 지연, 에러 로그 상세 조회 시 NullPointerException, 배치성 AI 리포트 생성 API 호출 실패, AI 응답 파싱 실패 유형으로 구분됩니다.
+- 각 오류는 서로 다른 컴포넌트에서 발생하였으며, 동일 시점에 연속적으로 발생한 것으로 보아 전체 시스템 안정성 이슈 또는 리포트 생성 및 조회 기능 관련 모듈가 포함되어 있어 관련 기능 영향 여부 확인이 필요합니다.
+
+---
+
+2. 주요 장애 유형
+
+### 2.1 DB 연결 실패
+- 주요 유형: DB Connection Timeout
+- 관련 컴포넌트 또는 클래스명: com.back.ai.web.AiReportController / HikariCP, MyBatis
+- 발생 특징:
+  - HikariCP 커넥션 풀에서 DB 연결을 할당받지 못하고 30초 후 타임아웃이 발생했습니다.
+  - Spring JDBC 및 MyBatis 트랜잭션 처리 과정에서 연결 실패가 확인되었습니다.
+  - AI 리포트 관련 요청 처리 중 발생한 것으로 확인됩니다.
+
+### 2.2 에러 로그 상세 조회 중 NullPointerException
+- 주요 유형: NullPointerException
+- 관련 컴포넌트 또는 클래스명: com.back.error.service.ErrorLogServiceImpl / com.back.errorlog.web.ErrorLogController
+- 발생 특징:
+  - 에러 로그 상세 처리 조회 대상 객체가 null인 상태에서 getRawLog() 메서드를 호출하여 예외가 발생하였습니다.
+  - 서비스 계층의 selectErrorLog() 메서드에서 예외가 발생한 것으로 확인됩니다.
+
+### 2.3 스케줄러 기반 AI 리포트 생성 실패
+- 주요 유형: 외부 또는 내부 API 호출 500 오류
+- 관련 컴포넌트 또는 클래스명: com.back.scheduler.Scheduler / RestTemplate
+- 발생 특징:
+  - 스케줄러 실행 중 전달 AI 리포트 생성 요청에 대해 HTTP 500 Internal Server Error가 반환되었습니다.
+  - RestTemplate 응답 처리 과정에서 서버 오류를 처리된 것이 확인됩니다.
+
+### 2.4 AI 응답 파싱 실패
+- 주요 유형: JSON 파싱 오류
+- 관련 컴포넌트 또는 클래스명: com.back.ai.service.impl.AiReportServiceImpl / Jackson ObjectMapper
+- 발생 특징:
+  - AI 응답을 JSON으로 파싱하는 과정에서 유효하지 않은 문자가 감지되어 파싱 실패하였습니다.
+  - 응답 본문이 JSON 형식이 아닌 HTML 또는 오류 페이지 형식일 가능성이 있습니다. 해당 내용은 정의, 실제 응답 원문 확인이 필요합니다.
+
+---
+
+3. 반복 발생 패턴
+- 동일한 예외가 반복적으로 발생한 정황은 제공된 ERROR 로그 4건만으로는 명확히 확인되지 않습니다.
+- 다만 AI 리포트 관련 기능에서 DB 연결 실패, 스케줄러 리포트 생성 실패, AI 응답 파싱 실패가 각각 발생하여 AI 리포트 처리 흐름 전반에 대한 점검이 필요합니다.
+
+---
+
+4. 원인 분석 및 추정
+
+### 4.1 DB 연결 지연 또는 커넥션 풀 부족
+- DB 연결 실패는 커넥션 풀에서 적절한 대기 시간 내 DB 커넥션을 확보하지 못해 발생했습니다.
+- 에러 로그 상세 조회 오류는 조회 결과 객체가 null인 상태에서 코드 레벨 검증 없이 메서드를 호출하여 발생했습니다.
+- 스케줄러 오류는 생성 API 호출 결과 서버 내부 오류가 반환되었으며, AI 응답 파싱 오류는 응답 데이터가 정상적인 JSON 형식으로 처리될 수 없는 상태에서 Jackson 파서가 실패하여 발생했습니다.
+
+### 4.2 추정 원인
+- DB 연결 실패: 커넥션 풀 부족, 장시간 점유 쿼리, DB 응답 지연, 빈번 커넥션, DB 서버 동시 응답 수 제한. 해당 상황에 DB 및 애플리케이션 지표 확인이 필요합니다.
+- NullPointerException: 존재하지 않는 로그 식별자 조회, DB 조회 결과 미존재, 예외 처리 누락, 입력값 검증 누락 등이 원인일 수 있습니다.
+- 스케줄러 HTTP 500 오류: 호출 대상 서버 내부 오류, AI 리포트 생성 로직 오류, 외부 AI 서비스 장애, 요청 파라미터 오류 등이 원인일 수 있습니다.
+- AI 응답 파싱 실패: 호출 대상 서비스가 JSON 대신 HTML 오류 페이지, 인증 오류 페이지, 프록시 오류 응답, 차단 오류 응답 등을 반환했을 가능성이 있습니다. 이는 추정이며 응답 상태 코드와 본문 확인이 필요합니다.
+
+---
+
+5. 영향
+- 시스템 장애로 인해 AI 리포트 조회 및 생성 기능 일부 응답 지연, 오류, 요청 누락 가능성이 있습니다.`,
+};
+
 const SERVICES = ["all", "api-gateway", "auth", "db"];
 const LEVELS = ["all", "ERROR", "WARN", "INFO"];
 
@@ -284,6 +352,85 @@ function LogTable({ logs, selectedId, onRowClick }) {
 // ─────────────────────────────────────────
 // 메인 페이지
 // ─────────────────────────────────────────
+function AiSummaryMarkdown({ content }) {
+  return (
+    <div className={styles.aiReportContent}>
+      {content.split("\n").map((line, index) => {
+        const trimmed = line.trim();
+        const key = `${index}-${trimmed}`;
+
+        if (!trimmed) {
+          return <div key={key} className={styles.aiReportSpacer} />;
+        }
+
+        if (trimmed === "---") {
+          return <hr key={key} className={styles.aiReportDivider} />;
+        }
+
+        if (trimmed.startsWith("### ")) {
+          return (
+            <h4 key={key} className={styles.aiReportSubHeading}>
+              {trimmed.slice(4)}
+            </h4>
+          );
+        }
+
+        if (/^\d+\.\s/.test(trimmed)) {
+          return (
+            <h3 key={key} className={styles.aiReportHeading}>
+              {trimmed}
+            </h3>
+          );
+        }
+
+        if (trimmed.startsWith("- ")) {
+          const isNested = line.startsWith("  ");
+
+          return (
+            <div
+              key={key}
+              className={classNames(
+                styles.aiReportListItem,
+                isNested && styles.aiReportNestedListItem,
+              )}
+            >
+              <span className={styles.aiReportBullet} />
+              <span>{trimmed.slice(2)}</span>
+            </div>
+          );
+        }
+
+        return (
+          <p key={key} className={styles.aiReportParagraph}>
+            {trimmed}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
+function AiReportSection({ report }) {
+  return (
+    <section className={styles.aiReportCard}>
+      <div className={styles.aiReportHeader}>
+        <div>
+          <h2 className={styles.aiReportTitle}>AI 분석 리포트</h2>
+          <p className={styles.aiReportSubtitle}>
+            선택한 날짜의 ERROR 로그를 기준으로 생성된 장애 분석 요약입니다.
+          </p>
+        </div>
+        <div className={styles.aiReportMeta}>
+          <span>{report.targetDate}</span>
+          <strong>ERROR {report.totalErrorCnt}건</strong>
+        </div>
+      </div>
+
+      <AiSummaryMarkdown content={report.aiSummary} />
+    </section>
+  );
+}
+
 export default function ErrorLogPage() {
   const [selectedId, setSelectedId] = useState(null);
   const [filterLevel, setFilterLevel] = useState("all");
@@ -363,6 +510,8 @@ export default function ErrorLogPage() {
         selectedId={selectedId}
         onRowClick={handleRowClick}
       />
+
+      <AiReportSection report={DUMMY_AI_REPORT} />
 
       {/* <div className={styles.footerNote}>
         {filtered.length}건 표시 중 · 페이지네이션 필요시 API 연동 시 추가
