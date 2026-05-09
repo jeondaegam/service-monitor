@@ -202,11 +202,13 @@ function RecipientModal({ initial, recipients, onSave, onClose }) {
           <>
             <div className={styles.field}>
               <label className={styles.label}>등록된 수신자</label>
-              <div className={styles.input}>
+              <div className={styles.input} style={{ display: "flex", flexDirection: "column", gap: "4px", maxHeight: "200px", overflowY: "auto" }}>
                 {recipients.length === 0 ? (
                   <span style={{ color: "var(--app-muted)" }}>수신자 없음</span>
                 ) : (
-                  recipients.map((r) => r.email).join(", ")
+                  recipients.map((r) => (
+                    <div key={r.id}>{r.email}</div>
+                  ))
                 )}
               </div>
             </div>
