@@ -123,10 +123,10 @@ const AVATAR_COLORS = [
   { bg: "#fce7f3", color: "#9d174d" },
 ];
 
-const LEVEL_CLASS = {
-  ERROR: styles.levelError,
-  WARN: styles.levelWarn,
-};
+// const LEVEL_CLASS = {
+//   ERROR: styles.levelError,
+//   WARN: styles.levelWarn,
+// };
 
 const HISTORY_FILTERS = [
   { key: "all", label: "전체" },
@@ -323,44 +323,44 @@ function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
   );
 }
 
-function LevelBadge({ level }) {
-  return (
-    <span className={classNames(styles.levelBadge, LEVEL_CLASS[level] ?? LEVEL_CLASS.WARN)}>
-      {level}
-    </span>
-  );
-}
+// function LevelBadge({ level }) {
+//   return (
+//     <span className={classNames(styles.levelBadge, LEVEL_CLASS[level] ?? LEVEL_CLASS.WARN)}>
+//       {level}
+//     </span>
+//   );
+// }
 
-function HistoryDetail({ history }) {
-  return (
-    <tr>
-      <td className={styles.detailCell} colSpan={3}>
-        <div className={styles.detailPanel}>
-          <div className={styles.detailGrid}>
-            {[
-              ["Mail ID", history.mailId],
-              ["트리거 레벨", history.triggerLevel],
-              ["연결 로그 ID", history.relatedLogId],
-            ].map(([label, value]) => (
-              <div key={label}>
-                <div className={styles.detailLabel}>{label}</div>
-                <div className={styles.detailValue}>
-                  {label === "트리거 레벨" ? (
-                    <LevelBadge level={value} />
-                  ) : (
-                    value
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </td>
-    </tr>
-  );
-}
+// function HistoryDetail({ history }) {
+//   return (
+//     <tr>
+//       <td className={styles.detailCell} colSpan={3}>
+//         <div className={styles.detailPanel}>
+//           <div className={styles.detailGrid}>
+//             {[
+//               ["Mail ID", history.mailId],
+//               ["트리거 레벨", history.triggerLevel],
+//               ["연결 로그 ID", history.relatedLogId],
+//             ].map(([label, value]) => (
+//               <div key={label}>
+//                 <div className={styles.detailLabel}>{label}</div>
+//                 <div className={styles.detailValue}>
+//                   {label === "트리거 레벨" ? (
+//                     <LevelBadge level={value} />
+//                   ) : (
+//                     value
+//                   )}
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+//       </td>
+//     </tr>
+//   );
+// }
 
-function HistoryTable({ histories, expandedMail, onToggle }) {
+function HistoryTable({ histories }) {
   return (
     <div className={styles.panel}>
       <table className={`app-table app-table--fixed ${styles.table}`}>
@@ -388,7 +388,7 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
           )}
 
           {histories.map((history) => {
-            const isOpen = expandedMail === history.mailId;
+            // const isOpen = expandedMail === history.mailId;
 
             return (
               <>
@@ -396,9 +396,9 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
                   key={history.mailId}
                   className={classNames(
                     styles.historyRow,
-                    isOpen && styles.historyRowOpen,
+                    // isOpen && styles.historyRowOpen,
                   )}
-                  onClick={() => onToggle(history.mailId)}
+                  // onClick={() => onToggle(history.mailId)}
                 >
                   <td className={classNames(styles.timeCell, styles.cellLeft)}>
                     {formatDateTime(history.sentAt)}
@@ -411,12 +411,12 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
                   </td>
                 </tr>
 
-                {isOpen && (
+                {/* {isOpen && (
                   <HistoryDetail
                     key={`detail-${history.mailId}`}
                     history={history}
                   />
-                )}
+                )} */}
               </>
             );
           })}
@@ -432,7 +432,7 @@ export default function Notifications() {
   const [recipients, setRecipients] = useState(DUMMY_RECIPIENTS);
   const [modal, setModal] = useState(null);
   const [historyStatus, setHistoryStatus] = useState("all");
-  const [expandedMail, setExpandedMail] = useState(null);
+  // const [expandedMail, setExpandedMail] = useState(null);
 
   const filteredHistory = useMemo(() => {
     return DUMMY_HISTORY.filter((history) => {
@@ -480,9 +480,9 @@ export default function Notifications() {
     setRecipients((prev) => prev.filter((recipient) => recipient.id !== id));
   };
 
-  const handleToggleHistory = (mailId) => {
-    setExpandedMail((current) => (current === mailId ? null : mailId));
-  };
+  // const handleToggleHistory = (mailId) => {
+  //   setExpandedMail((current) => (current === mailId ? null : mailId));
+  // };
 
   return (
     <>
@@ -552,11 +552,7 @@ export default function Notifications() {
               ))}
             </div> */}
 
-            <HistoryTable
-              histories={filteredHistory}
-              expandedMail={expandedMail}
-              onToggle={handleToggleHistory}
-            />
+            <HistoryTable histories={filteredHistory} />
 
             {/* <div className={styles.footerNote}>
               {filteredHistory.length}건 표시 중 · 페이지네이션은 API 연동 시
