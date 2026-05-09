@@ -5,14 +5,14 @@ import styles from "./ErrorLogPage.module.css";
 // ─────────────────────────────────────────
 // 하드코딩 더미 데이터
 // 나중에 API 붙일 때 이 부분만 교체
-// GET /api/logs?level=&service=&keyword=&page=&size=
+// GET /api/logs?level=&errorType=&keyword=&page=&size=
 // ─────────────────────────────────────────
 const DUMMY_LOGS = [
   {
     logId: "log_001",
     level: "ERROR",
-    service: "api-gateway",
-    message: "Connection timeout: upstream responded with 502",
+    errorType: "server",
+    message: "AI report request failed: server returned HTTP 500 while generating daily analysis",
     timestamp: "2026-05-01T14:03:21Z",
     requestId: "req_8f2d1a3c",
     stackTrace:
@@ -21,8 +21,8 @@ const DUMMY_LOGS = [
   {
     logId: "log_002",
     level: "WARN",
-    service: "auth",
-    message: "JWT validation failed for user_id=4821: token expired",
+    errorType: "cpu",
+    message: "CPU usage exceeded threshold during AI report batch processing: 92.4%",
     timestamp: "2026-05-01T14:02:58Z",
     requestId: "req_c91e4b2f",
     stackTrace:
@@ -31,8 +31,8 @@ const DUMMY_LOGS = [
   {
     logId: "log_003",
     level: "ERROR",
-    service: "db",
-    message: "Max connection pool size exceeded: 100/100 connections active",
+    errorType: "memory",
+    message: "Memory pressure detected while parsing AI response payload: heap usage 91%",
     timestamp: "2026-05-01T14:01:44Z",
     requestId: "req_77a9c3d1",
     stackTrace:
@@ -41,8 +41,8 @@ const DUMMY_LOGS = [
   {
     logId: "log_004",
     level: "WARN",
-    service: "api-gateway",
-    message: "Response time exceeded threshold: 3842ms (threshold: 3000ms)",
+    errorType: "disk",
+    message: "Disk write latency increased while storing error log detail snapshot",
     timestamp: "2026-05-01T14:00:09Z",
     requestId: "req_4e2f8b5c",
     stackTrace:
@@ -51,8 +51,8 @@ const DUMMY_LOGS = [
   {
     logId: "log_005",
     level: "ERROR",
-    service: "auth",
-    message: "Redis session store unreachable: connection refused",
+    errorType: "network",
+    message: "Network timeout while calling AI report generation API from scheduler",
     timestamp: "2026-05-01T13:58:33Z",
     requestId: "req_2d7c1e9a",
     stackTrace:
@@ -61,8 +61,8 @@ const DUMMY_LOGS = [
   {
     logId: "log_006",
     level: "INFO",
-    service: "db",
-    message: "Scheduled maintenance: index rebuild completed in 4.2s",
+    errorType: "db",
+    message: "DB connection timeout from HikariCP while loading AI report data",
     timestamp: "2026-05-01T13:55:00Z",
     requestId: "req_00000000",
     stackTrace: "",
@@ -70,9 +70,9 @@ const DUMMY_LOGS = [
   {
     logId: "log_007",
     level: "ERROR",
-    service: "api-gateway",
+    errorType: "server",
     message:
-      "Upstream service returned 500: internal server error from /users/profile",
+      "NullPointerException while reading raw error log detail: getRawLog() called on null",
     timestamp: "2026-05-01T13:52:17Z",
     requestId: "req_9b3f2c7d",
     stackTrace:
@@ -81,9 +81,9 @@ const DUMMY_LOGS = [
   {
     logId: "log_008",
     level: "WARN",
-    service: "db",
+    errorType: "db",
     message:
-      "Slow query detected (1842ms): SELECT * FROM orders WHERE user_id=? AND status=?",
+      "JSON parse failed for AI response: unexpected HTML error page received",
     timestamp: "2026-05-01T13:49:05Z",
     requestId: "req_5a8d3e1f",
     stackTrace:
@@ -159,8 +159,8 @@ const DUMMY_AI_REPORT = {
 - 시스템 장애로 인해 AI 리포트 조회 및 생성 기능 일부 응답 지연, 오류, 요청 누락 가능성이 있습니다.`,
 };
 
-const SERVICES = ["all", "api-gateway", "auth", "db"];
-const LEVELS = ["all", "ERROR", "WARN", "INFO"];
+const ERROR_TYPES = ["all", "server", "cpu", "memory", "disk", "network", "db"];
+// const LEVELS = ["all", "ERROR", "WARN", "INFO"];
 
 const LEVEL_STYLE = {
   ERROR: { bg: "#fee2e2", color: "#b91c1c" },
@@ -168,7 +168,7 @@ const LEVEL_STYLE = {
   INFO: { bg: "#dbeafe", color: "#1e40af" },
 };
 
-const TABLE_HEADERS = ["시간", "레벨", "서비스", "메시지", ""];
+const TABLE_HEADERS = ["Log ID", "에러 발생 일시", "에러 유형", "메시지", ""];
 
 function formatTime(iso) {
   const d = new Date(iso);
@@ -197,21 +197,21 @@ function classNames(...names) {
   return names.filter(Boolean).join(" ");
 }
 
-function LevelBadge({ level }) {
-  const style = LEVEL_STYLE[level] || LEVEL_STYLE.INFO;
-
-  return (
-    <span
-      className={styles.levelBadge}
-      style={{
-        "--level-bg": style.bg,
-        "--level-color": style.color,
-      }}
-    >
-      {level}
-    </span>
-  );
-}
+// function LevelBadge({ level }) {
+//   const style = LEVEL_STYLE[level] || LEVEL_STYLE.INFO;
+//
+//   return (
+//     <span
+//       className={styles.levelBadge}
+//       style={{
+//         "--level-bg": style.bg,
+//         "--level-color": style.color,
+//       }}
+//     >
+//       {level}
+//     </span>
+//   );
+// }
 
 function FilterChip({ active, tone, children, onClick }) {
   return (
@@ -247,7 +247,7 @@ function DetailPanel({ log }) {
             {[
               ["Log ID", log.logId],
               ["Request ID", log.requestId],
-              ["서비스", log.service],
+              ["에러 유형", log.errorType],
               ["발생 시각", formatDateTime(log.timestamp)],
             ].map(([label, value]) => (
               <div key={label}>
@@ -279,9 +279,12 @@ function LogTable({ logs, selectedId, onRowClick }) {
     <div className={styles.tableCard}>
       <table className={styles.table}>
         <colgroup>
+          <col className={styles.logIdCol} />
           <col className={styles.timeCol} />
+          {/*
           <col className={styles.levelCol} />
-          <col className={styles.serviceCol} />
+          */}
+          <col className={styles.errorTypeCol} />
           <col />
           <col className={styles.arrowCol} />
         </colgroup>
@@ -321,13 +324,16 @@ function LogTable({ logs, selectedId, onRowClick }) {
                   )}
                   onClick={() => onRowClick(log.logId)}
                 >
+                  <td className={styles.logIdCell}>{log.logId}</td>
                   <td className={styles.timeCell}>
                     {formatTime(log.timestamp)}
                   </td>
+                  {/*
                   <td className={styles.levelCell}>
                     <LevelBadge level={log.level} />
                   </td>
-                  <td className={styles.serviceCell}>{log.service}</td>
+                  */}
+                  <td className={styles.errorTypeCell}>{log.errorType}</td>
                   <td className={styles.messageCell}>{log.message}</td>
                   <td
                     className={classNames(
@@ -433,14 +439,14 @@ function AiReportSection({ report }) {
 
 export default function ErrorLogPage() {
   const [selectedId, setSelectedId] = useState(null);
-  const [filterLevel, setFilterLevel] = useState("all");
-  const [filterService, setFilterService] = useState("all");
+  // const [filterLevel, setFilterLevel] = useState("all");
+  const [filterErrorType, setFilterErrorType] = useState("all");
   const [keyword] = useState("");
 
   const filtered = useMemo(() => {
     return DUMMY_LOGS.filter((log) => {
-      if (filterLevel !== "all" && log.level !== filterLevel) return false;
-      if (filterService !== "all" && log.service !== filterService)
+      // if (filterLevel !== "all" && log.level !== filterLevel) return false;
+      if (filterErrorType !== "all" && log.errorType !== filterErrorType)
         return false;
       if (
         keyword &&
@@ -450,19 +456,19 @@ export default function ErrorLogPage() {
       }
       return true;
     });
-  }, [filterLevel, filterService, keyword]);
+  }, [filterErrorType, keyword]);
 
   const handleRowClick = (logId) => {
     setSelectedId((prev) => (prev === logId ? null : logId));
   };
 
-  const handleLevelChange = (level) => {
-    setFilterLevel(level);
-    setSelectedId(null);
-  };
+  // const handleLevelChange = (level) => {
+  //   setFilterLevel(level);
+  //   setSelectedId(null);
+  // };
 
-  const handleServiceChange = (service) => {
-    setFilterService(service);
+  const handleErrorTypeChange = (errorType) => {
+    setFilterErrorType(errorType);
     setSelectedId(null);
   };
 
@@ -476,6 +482,7 @@ export default function ErrorLogPage() {
       </header>
 
       <div className={styles.filterBar}>
+        {/*
         <div className={styles.chipGroup}>
           {LEVELS.map((level) => (
             <FilterChip
@@ -490,16 +497,17 @@ export default function ErrorLogPage() {
         </div>
 
         <div className={styles.divider} />
+        */}
 
         <div className={styles.chipGroup}>
-          {SERVICES.map((service) => (
+          {ERROR_TYPES.map((errorType) => (
             <FilterChip
-              key={service}
-              active={filterService === service}
-              tone="service"
-              onClick={() => handleServiceChange(service)}
+              key={errorType}
+              active={filterErrorType === errorType}
+              tone="errorType"
+              onClick={() => handleErrorTypeChange(errorType)}
             >
-              {service === "all" ? "전체 서비스" : service}
+              {errorType === "all" ? "전체 에러 유형" : errorType}
             </FilterChip>
           ))}
         </div>
