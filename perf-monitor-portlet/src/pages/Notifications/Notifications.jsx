@@ -172,20 +172,20 @@ function ToggleSwitch({ active, onClick, title }) {
 // ─────────────────────────────────────────
 // 수신자 추가/수정 모달
 // ─────────────────────────────────────────
-function RecipientModal({ initial, onSave, onClose }) {
-  const [form, setForm] = useState(
-    initial ?? { email: "" },
-  );
+function RecipientModal({ initial, recipients, onSave, onClose }) {
+  const [newEmail, setNewEmail] = useState("");
   const isEdit = Boolean(initial);
 
-  const set = (key, value) => setForm((prev) => ({ ...prev, [key]: value }));
-
   const handleSave = () => {
-    if (!form.email) {
+    if (!newEmail) {
       alert("이메일은 필수입니다.");
       return;
     }
-    onSave(form);
+    if (recipients.some((r) => r.email === newEmail)) {
+      alert("이미 등록된 이메일입니다.");
+      return;
+    }
+    onSave({ email: newEmail });
   };
 
   return (
@@ -198,25 +198,36 @@ function RecipientModal({ initial, onSave, onClose }) {
           {isEdit ? "수신자 수정" : "수신자 추가"}
         </h2>
 
-        {[
-          {
-            label: "이메일 *",
-            key: "email",
-            type: "email",
-            placeholder: "example@company.com",
-          },
-        ].map(({ label, key, type, placeholder }) => (
-          <div key={key} className={styles.field}>
-            <label className={styles.label}>{label}</label>
-            <input
-              className={styles.input}
-              type={type}
-              value={form[key]}
-              placeholder={placeholder}
-              onChange={(event) => set(key, event.target.value)}
-            />
-          </div>
-        ))}
+        {!isEdit && (
+          <>
+            <div className={styles.field}>
+              <label className={styles.label}>등록된 수신자</label>
+              <div className={styles.input}>
+                {recipients.length === 0 ? (
+                  <span style={{ color: "var(--app-muted)" }}>수신자 없음</span>
+                ) : (
+                  recipients.map((r) => r.email).join(", ")
+                )}
+              </div>
+            </div>
+
+            <div className={styles.field}>
+              <label className={styles.label}>추가할 이메일 *</label>
+              <input
+                className={styles.input}
+                type="email"
+                value={newEmail}
+                placeholder="example@company.com"
+                onChange={(e) => setNewEmail(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    handleSave();
+                  }
+                }}
+              />
+            </div>
+          </>
+        )}
 
         <div className={styles.modalActions}>
           <button
@@ -427,7 +438,10 @@ export default function Notifications() {
 
   const handleSaveRecipient = (form) => {
     if (modal.mode === "add") {
-      setRecipients((prev) => [...prev, { ...form, id: Date.now() }]);
+      setRecipients((prev) => [
+        ...prev,
+        { ...form, id: Date.now(), name: "", team: "", active: true },
+      ]);
     } else {
       setRecipients((prev) =>
         prev.map((recipient) =>
@@ -464,6 +478,7 @@ export default function Notifications() {
       {modal && (
         <RecipientModal
           initial={modal.mode === "edit" ? modal.data : null}
+          recipients={recipients}
           onSave={handleSaveRecipient}
           onClose={() => setModal(null)}
         />
