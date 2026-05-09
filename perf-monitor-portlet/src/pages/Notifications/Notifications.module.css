@@ -239,18 +239,13 @@
   border-collapse: collapse;
 }
 
+.emailCol {
+  width: 210px;
+}
+
 /* 발송시각 */
 .sentAtCol {
   width: 150px;
-}
-
-/* 결과 */
-.statusCol {
-  width: 70px;
-}
-
-.countCol {
-  width: 70px;
 }
 
 .table thead tr {
@@ -291,6 +286,14 @@
   font-size: 11px;
 }
 
+.emailCell {
+  overflow: hidden;
+  color: var(--app-text);
+  font-family: monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .subjectCell {
   overflow: hidden;
   color: var(--app-text);
@@ -298,27 +301,11 @@
   white-space: nowrap;
 }
 
-.centerCell {
-  text-align: center;
-}
-
-/* 성공/실패 배지 */
-.statusBadge,
 .levelBadge {
   border-radius: 20px;
   padding: 2px 8px;
   font-size: 11px;
   font-weight: 600;
-}
-
-.successBadge {
-  background: #d1fae5;
-  color: #065f46;
-}
-
-.failBadge {
-  background: #fee2e2;
-  color: #b91c1c;
 }
 
 .levelBadge {
@@ -356,15 +343,6 @@
   gap: 6px;
   color: var(--app-text);
   font-family: monospace;
-  font-size: 12px;
-}
-
-.failMessage {
-  margin-top: 12px;
-  border-radius: 8px;
-  padding: 8px 12px;
-  background: #fee2e2;
-  color: #b91c1c;
   font-size: 12px;
 }
 

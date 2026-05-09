@@ -55,6 +55,7 @@ const DUMMY_RECIPIENTS = [
 const DUMMY_HISTORY = [
   {
     mailId: "mail_001",
+    senderEmail: "monitor@company.com",
     subject: "[CRITICAL] API Gateway 장애 발생",
     sentAt: "2025-05-01T14:03:22Z",
     status: "SUCCESS",
@@ -64,6 +65,7 @@ const DUMMY_HISTORY = [
   },
   {
     mailId: "mail_002",
+    senderEmail: "monitor@company.com",
     subject: "[WARN] DB 응답 지연 감지",
     sentAt: "2025-05-01T13:47:10Z",
     status: "SUCCESS",
@@ -73,6 +75,7 @@ const DUMMY_HISTORY = [
   },
   {
     mailId: "mail_003",
+    senderEmail: "alert@company.com",
     subject: "[CRITICAL] Auth 서비스 오류",
     sentAt: "2025-05-01T12:15:44Z",
     status: "FAIL",
@@ -82,6 +85,7 @@ const DUMMY_HISTORY = [
   },
   {
     mailId: "mail_004",
+    senderEmail: "monitor@company.com",
     subject: "[WARN] 응답시간 임계치 초과",
     sentAt: "2025-05-01T11:30:05Z",
     status: "SUCCESS",
@@ -91,6 +95,7 @@ const DUMMY_HISTORY = [
   },
   {
     mailId: "mail_005",
+    senderEmail: "alert@company.com",
     subject: "[CRITICAL] Redis 세션 스토어 다운",
     sentAt: "2025-04-30T22:08:33Z",
     status: "SUCCESS",
@@ -100,6 +105,7 @@ const DUMMY_HISTORY = [
   },
   {
     mailId: "mail_006",
+    senderEmail: "monitor@company.com",
     subject: "[WARN] Connection pool 경고",
     sentAt: "2025-04-30T18:55:21Z",
     status: "FAIL",
@@ -318,20 +324,6 @@ function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
   );
 }
 
-function HistoryStatusBadge({ status }) {
-  const isSuccess = status === "SUCCESS";
-  return (
-    <span
-      className={classNames(
-        styles.statusBadge,
-        isSuccess ? styles.successBadge : styles.failBadge,
-      )}
-    >
-      {isSuccess ? "성공" : "실패"}
-    </span>
-  );
-}
-
 function LevelBadge({ level }) {
   const style = LEVEL_STYLE[level] ?? LEVEL_STYLE.WARN;
   return (
@@ -347,18 +339,12 @@ function LevelBadge({ level }) {
 function HistoryDetail({ history }) {
   return (
     <tr>
-      <td className={styles.detailCell} colSpan={4}>
+      <td className={styles.detailCell} colSpan={3}>
         <div className={styles.detailPanel}>
           <div className={styles.detailGrid}>
             {[
               ["Mail ID", history.mailId],
               ["트리거 레벨", history.triggerLevel],
-              [
-                "수신자",
-                history.status === "SUCCESS"
-                  ? `${history.recipientCount}명`
-                  : "발송 실패",
-              ],
               ["연결 로그 ID", history.relatedLogId],
             ].map(([label, value]) => (
               <div key={label}>
@@ -373,12 +359,6 @@ function HistoryDetail({ history }) {
               </div>
             ))}
           </div>
-
-          {history.status === "FAIL" && (
-            <div className={styles.failMessage}>
-              발송 실패: SMTP 연결 오류 또는 수신자 목록이 비어있을 수 있습니다.
-            </div>
-          )}
         </div>
       </td>
     </tr>
@@ -391,13 +371,12 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
       <table className={styles.table}>
         <colgroup>
           <col className={styles.sentAtCol} />
+          <col className={styles.emailCol} />
           <col />
-          <col className={styles.statusCol} />
-          <col className={styles.countCol} />
         </colgroup>
         <thead>
           <tr>
-            {["발송 시각", "제목", "결과", "수신자"].map((header) => (
+            {["발송 시각", "발송 주소", "제목"].map((header) => (
               <th key={header}>{header}</th>
             ))}
           </tr>
@@ -405,7 +384,7 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
         <tbody>
           {histories.length === 0 && (
             <tr>
-              <td className={styles.empty} colSpan={4}>
+              <td className={styles.empty} colSpan={3}>
                 발송 이력이 없습니다.
               </td>
             </tr>
@@ -427,15 +406,8 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
                   <td className={styles.timeCell}>
                     {formatDateTime(history.sentAt)}
                   </td>
+                  <td className={styles.emailCell}>{history.senderEmail}</td>
                   <td className={styles.subjectCell}>{history.subject}</td>
-                  <td>
-                    <HistoryStatusBadge status={history.status} />
-                  </td>
-                  <td className={styles.centerCell}>
-                    {history.status === "SUCCESS"
-                      ? `${history.recipientCount}명`
-                      : "-"}
-                  </td>
                 </tr>
 
                 {isOpen && (
