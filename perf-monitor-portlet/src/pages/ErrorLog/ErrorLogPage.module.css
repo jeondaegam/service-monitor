@@ -96,17 +96,21 @@
 }
 
 .tableCard {
-  height: clamp(430px, 52vh, 680px);
-  overflow: auto;
+  max-height: 520px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
   border: 1px solid var(--app-border);
   border-radius: 12px;
   background: var(--app-panel);
-  scrollbar-color: var(--app-scrollbar-thumb) var(--app-scrollbar-track);
+
+  scrollbar-color: var(--app-scrollbar-thumb)
+    var(--app-scrollbar-track);
 }
 
 .table {
   width: 100%;
-  min-height: 100%;
+  /* min-height: 100%; */
   border-collapse: collapse;
   table-layout: fixed;
 }
