@@ -550,8 +550,9 @@ export default function ErrorLogPage() {
     <div className="app-page app-page--wide app-page--padded">
       <header className="app-page-header">
         <h1 className="app-page-title">에러 로그</h1>
-        <p className="app-page-subtitle">
-          총 {filtered.length}건 · 클릭하면 상세 내용을 확인할 수 있습니다.
+        <p className="app-page-subtitle"> 
+          {/* 총 {filtered.length}건 ·  */}
+          날짜별 장애 및 에러 로그 이력을 기반으로 AI 분석 리포트를 제공합니다. 클릭하면 상세 내용을 확인할 수 있습니다.
         </p>
       </header>
 

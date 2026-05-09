@@ -29,6 +29,7 @@ export function NavDesktop() {
         }}
       >
         <Box sx={{ fontSize: 13, fontWeight: 700, color: "var(--app-text)" }}>
+          발표의 숲<br/>
           Service Monitor
         </Box>
         <Box
