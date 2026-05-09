@@ -8,12 +8,48 @@ import styles from "./Notifications.module.css";
 //   히스토리 → GET /api/mail/history?page=0&size=10
 // ─────────────────────────────────────────
 const DUMMY_RECIPIENTS = [
-  { id: 1, email: "yj.hong@company.com", name: "홍유진", team: "운영팀", active: true },
-  { id: 2, email: "sh.lee@company.com", name: "이승환", team: "개발팀", active: false },
-  { id: 3, email: "ji.han@company.com", name: "한정일", team: "인프라팀", active: false },
-  { id: 4, email: "yh.heo@company.com", name: "허연혜", team: "운영팀", active: true },
-  { id: 5, email: "yr.jeon@company.com", name: "전여름", team: "운영팀", active: true },
-  { id: 6, email: "ne.kim@company.com", name: "김나은", team: "개발팀", active: true },
+  {
+    id: 1,
+    email: "yj.hong@company.com",
+    name: "홍유진",
+    team: "운영팀",
+    active: true,
+  },
+  {
+    id: 2,
+    email: "sh.lee@company.com",
+    name: "이승환",
+    team: "개발팀",
+    active: false,
+  },
+  {
+    id: 3,
+    email: "ji.han@company.com",
+    name: "한정일",
+    team: "인프라팀",
+    active: false,
+  },
+  {
+    id: 4,
+    email: "yh.heo@company.com",
+    name: "허연혜",
+    team: "운영팀",
+    active: true,
+  },
+  {
+    id: 5,
+    email: "yr.jeon@company.com",
+    name: "전여름",
+    team: "운영팀",
+    active: true,
+  },
+  {
+    id: 6,
+    email: "ne.kim@company.com",
+    name: "김나은",
+    team: "개발팀",
+    active: true,
+  },
 ];
 
 const DUMMY_HISTORY = [
@@ -148,11 +184,21 @@ function RecipientModal({ initial, onSave, onClose }) {
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(event) => event.stopPropagation()}>
-        <h2 className={styles.modalTitle}>{isEdit ? "수신자 수정" : "수신자 추가"}</h2>
+      <div
+        className={styles.modal}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <h2 className={styles.modalTitle}>
+          {isEdit ? "수신자 수정" : "수신자 추가"}
+        </h2>
 
         {[
-          { label: "이메일 *", key: "email", type: "email", placeholder: "example@company.com" },
+          {
+            label: "이메일 *",
+            key: "email",
+            type: "email",
+            placeholder: "example@company.com",
+          },
           { label: "이름 *", key: "name", type: "text", placeholder: "홍길동" },
           { label: "팀", key: "team", type: "text", placeholder: "운영팀" },
         ].map(({ label, key, type, placeholder }) => (
@@ -170,8 +216,16 @@ function RecipientModal({ initial, onSave, onClose }) {
 
         <div className={styles.modalSwitchRow}>
           <span className={styles.label}>활성화</span>
-          <ToggleSwitch active={form.active} onClick={() => set("active", !form.active)} />
-          <span className={classNames(styles.switchText, form.active && styles.switchTextActive)}>
+          <ToggleSwitch
+            active={form.active}
+            onClick={() => set("active", !form.active)}
+          />
+          <span
+            className={classNames(
+              styles.switchText,
+              form.active && styles.switchTextActive,
+            )}
+          >
             {form.active ? "활성" : "비활성"}
           </span>
         </div>
@@ -209,7 +263,9 @@ function SummaryCard({ label, value }) {
 function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
   return (
     <div className={styles.panel}>
-      {recipients.length === 0 && <div className={styles.empty}>수신자가 없습니다.</div>}
+      {recipients.length === 0 && (
+        <div className={styles.empty}>수신자가 없습니다.</div>
+      )}
 
       {recipients.map((recipient) => {
         const avatar = avatarColor(recipient.id);
@@ -217,11 +273,17 @@ function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
         return (
           <div
             key={recipient.id}
-            className={classNames(styles.recipientRow, !recipient.active && styles.inactive)}
+            className={classNames(
+              styles.recipientRow,
+              !recipient.active && styles.inactive,
+            )}
           >
             <div
               className={styles.avatar}
-              style={{ "--avatar-bg": avatar.bg, "--avatar-color": avatar.color }}
+              style={{
+                "--avatar-bg": avatar.bg,
+                "--avatar-color": avatar.color,
+              }}
             >
               {getInitials(recipient.name)}
             </div>
@@ -239,7 +301,11 @@ function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
               onClick={() => onToggleActive(recipient.id)}
             />
 
-            <button className={styles.secondaryButton} type="button" onClick={() => onEdit(recipient)}>
+            <button
+              className={styles.secondaryButton}
+              type="button"
+              onClick={() => onEdit(recipient)}
+            >
               수정
             </button>
             {/* <button className={styles.dangerButton} type="button" onClick={() => onDelete(recipient.id)}>
@@ -255,7 +321,12 @@ function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
 function HistoryStatusBadge({ status }) {
   const isSuccess = status === "SUCCESS";
   return (
-    <span className={classNames(styles.statusBadge, isSuccess ? styles.successBadge : styles.failBadge)}>
+    <span
+      className={classNames(
+        styles.statusBadge,
+        isSuccess ? styles.successBadge : styles.failBadge,
+      )}
+    >
       {isSuccess ? "성공" : "실패"}
     </span>
   );
@@ -284,14 +355,20 @@ function HistoryDetail({ history }) {
               ["트리거 레벨", history.triggerLevel],
               [
                 "수신자",
-                history.status === "SUCCESS" ? `${history.recipientCount}명` : "발송 실패",
+                history.status === "SUCCESS"
+                  ? `${history.recipientCount}명`
+                  : "발송 실패",
               ],
               ["연결 로그 ID", history.relatedLogId],
             ].map(([label, value]) => (
               <div key={label}>
                 <div className={styles.detailLabel}>{label}</div>
                 <div className={styles.detailValue}>
-                  {label === "트리거 레벨" ? <LevelBadge level={value} /> : value}
+                  {label === "트리거 레벨" ? (
+                    <LevelBadge level={value} />
+                  ) : (
+                    value
+                  )}
                 </div>
               </div>
             ))}
@@ -341,20 +418,32 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
               <>
                 <tr
                   key={history.mailId}
-                  className={classNames(styles.historyRow, isOpen && styles.historyRowOpen)}
+                  className={classNames(
+                    styles.historyRow,
+                    isOpen && styles.historyRowOpen,
+                  )}
                   onClick={() => onToggle(history.mailId)}
                 >
-                  <td className={styles.timeCell}>{formatDateTime(history.sentAt)}</td>
+                  <td className={styles.timeCell}>
+                    {formatDateTime(history.sentAt)}
+                  </td>
                   <td className={styles.subjectCell}>{history.subject}</td>
                   <td>
                     <HistoryStatusBadge status={history.status} />
                   </td>
                   <td className={styles.centerCell}>
-                    {history.status === "SUCCESS" ? `${history.recipientCount}명` : "-"}
+                    {history.status === "SUCCESS"
+                      ? `${history.recipientCount}명`
+                      : "-"}
                   </td>
                 </tr>
 
-                {isOpen && <HistoryDetail key={`detail-${history.mailId}`} history={history} />}
+                {isOpen && (
+                  <HistoryDetail
+                    key={`detail-${history.mailId}`}
+                    history={history}
+                  />
+                )}
               </>
             );
           })}
@@ -374,13 +463,16 @@ export default function Notifications() {
 
   const filteredHistory = useMemo(() => {
     return DUMMY_HISTORY.filter((history) => {
-      if (historyStatus !== "all" && history.status !== historyStatus) return false;
+      if (historyStatus !== "all" && history.status !== historyStatus)
+        return false;
       return true;
     });
   }, [historyStatus]);
 
   const activeCount = recipients.filter((recipient) => recipient.active).length;
-  const successCount = DUMMY_HISTORY.filter((history) => history.status === "SUCCESS").length;
+  const successCount = DUMMY_HISTORY.filter(
+    (history) => history.status === "SUCCESS",
+  ).length;
 
   const handleSaveRecipient = (form) => {
     if (modal.mode === "add") {
@@ -388,7 +480,9 @@ export default function Notifications() {
     } else {
       setRecipients((prev) =>
         prev.map((recipient) =>
-          recipient.id === modal.data.id ? { ...recipient, ...form } : recipient,
+          recipient.id === modal.data.id
+            ? { ...recipient, ...form }
+            : recipient,
         ),
       );
     }
@@ -398,7 +492,9 @@ export default function Notifications() {
   const handleToggleActive = (id) => {
     setRecipients((prev) =>
       prev.map((recipient) =>
-        recipient.id === id ? { ...recipient, active: !recipient.active } : recipient,
+        recipient.id === id
+          ? { ...recipient, active: !recipient.active }
+          : recipient,
       ),
     );
   };
@@ -425,14 +521,16 @@ export default function Notifications() {
       <div className={styles.page}>
         <header className={styles.header}>
           <h1 className={styles.title}>알림 설정</h1>
-          <p className={styles.subtitle}>장애 알림 수신자 관리 및 발송 이력 조회</p>
+          <p className={styles.subtitle}>
+            장애 알림 수신자 관리 및 발송 이력 조회
+          </p>
         </header>
 
-        <div className={styles.summaryGrid}>
+        {/* <div className={styles.summaryGrid}>
           <SummaryCard label="전체 수신자" value={recipients.length} />
           <SummaryCard label="활성 수신자" value={activeCount} />
           <SummaryCard label="발송 성공 (7일)" value={successCount} />
-        </div>
+        </div> */}
 
         <div className={styles.contentGrid}>
           <section>
@@ -450,7 +548,9 @@ export default function Notifications() {
             <RecipientList
               recipients={recipients}
               onToggleActive={handleToggleActive}
-              onEdit={(recipient) => setModal({ mode: "edit", data: recipient })}
+              onEdit={(recipient) =>
+                setModal({ mode: "edit", data: recipient })
+              }
               onDelete={handleDelete}
             />
           </section>
@@ -461,7 +561,7 @@ export default function Notifications() {
               <span className={styles.sectionMeta}>최근 7일</span>
             </div>
 
-             {/* 발송 히스토리: 전체, 성공, 실패 필터 */}
+            {/* 발송 히스토리: 전체, 성공, 실패 필터 */}
             {/* <div className={styles.filterBar}>
               {HISTORY_FILTERS.map((filter) => (
                 <button
@@ -482,7 +582,8 @@ export default function Notifications() {
             />
 
             <div className={styles.footerNote}>
-              {filteredHistory.length}건 표시 중 · 페이지네이션은 API 연동 시 추가
+              {filteredHistory.length}건 표시 중 · 페이지네이션은 API 연동 시
+              추가
             </div>
           </section>
         </div>
