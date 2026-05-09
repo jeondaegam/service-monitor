@@ -31,6 +31,17 @@
   margin-bottom: 16px;
 }
 
+.dateControls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.datePicker input {
+  color: var(--app-text);
+  font-family: system-ui, sans-serif;
+}
+
 .chipGroup {
   display: flex;
   gap: 6px;

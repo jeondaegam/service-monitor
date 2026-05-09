@@ -1,11 +1,12 @@
 import { Fragment, useMemo, useState } from "react";
+import { Button, TextField } from "@mui/material";
 
 import styles from "./ErrorLogPage.module.css";
 
 // ─────────────────────────────────────────
 // 하드코딩 더미 데이터
 // 나중에 API 붙일 때 이 부분만 교체
-// GET /api/logs?level=&errorType=&keyword=&page=&size=
+// GET /api/logs?date=&level=&errorType=&keyword=&page=&size=
 // ─────────────────────────────────────────
 const DUMMY_LOGS = [
   {
@@ -169,6 +170,25 @@ const LEVEL_STYLE = {
 };
 
 const TABLE_HEADERS = ["Log ID", "에러 발생 일시", "에러 유형", "메시지", ""];
+
+function formatDateInput(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function getDateByOffset(offsetDays) {
+  const date = new Date();
+  date.setDate(date.getDate() + offsetDays);
+  return formatDateInput(date);
+}
+
+function applyDateToTimestamp(timestamp, date) {
+  const [, time = "00:00:00Z"] = timestamp.split("T");
+  return `${date}T${time}`;
+}
 
 function formatTime(iso) {
   const d = new Date(iso);
@@ -439,12 +459,21 @@ function AiReportSection({ report }) {
 
 export default function ErrorLogPage() {
   const [selectedId, setSelectedId] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(() => getDateByOffset(0));
   // const [filterLevel, setFilterLevel] = useState("all");
   const [filterErrorType, setFilterErrorType] = useState("all");
   const [keyword] = useState("");
+  const todayDate = getDateByOffset(0);
+
+  const datedLogs = useMemo(() => {
+    return DUMMY_LOGS.map((log) => ({
+      ...log,
+      timestamp: applyDateToTimestamp(log.timestamp, selectedDate),
+    }));
+  }, [selectedDate]);
 
   const filtered = useMemo(() => {
-    return DUMMY_LOGS.filter((log) => {
+    return datedLogs.filter((log) => {
       // if (filterLevel !== "all" && log.level !== filterLevel) return false;
       if (filterErrorType !== "all" && log.errorType !== filterErrorType)
         return false;
@@ -456,7 +485,14 @@ export default function ErrorLogPage() {
       }
       return true;
     });
-  }, [filterErrorType, keyword]);
+  }, [datedLogs, filterErrorType, keyword]);
+
+  const aiReport = useMemo(() => {
+    return {
+      ...DUMMY_AI_REPORT,
+      targetDate: selectedDate,
+    };
+  }, [selectedDate]);
 
   const handleRowClick = (logId) => {
     setSelectedId((prev) => (prev === logId ? null : logId));
@@ -466,6 +502,19 @@ export default function ErrorLogPage() {
   //   setFilterLevel(level);
   //   setSelectedId(null);
   // };
+
+  const handleDateChange = (date) => {
+    if (!date) return;
+
+    if (date > todayDate) {
+      setSelectedDate(todayDate);
+      setSelectedId(null);
+      return;
+    }
+
+    setSelectedDate(date);
+    setSelectedId(null);
+  };
 
   const handleErrorTypeChange = (errorType) => {
     setFilterErrorType(errorType);
@@ -482,6 +531,43 @@ export default function ErrorLogPage() {
       </header>
 
       <div className={styles.filterBar}>
+        <div className={styles.dateControls}>
+          <Button
+            size="small"
+            variant={selectedDate === todayDate ? "contained" : "outlined"}
+            onClick={() => handleDateChange(todayDate)}
+            sx={{ borderRadius: "20px", minWidth: 56, fontSize: 12, fontWeight: 700 }}
+          >
+            오늘
+          </Button>
+          <Button
+            size="small"
+            variant={selectedDate === getDateByOffset(-1) ? "contained" : "outlined"}
+            onClick={() => handleDateChange(getDateByOffset(-1))}
+            sx={{ borderRadius: "20px", minWidth: 56, fontSize: 12, fontWeight: 700 }}
+          >
+            어제
+          </Button>
+          <TextField
+            className={styles.datePicker}
+            type="date"
+            size="small"
+            value={selectedDate}
+            onChange={(event) => handleDateChange(event.target.value)}
+            sx={{
+              width: 158,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "20px",
+                backgroundColor: "var(--app-panel)",
+                fontSize: 12,
+              },
+              "& .MuiOutlinedInput-input": {
+                padding: "6px 12px",
+              },
+            }}
+          />
+        </div>
+
         {/*
         <div className={styles.chipGroup}>
           {LEVELS.map((level) => (
@@ -519,7 +605,7 @@ export default function ErrorLogPage() {
         onRowClick={handleRowClick}
       />
 
-      <AiReportSection report={DUMMY_AI_REPORT} />
+      <AiReportSection report={aiReport} />
 
       {/* <div className={styles.footerNote}>
         {filtered.length}건 표시 중 · 페이지네이션 필요시 API 연동 시 추가
