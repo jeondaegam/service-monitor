@@ -301,19 +301,19 @@ function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
               </div>
             </div>
 
-            <ToggleSwitch
+            {/* <ToggleSwitch
               active={recipient.active}
               title={recipient.active ? "비활성화" : "활성화"}
               onClick={() => onToggleActive(recipient.id)}
-            />
+            /> */}
 
-            <button
+            {/* <button
               className={styles.secondaryButton}
               type="button"
               onClick={() => onEdit(recipient)}
             >
               수정
-            </button>
+            </button> */}
             {/* <button className={styles.dangerButton} type="button" onClick={() => onDelete(recipient.id)}>
               삭제
             </button> */}
