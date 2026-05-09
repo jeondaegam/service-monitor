@@ -237,7 +237,7 @@
 
 .historyRow:hover td {
   background: var(--app-hover);
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .historyRowOpen td {
