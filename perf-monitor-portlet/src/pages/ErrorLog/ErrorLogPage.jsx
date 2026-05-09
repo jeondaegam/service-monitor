@@ -90,6 +90,28 @@ const DUMMY_LOGS = [
     stackTrace:
       "com.example.db.QueryMonitor.logSlowQuery(QueryMonitor.java:44)\n  at com.example.repository.OrderRepository.findByUserId(OrderRepository.java:133)",
   },
+    {
+    logId: "log_009",
+    level: "WARN",
+    errorType: "db",
+    message:
+      "JSON parse failed for AI response: unexpected HTML error page received",
+    timestamp: "2026-05-01T13:49:05Z",
+    requestId: "req_5a8d3e1f",
+    stackTrace:
+      "com.example.db.QueryMonitor.logSlowQuery(QueryMonitor.java:44)\n  at com.example.repository.OrderRepository.findByUserId(OrderRepository.java:133)",
+  },
+      {
+    logId: "log_010",
+    level: "WARN",
+    errorType: "db",
+    message:
+      "JSON parse failed for AI response: unexpected HTML error page received",
+    timestamp: "2026-05-01T13:49:05Z",
+    requestId: "req_5a8d3e1f",
+    stackTrace:
+      "com.example.db.QueryMonitor.logSlowQuery(QueryMonitor.java:44)\n  at com.example.repository.OrderRepository.findByUserId(OrderRepository.java:133)",
+  },
 ];
 
 const DUMMY_AI_REPORT = {
@@ -169,7 +191,7 @@ const LEVEL_STYLE = {
   INFO: { bg: "#dbeafe", color: "#1e40af" },
 };
 
-const TABLE_HEADERS = ["Log ID", "에러 발생 일시", "에러 유형", "메시지", ""];
+const TABLE_HEADERS = ["로그 ID", "에러 발생 일시", "에러 유형", "메시지", ""];
 
 function formatDateInput(date) {
   const year = date.getFullYear();
