@@ -384,7 +384,9 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
         <thead>
           <tr>
             {["발송 시각", "발송 주소", "제목"].map((header) => (
-              <th key={header}>{header}</th>
+              <th key={header} style={{ textAlign: "center" }}>
+                {header}
+              </th>
             ))}
           </tr>
         </thead>
@@ -410,11 +412,15 @@ function HistoryTable({ histories, expandedMail, onToggle }) {
                   )}
                   onClick={() => onToggle(history.mailId)}
                 >
-                  <td className={styles.timeCell}>
+                  <td className={styles.timeCell} style={{ textAlign: "center" }}>
                     {formatDateTime(history.sentAt)}
                   </td>
-                  <td className={styles.emailCell}>{history.senderEmail}</td>
-                  <td className={styles.subjectCell}>{history.subject}</td>
+                  <td className={styles.emailCell} style={{ textAlign: "center" }}>
+                    {history.senderEmail}
+                  </td>
+                  <td className={styles.subjectCell} style={{ textAlign: "left" }}>
+                    {history.subject}
+                  </td>
                 </tr>
 
                 {isOpen && (
