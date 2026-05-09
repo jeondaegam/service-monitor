@@ -216,26 +216,39 @@
 
 .ruleList {
   display: grid;
-  gap: 10px;
+  border-top: 1px solid var(--app-border);
 }
 
 .ruleItem {
-  border: 1px solid var(--app-border);
-  border-radius: 8px;
-  padding: 12px;
-  background: var(--app-panel-alt);
+  display: grid;
+  grid-template-columns: minmax(112px, max-content) 1fr;
+  align-items: center;
+  gap: 22px;
+  min-height: 38px;
+  border-bottom: 1px solid var(--app-border);
+  padding: 8px 4px;
+  transition: background 0.15s ease;
+}
+
+.ruleItem:hover {
+  background: var(--app-hover);
 }
 
 .ruleTitle {
+  min-width: 0;
   color: var(--app-text);
   font-size: 13px;
   font-weight: 700;
 }
 
 .ruleText {
-  margin: 6px 0 0;
+  overflow: hidden;
+  margin: 0;
   color: var(--app-muted);
   font-size: 12px;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tooltip {
@@ -264,5 +277,17 @@
   .riskGrid,
   .bottomGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .ruleItem {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 9px 4px;
+  }
+
+  .ruleText {
+    white-space: normal;
   }
 }
