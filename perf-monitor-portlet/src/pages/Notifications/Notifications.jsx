@@ -295,9 +295,8 @@ function RecipientList({ recipients, onToggleActive, onEdit, onDelete }) {
             </div>
 
             <div className={styles.recipientInfo}>
-              <div className={styles.recipientName}>{recipient.name}</div>
               <div className={styles.recipientMeta}>
-                {recipient.email} · {recipient.team}
+                {recipient.email}
               </div>
             </div>
 
