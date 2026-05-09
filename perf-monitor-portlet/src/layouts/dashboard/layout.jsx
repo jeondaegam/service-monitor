@@ -1,10 +1,13 @@
 import { Box } from "@mui/material";
+import { useLocation } from "react-router-dom";
 import { NavDesktop } from "./nav";
 import OrderTimeline from "../../sections/overview/analytics-order-timeline";
 import { useThemeMode } from "../../theme-mode";
 
 export function DashboardLayout({ children }) {
   const { themeMode } = useThemeMode();
+  const { pathname } = useLocation();
+  const hideTimeline = pathname === "/error-log";
 
   return (
     <Box
@@ -44,7 +47,7 @@ export function DashboardLayout({ children }) {
           overflowY: "auto",
         }}
       >
-        <OrderTimeline />
+        {!hideTimeline && <OrderTimeline />}
       </Box>
     </Box>
   );
