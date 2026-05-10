@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import styles from "./Notifications.module.css";
 // ─────────────────────────────────────────
@@ -61,60 +61,36 @@ const DUMMY_HISTORY = [
     elEmail: "monitor@company.com",
     elTitle: "[CRITICAL] API Gateway 장애 발생",
     elSenddate: "2025-05-01T14:03:22Z",
-    status: "SUCCESS",
-    recipientCount: 3,
-    triggerLevel: "ERROR",
-    relatedLogId: "log_001",
   },
   {
     elId: "mail_002",
     elEmail: "monitor@company.com",
     elTitle: "[WARN] DB 응답 지연 감지",
     elSenddate: "2025-05-01T13:47:10Z",
-    status: "SUCCESS",
-    recipientCount: 3,
-    triggerLevel: "WARN",
-    relatedLogId: "log_008",
   },
   {
     elId: "mail_003",
     elEmail: "alert@company.com",
     elTitle: "[CRITICAL] Auth 서비스 오류",
     elSenddate: "2025-05-01T12:15:44Z",
-    status: "FAIL",
-    recipientCount: 0,
-    triggerLevel: "ERROR",
-    relatedLogId: "log_005",
   },
   {
     elId: "mail_004",
     elEmail: "monitor@company.com",
     elTitle: "[WARN] 응답시간 임계치 초과",
     elSenddate: "2025-05-01T11:30:05Z",
-    status: "SUCCESS",
-    recipientCount: 4,
-    triggerLevel: "WARN",
-    relatedLogId: "log_004",
   },
   {
     elId: "mail_005",
     elEmail: "alert@company.com",
     elTitle: "[CRITICAL] Redis 세션 스토어 다운",
     elSenddate: "2025-04-30T22:08:33Z",
-    status: "SUCCESS",
-    recipientCount: 3,
-    triggerLevel: "ERROR",
-    relatedLogId: "log_005",
   },
   {
     elId: "mail_006",
     elEmail: "monitor@company.com",
     elTitle: "[WARN] Connection pool 경고",
     elSenddate: "2025-04-30T18:55:21Z",
-    status: "FAIL",
-    recipientCount: 0,
-    triggerLevel: "WARN",
-    relatedLogId: "log_003",
   },
 ];
 
@@ -124,17 +100,6 @@ const AVATAR_COLORS = [
   { bg: "#d1fae5", color: "#065f46" },
   { bg: "#ede9fe", color: "#5b21b6" },
   { bg: "#fce7f3", color: "#9d174d" },
-];
-
-// const LEVEL_CLASS = {
-//   ERROR: styles.levelError,
-//   WARN: styles.levelWarn,
-// };
-
-const HISTORY_FILTERS = [
-  { key: "all", label: "전체" },
-  { key: "SUCCESS", label: "성공" },
-  { key: "FAIL", label: "실패" },
 ];
 
 function formatDateTime(iso) {
@@ -175,10 +140,6 @@ function normalizeEmailHistories(payload) {
     elEmail: history.elEmail ?? history.senderEmail ?? "",
     elTitle: history.elTitle ?? history.subject ?? "",
     elSenddate: history.elSenddate ?? history.sentAt ?? "",
-    status: history.status ?? "",
-    recipientCount: history.recipientCount ?? 0,
-    triggerLevel: history.triggerLevel ?? "",
-    relatedLogId: history.relatedLogId ?? "",
   }));
 }
 
@@ -356,43 +317,6 @@ function RecipientList({ recipients, onDelete }) {
   );
 }
 
-// function LevelBadge({ level }) {
-//   return (
-//     <span className={classNames(styles.levelBadge, LEVEL_CLASS[level] ?? LEVEL_CLASS.WARN)}>
-//       {level}
-//     </span>
-//   );
-// }
-
-// function HistoryDetail({ history }) {
-//   return (
-//     <tr>
-//       <td className={styles.detailCell} colSpan={3}>
-//         <div className={styles.detailPanel}>
-//           <div className={styles.detailGrid}>
-//             {[
-//               ["Mail ID", history.elId],
-//               ["트리거 레벨", history.triggerLevel],
-//               ["연결 로그 ID", history.relatedLogId],
-//             ].map(([label, value]) => (
-//               <div key={label}>
-//                 <div className={styles.detailLabel}>{label}</div>
-//                 <div className={styles.detailValue}>
-//                   {label === "트리거 레벨" ? (
-//                     <LevelBadge level={value} />
-//                   ) : (
-//                     value
-//                   )}
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </td>
-//     </tr>
-//   );
-// }
-
 function HistoryTable({ histories, loading, error }) {
   return (
     <div className={styles.panel}>
@@ -436,40 +360,19 @@ function HistoryTable({ histories, loading, error }) {
             </tr>
           )}
 
-          {histories.map((history) => {
-            // const isOpen = expandedMail === history.elId;
-
-            return (
-              <Fragment key={history.elId}>
-                <tr
-                  className={classNames(
-                    styles.historyRow,
-                    // isOpen && styles.historyRowOpen,
-                  )}
-                  // onClick={() => onToggle(history.elId)}
-                >
-                  <td className={classNames(styles.timeCell, styles.cellLeft)}>
-                    {formatDateTime(history.elSenddate)}
-                  </td>
-                  <td className={classNames(styles.emailCell, styles.cellLeft)}>
-                    {history.elEmail}
-                  </td>
-                  <td
-                    className={classNames(styles.subjectCell, styles.cellLeft)}
-                  >
-                    {history.elTitle}
-                  </td>
-                </tr>
-
-                {/* {isOpen && (
-                  <HistoryDetail
-                    key={`detail-${history.elId}`}
-                    history={history}
-                  />
-                )} */}
-              </Fragment>
-            );
-          })}
+          {histories.map((history) => (
+            <tr key={history.elId} className={styles.historyRow}>
+              <td className={classNames(styles.timeCell, styles.cellLeft)}>
+                {formatDateTime(history.elSenddate)}
+              </td>
+              <td className={classNames(styles.emailCell, styles.cellLeft)}>
+                {history.elEmail}
+              </td>
+              <td className={classNames(styles.subjectCell, styles.cellLeft)}>
+                {history.elTitle}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
@@ -484,8 +387,6 @@ export default function Notifications() {
   const [historyLoading, setHistoryLoading] = useState(false);
   const [historyError, setHistoryError] = useState("");
   const [modal, setModal] = useState(null);
-  const [historyStatus] = useState("all");
-  // const [expandedMail, setExpandedMail] = useState(null);
 
   useEffect(() => {
     let ignore = false;
@@ -518,18 +419,7 @@ export default function Notifications() {
     };
   }, []);
 
-  const filteredHistory = useMemo(() => {
-    return histories.filter((history) => {
-      if (historyStatus !== "all" && history.status !== historyStatus)
-        return false;
-      return true;
-    });
-  }, [histories, historyStatus]);
-
   // const activeCount = recipients.filter((recipient) => recipient.active).length;
-  // const successCount = histories.filter(
-  //   (history) => history.status === "SUCCESS",
-  // ).length;
 
   const handleSaveRecipient = (form) => {
     if (modal.mode === "add") {
@@ -564,10 +454,6 @@ export default function Notifications() {
     setRecipients((prev) => prev.filter((recipient) => recipient.id !== id));
   };
 
-  // const handleToggleHistory = (elId) => {
-  //   setExpandedMail((current) => (current === elId ? null : elId));
-  // };
-
   return (
     <>
       {modal && (
@@ -590,7 +476,6 @@ export default function Notifications() {
         {/* <div className={styles.summaryGrid}>
           <SummaryCard label="전체 수신자" value={recipients.length} />
           <SummaryCard label="활성 수신자" value={activeCount} />
-          <SummaryCard label="발송 성공 (7일)" value={successCount} />
         </div> */}
 
         <div className={styles.contentGrid}>
@@ -615,28 +500,14 @@ export default function Notifications() {
               {/* <span className={styles.sectionMeta}>최근 7일</span> */}
             </div>
 
-            {/* 발송 히스토리: 전체, 성공, 실패 필터 */}
-            {/* <div className={styles.filterBar}>
-              {HISTORY_FILTERS.map((filter) => (
-                <button
-                  key={filter.key}
-                  className={classNames(styles.chip, historyStatus === filter.key && styles.chipActive)}
-                  type="button"
-                  onClick={() => setHistoryStatus(filter.key)}
-                >
-                  {filter.label}
-                </button>
-              ))}
-            </div> */}
-
             <HistoryTable
-              histories={filteredHistory}
+              histories={histories}
               loading={historyLoading}
               error={historyError}
             />
 
             {/* <div className={styles.footerNote}>
-              {filteredHistory.length}건 표시 중 · 페이지네이션은 API 연동 시
+              {histories.length}건 표시 중 · 페이지네이션은 API 연동 시
               추가
             </div> */}
           </section>
