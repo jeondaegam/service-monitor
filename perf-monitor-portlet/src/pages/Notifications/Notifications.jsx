@@ -153,6 +153,13 @@ async function fetchEmailHistories() {
     throw new Error("Failed to fetch email histories");
   }
 
+  const contentType = response.headers.get("content-type") ?? "";
+  if (!contentType.includes("application/json")) {
+    throw new Error(
+      `Expected JSON from ${EMAIL_HISTORY_ENDPOINT}, but received ${contentType || "unknown content type"}`,
+    );
+  }
+
   return normalizeEmailHistories(await response.json());
 }
 
