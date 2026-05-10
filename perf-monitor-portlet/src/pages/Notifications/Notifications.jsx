@@ -360,19 +360,21 @@ function HistoryTable({ histories, loading, error }) {
             </tr>
           )}
 
-          {histories.map((history) => (
-            <tr key={history.elId} className={styles.historyRow}>
-              <td className={classNames(styles.timeCell, styles.cellLeft)}>
-                {formatDateTime(history.elSenddate)}
-              </td>
-              <td className={classNames(styles.emailCell, styles.cellLeft)}>
-                {history.elEmail}
-              </td>
-              <td className={classNames(styles.subjectCell, styles.cellLeft)}>
-                {history.elTitle}
-              </td>
-            </tr>
-          ))}
+          {!loading &&
+            !error &&
+            histories.map((history) => (
+              <tr key={history.elId} className={styles.historyRow}>
+                <td className={classNames(styles.timeCell, styles.cellLeft)}>
+                  {formatDateTime(history.elSenddate)}
+                </td>
+                <td className={classNames(styles.emailCell, styles.cellLeft)}>
+                  {history.elEmail}
+                </td>
+                <td className={classNames(styles.subjectCell, styles.cellLeft)}>
+                  {history.elTitle}
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>
@@ -383,7 +385,9 @@ function HistoryTable({ histories, loading, error }) {
 // ─────────────────────────────────────────
 export default function Notifications() {
   const [recipients, setRecipients] = useState(DUMMY_RECIPIENTS);
-  const [histories, setHistories] = useState(DUMMY_HISTORY);
+  const [histories, setHistories] = useState(() =>
+    USE_EMAIL_HISTORY_API ? [] : DUMMY_HISTORY,
+  );
   const [historyLoading, setHistoryLoading] = useState(false);
   const [historyError, setHistoryError] = useState("");
   const [modal, setModal] = useState(null);
@@ -403,6 +407,7 @@ export default function Notifications() {
       } catch (error) {
         console.error(error);
         if (!ignore) {
+          setHistories([]);
           setHistoryError("발송 히스토리를 불러오지 못했습니다.");
         }
       } finally {
