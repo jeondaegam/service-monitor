@@ -57,60 +57,60 @@ const DUMMY_RECIPIENTS = [
 
 const DUMMY_HISTORY = [
   {
-    mailId: "mail_001",
-    senderEmail: "monitor@company.com",
-    subject: "[CRITICAL] API Gateway 장애 발생",
-    sentAt: "2025-05-01T14:03:22Z",
+    elId: "mail_001",
+    elEmail: "monitor@company.com",
+    elTitle: "[CRITICAL] API Gateway 장애 발생",
+    elSenddate: "2025-05-01T14:03:22Z",
     status: "SUCCESS",
     recipientCount: 3,
     triggerLevel: "ERROR",
     relatedLogId: "log_001",
   },
   {
-    mailId: "mail_002",
-    senderEmail: "monitor@company.com",
-    subject: "[WARN] DB 응답 지연 감지",
-    sentAt: "2025-05-01T13:47:10Z",
+    elId: "mail_002",
+    elEmail: "monitor@company.com",
+    elTitle: "[WARN] DB 응답 지연 감지",
+    elSenddate: "2025-05-01T13:47:10Z",
     status: "SUCCESS",
     recipientCount: 3,
     triggerLevel: "WARN",
     relatedLogId: "log_008",
   },
   {
-    mailId: "mail_003",
-    senderEmail: "alert@company.com",
-    subject: "[CRITICAL] Auth 서비스 오류",
-    sentAt: "2025-05-01T12:15:44Z",
+    elId: "mail_003",
+    elEmail: "alert@company.com",
+    elTitle: "[CRITICAL] Auth 서비스 오류",
+    elSenddate: "2025-05-01T12:15:44Z",
     status: "FAIL",
     recipientCount: 0,
     triggerLevel: "ERROR",
     relatedLogId: "log_005",
   },
   {
-    mailId: "mail_004",
-    senderEmail: "monitor@company.com",
-    subject: "[WARN] 응답시간 임계치 초과",
-    sentAt: "2025-05-01T11:30:05Z",
+    elId: "mail_004",
+    elEmail: "monitor@company.com",
+    elTitle: "[WARN] 응답시간 임계치 초과",
+    elSenddate: "2025-05-01T11:30:05Z",
     status: "SUCCESS",
     recipientCount: 4,
     triggerLevel: "WARN",
     relatedLogId: "log_004",
   },
   {
-    mailId: "mail_005",
-    senderEmail: "alert@company.com",
-    subject: "[CRITICAL] Redis 세션 스토어 다운",
-    sentAt: "2025-04-30T22:08:33Z",
+    elId: "mail_005",
+    elEmail: "alert@company.com",
+    elTitle: "[CRITICAL] Redis 세션 스토어 다운",
+    elSenddate: "2025-04-30T22:08:33Z",
     status: "SUCCESS",
     recipientCount: 3,
     triggerLevel: "ERROR",
     relatedLogId: "log_005",
   },
   {
-    mailId: "mail_006",
-    senderEmail: "monitor@company.com",
-    subject: "[WARN] Connection pool 경고",
-    sentAt: "2025-04-30T18:55:21Z",
+    elId: "mail_006",
+    elEmail: "monitor@company.com",
+    elTitle: "[WARN] Connection pool 경고",
+    elSenddate: "2025-04-30T18:55:21Z",
     status: "FAIL",
     recipientCount: 0,
     triggerLevel: "WARN",
@@ -171,10 +171,10 @@ function normalizeEmailHistories(payload) {
       []);
 
   return histories.map((history, index) => ({
-    mailId: history.mailId ?? history.id ?? `mail_${index + 1}`,
-    senderEmail: history.senderEmail ?? "",
-    subject: history.subject ?? "",
-    sentAt: history.sentAt ?? "",
+    elId: history.elId ?? history.mailId ?? history.id ?? `mail_${index + 1}`,
+    elEmail: history.elEmail ?? history.senderEmail ?? "",
+    elTitle: history.elTitle ?? history.subject ?? "",
+    elSenddate: history.elSenddate ?? history.sentAt ?? "",
     status: history.status ?? "",
     recipientCount: history.recipientCount ?? 0,
     triggerLevel: history.triggerLevel ?? "",
@@ -371,7 +371,7 @@ function RecipientList({ recipients, onDelete }) {
 //         <div className={styles.detailPanel}>
 //           <div className={styles.detailGrid}>
 //             {[
-//               ["Mail ID", history.mailId],
+//               ["Mail ID", history.elId],
 //               ["트리거 레벨", history.triggerLevel],
 //               ["연결 로그 ID", history.relatedLogId],
 //             ].map(([label, value]) => (
@@ -437,33 +437,33 @@ function HistoryTable({ histories, loading, error }) {
           )}
 
           {histories.map((history) => {
-            // const isOpen = expandedMail === history.mailId;
+            // const isOpen = expandedMail === history.elId;
 
             return (
-              <Fragment key={history.mailId}>
+              <Fragment key={history.elId}>
                 <tr
                   className={classNames(
                     styles.historyRow,
                     // isOpen && styles.historyRowOpen,
                   )}
-                  // onClick={() => onToggle(history.mailId)}
+                  // onClick={() => onToggle(history.elId)}
                 >
                   <td className={classNames(styles.timeCell, styles.cellLeft)}>
-                    {formatDateTime(history.sentAt)}
+                    {formatDateTime(history.elSenddate)}
                   </td>
                   <td className={classNames(styles.emailCell, styles.cellLeft)}>
-                    {history.senderEmail}
+                    {history.elEmail}
                   </td>
                   <td
                     className={classNames(styles.subjectCell, styles.cellLeft)}
                   >
-                    {history.subject}
+                    {history.elTitle}
                   </td>
                 </tr>
 
                 {/* {isOpen && (
                   <HistoryDetail
-                    key={`detail-${history.mailId}`}
+                    key={`detail-${history.elId}`}
                     history={history}
                   />
                 )} */}
@@ -564,8 +564,8 @@ export default function Notifications() {
     setRecipients((prev) => prev.filter((recipient) => recipient.id !== id));
   };
 
-  // const handleToggleHistory = (mailId) => {
-  //   setExpandedMail((current) => (current === mailId ? null : mailId));
+  // const handleToggleHistory = (elId) => {
+  //   setExpandedMail((current) => (current === elId ? null : elId));
   // };
 
   return (
