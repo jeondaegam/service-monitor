@@ -1,12 +1,15 @@
-import { useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 
 import styles from "./Notifications.module.css";
 // ─────────────────────────────────────────
 // 하드코딩 더미 데이터
 // API 붙일 때 교체 위치:
 //   수신자 → GET /api/mail/recipients
-//   히스토리 → GET /api/mail/history?page=0&size=10
+//   히스토리 → USE_EMAIL_HISTORY_API를 true로 변경
 // ─────────────────────────────────────────
+const USE_EMAIL_HISTORY_API = false;
+const EMAIL_HISTORY_ENDPOINT = "/api/email/email-histories";
+
 const DUMMY_RECIPIENTS = [
   {
     id: 1,
@@ -158,6 +161,40 @@ function classNames(...names) {
   return names.filter(Boolean).join(" ");
 }
 
+function normalizeEmailHistories(payload) {
+  const histories = Array.isArray(payload)
+    ? payload
+    : (payload?.data ??
+      payload?.content ??
+      payload?.histories ??
+      payload?.emailHistories ??
+      []);
+
+  return histories.map((history, index) => ({
+    mailId: history.mailId ?? history.id ?? `mail_${index + 1}`,
+    senderEmail: history.senderEmail ?? "",
+    subject: history.subject ?? "",
+    sentAt: history.sentAt ?? "",
+    status: history.status ?? "",
+    recipientCount: history.recipientCount ?? 0,
+    triggerLevel: history.triggerLevel ?? "",
+    relatedLogId: history.relatedLogId ?? "",
+  }));
+}
+
+async function fetchEmailHistories() {
+  if (!USE_EMAIL_HISTORY_API) {
+    return DUMMY_HISTORY;
+  }
+
+  const response = await fetch(EMAIL_HISTORY_ENDPOINT);
+  if (!response.ok) {
+    throw new Error("Failed to fetch email histories");
+  }
+
+  return normalizeEmailHistories(await response.json());
+}
+
 // function ToggleSwitch({ active, onClick, title }) {
 //   return (
 //     <button
@@ -203,7 +240,9 @@ function RecipientModal({ initial, recipients, onSave, onClose }) {
           <>
             <div className={styles.field}>
               <label className={styles.label}>등록된 수신자</label>
-              <div className={classNames(styles.input, styles.recipientEmailList)}>
+              <div
+                className={classNames(styles.input, styles.recipientEmailList)}
+              >
                 {recipients.length === 0 ? (
                   <span className={styles.mutedText}>수신자 없음</span>
                 ) : (
@@ -260,7 +299,7 @@ function SummaryCard({ label, value }) {
   );
 }
 
-function RecipientList({ recipients, onEdit, onDelete }) {
+function RecipientList({ recipients, onDelete }) {
   return (
     <div className={styles.panel}>
       {recipients.length === 0 && (
@@ -271,10 +310,7 @@ function RecipientList({ recipients, onEdit, onDelete }) {
         const avatar = avatarColor(recipient.id);
 
         return (
-          <div
-            key={recipient.id}
-            className={styles.recipientRow}
-          >
+          <div key={recipient.id} className={styles.recipientRow}>
             <div
               className={styles.avatar}
               style={{
@@ -357,7 +393,7 @@ function RecipientList({ recipients, onEdit, onDelete }) {
 //   );
 // }
 
-function HistoryTable({ histories }) {
+function HistoryTable({ histories, loading, error }) {
   return (
     <div className={styles.panel}>
       <table className={`app-table app-table--fixed ${styles.table}`}>
@@ -376,7 +412,23 @@ function HistoryTable({ histories }) {
           </tr>
         </thead>
         <tbody>
-          {histories.length === 0 && (
+          {loading && (
+            <tr>
+              <td className={styles.empty} colSpan={3}>
+                발송 이력을 불러오는 중입니다.
+              </td>
+            </tr>
+          )}
+
+          {!loading && error && (
+            <tr>
+              <td className={styles.empty} colSpan={3}>
+                {error}
+              </td>
+            </tr>
+          )}
+
+          {!loading && !error && histories.length === 0 && (
             <tr>
               <td className={styles.empty} colSpan={3}>
                 발송 이력이 없습니다.
@@ -388,9 +440,8 @@ function HistoryTable({ histories }) {
             // const isOpen = expandedMail === history.mailId;
 
             return (
-              <>
+              <Fragment key={history.mailId}>
                 <tr
-                  key={history.mailId}
                   className={classNames(
                     styles.historyRow,
                     // isOpen && styles.historyRowOpen,
@@ -403,7 +454,9 @@ function HistoryTable({ histories }) {
                   <td className={classNames(styles.emailCell, styles.cellLeft)}>
                     {history.senderEmail}
                   </td>
-                  <td className={classNames(styles.subjectCell, styles.cellLeft)}>
+                  <td
+                    className={classNames(styles.subjectCell, styles.cellLeft)}
+                  >
                     {history.subject}
                   </td>
                 </tr>
@@ -414,7 +467,7 @@ function HistoryTable({ histories }) {
                     history={history}
                   />
                 )} */}
-              </>
+              </Fragment>
             );
           })}
         </tbody>
@@ -427,22 +480,56 @@ function HistoryTable({ histories }) {
 // ─────────────────────────────────────────
 export default function Notifications() {
   const [recipients, setRecipients] = useState(DUMMY_RECIPIENTS);
+  const [histories, setHistories] = useState(DUMMY_HISTORY);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyError, setHistoryError] = useState("");
   const [modal, setModal] = useState(null);
-  const [historyStatus, setHistoryStatus] = useState("all");
+  const [historyStatus] = useState("all");
   // const [expandedMail, setExpandedMail] = useState(null);
 
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadEmailHistories() {
+      setHistoryLoading(USE_EMAIL_HISTORY_API);
+      setHistoryError("");
+
+      try {
+        const nextHistories = await fetchEmailHistories();
+        if (!ignore) {
+          setHistories(nextHistories);
+        }
+      } catch (error) {
+        console.error(error);
+        if (!ignore) {
+          setHistoryError("발송 히스토리를 불러오지 못했습니다.");
+        }
+      } finally {
+        if (!ignore) {
+          setHistoryLoading(false);
+        }
+      }
+    }
+
+    loadEmailHistories();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
   const filteredHistory = useMemo(() => {
-    return DUMMY_HISTORY.filter((history) => {
+    return histories.filter((history) => {
       if (historyStatus !== "all" && history.status !== historyStatus)
         return false;
       return true;
     });
-  }, [historyStatus]);
+  }, [histories, historyStatus]);
 
   // const activeCount = recipients.filter((recipient) => recipient.active).length;
-  const successCount = DUMMY_HISTORY.filter(
-    (history) => history.status === "SUCCESS",
-  ).length;
+  // const successCount = histories.filter(
+  //   (history) => history.status === "SUCCESS",
+  // ).length;
 
   const handleSaveRecipient = (form) => {
     if (modal.mode === "add") {
@@ -519,13 +606,7 @@ export default function Notifications() {
               </button>
             </div>
 
-            <RecipientList
-              recipients={recipients}
-              onEdit={(recipient) =>
-                setModal({ mode: "edit", data: recipient })
-              }
-              onDelete={handleDelete}
-            />
+            <RecipientList recipients={recipients} onDelete={handleDelete} />
           </section>
 
           <section>
@@ -548,7 +629,11 @@ export default function Notifications() {
               ))}
             </div> */}
 
-            <HistoryTable histories={filteredHistory} />
+            <HistoryTable
+              histories={filteredHistory}
+              loading={historyLoading}
+              error={historyError}
+            />
 
             {/* <div className={styles.footerNote}>
               {filteredHistory.length}건 표시 중 · 페이지네이션은 API 연동 시
