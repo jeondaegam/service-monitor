@@ -88,7 +88,7 @@ function getTimelineDotColor(type) {
   return DOT_COLORS[type] || "#1877F2";
 }
 
-export default function OrderTimeline({
+export default function IncidentFeed({
   title = "최근 장애 이력",
   subheader,
   list = timelineList,

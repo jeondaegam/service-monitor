@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { NavDesktop } from "./nav";
-import OrderTimeline from "../../sections/overview/analytics-order-timeline";
+import IncidentFeed from "../../sections/overview/incident-feed";
 import { useThemeMode } from "../../theme-mode";
 
 export function DashboardLayout({ children }) {
@@ -47,7 +47,7 @@ export function DashboardLayout({ children }) {
           overflowY: "auto",
         }}
       >
-        {!hideTimeline && <OrderTimeline />}
+        {!hideTimeline && <IncidentFeed />}
       </Box>
     </Box>
   );
